@@ -1,0 +1,91 @@
+<!doctype html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymelead/layout"
+        layout:decorator="layouts/main">
+>
+<head>
+    <title>Teams</title>
+
+</head>
+<body>
+
+
+<div layout:fragment="content">
+
+    <div class="jumbotron">
+        <div class="container">
+            <h2>Our Teams</h2>
+            <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                exea commodo consequat.</h4>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="row" th:each="team : ${teams}">
+            <div class="col-md-12">
+                <div class="col-md-4">
+                    <br/>
+                    <div>
+                        <img class="profile-picture2" th:classappend="${team.base64image != null}? 'zoom'"
+                             th:src="${team.base64image != null} ? @{'data:image/jpeg;base64,'+${team.base64image}} : '/images/usergroup.jpg' "/>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <a th:href="@{/teams/show/} + ${team.id}"><h2 th:text="${team.name}">name</h2></a>
+                    <table class="table table-striped">
+                        <tr>
+                            <td class="col-md-5">Yell</td>
+                            <td th:text="${team.yell}">yell</td>
+                        </tr>
+                        <tr>
+                            <td>Team captain</td>
+                            <td>
+                                <div th:if="${team.teamCaptain != null}">
+                                    <a th:href="@{/members/show/} + ${team.teamCaptain.getId()}">
+                                <span th:text="|${team.teamCaptain.firstName} ${team.teamCaptain.lastName}|">
+                                team captian </span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Enrolled competitions</td>
+                            <td>
+                                <div th:each="competition : ${team.competitions}">
+                                    <a th:href="@{/competitions/show/} + ${competition.id}"><span
+                                            th:text="${competition.name}">competiition</span></a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Members</td>
+                            <td>
+                                <div th:each="member : ${team.members}">
+                                    <a th:href="@{/members/show/} + ${member.id}"><span
+                                            th:text="|${member.firstName} ${member.lastName}|">member</span></a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <hr/>
+            </div>
+        </div>
+
+        <p th:if="${teams.size() == 0}">
+        <div class="alert alert-warning" role="alert">No teams Found.</div>
+        </p>
+
+
+    </div>
+</div>
+
+
+</body>
+</html>

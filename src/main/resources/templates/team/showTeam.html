@@ -1,0 +1,130 @@
+<!doctype html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymelead/layout"
+        layout:decorator="layouts/main">
+>
+<head>
+
+    <title>Team</title>
+
+</head>
+<body>
+
+
+<div layout:fragment="content">
+    <br/>
+
+    <div class="container">
+        <br/>
+        <ol class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="/teams/list">teams</a></li>
+            <li class="active" th:text="${team.name}"></li>
+        </ol>
+    </div>
+
+    <div class="container">
+
+        <div th:if="${message}" class="alert alert-success" role="alert">
+            <p th:text="${message}">succes message</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5">
+                <br/>
+                <header>
+                    <img class="img-responsive img-rounded" th:src="${team.base64image != null} ? @{'data:image/jpeg;base64,'+${team.base64image}} : '/images/usergroup.jpg' "/>
+                </header>
+            </div>
+            <div class="col-md-7">
+                <h2 th:text="${team.name}">name</h2>
+                <table class="table table-striped">
+                    <tr>
+                        <td>Yell</td>
+                        <td th:text="${team.yell}">yell</td>
+                    </tr>
+                    <tr>
+                        <td>Team captain</td>
+                        <td>
+                            <div th:if="${team.teamCaptain != null}">
+                                <a th:href="@{/members/show/} + ${team.teamCaptain.id}">
+                                <span th:text="|${team.teamCaptain.firstName} ${team.teamCaptain.lastName}|">
+                                team captian </span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Enrolled competitions</td>
+                        <td>
+                            <div th:each="competition : ${team.competitions}">
+                                <a th:href="@{/competition/show/} + ${competition.id}"><span
+                                        th:text="${competition.name}">competition</span></a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Members</td>
+                        <td>
+                            <div th:each="member : ${team.members}">
+                                <a th:href="@{/members/show/} + ${member.id}"><span
+                                        th:text="|${member.firstName} ${member.lastName}|">member</span></a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <hr/>
+            <br/><br/>
+        </div>
+
+        <div class="col-md-7 well pull-right table-responsive">
+
+            <h2>Matches</h2>
+            <br/>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Competition</th>
+                    <th>Match</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Result</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="game, iterationStatus : ${team.games}">
+                    <td><a th:href="@{/competition/show/} + ${game.competition.id}"><span th:text="${game.competition.name}">Competition</span></a></td>
+                    <td><a th:href="@{/teams/show/} + ${game.teams.get(0).id}">
+                        <span th:text="${game.teams.get(0).name}">team 1</span></a>
+                        -
+                        <a th:href="@{/teams/show/} + ${game.teams.get(0).id}">
+                            <span th:text="${game.teams.get(1).name}">team 2</span></a>
+
+                    </td>
+                    <td th:text="${#dates.format(game.date,'dd-M-yyyy hh:mm')}">date</td>
+                    <td th:text="${game.location.field}">location</td>
+                    <td>
+                        <div th:if="|${game.scoreTeamA != null}">
+                            <span th:text="|${game.scoreTeamA} - ${game.scoreTeamB}|">result</span>
+                        </div>
+                        <div th:if="|${game.scoreTeamA == null}">
+                            <span> .. - ..</span>
+                        </div>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+</html>

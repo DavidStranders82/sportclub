@@ -1,0 +1,90 @@
+<!doctype html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymelead/layout"
+        layout:decorator="layouts/main">
+>
+<head>
+
+    <title>Admin</title>
+
+</head>
+<body>
+
+
+<div layout:fragment="content">
+
+    <div class="container">
+        <div class="container">
+            <br/>
+            <h2>Manage competitions</h2>
+            <br/>
+            <a class="btn btn-md btn-primary " th:href="@{/admin/competition/create}">Add new competition</a>
+            <br/><br/><br/>
+
+            <div th:if="${message}" class="alert alert-success" role="alert">
+                <p th:text="${message}">succes message</p>
+            </div>
+            <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Maximum teams</th>
+                    <th>Enrolled teams</th>
+                    <th>Period</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="competition, iterationStatus : ${competitions}">
+                    <td th:text="${iterationStatus.count}">1</td>
+                    <td th:text="${competition.name}">name</td>
+                    <td th:text="${competition.maxTeams}">max teams</td>
+                    <td>
+                        <div th:each="team : ${competition.teams}">
+                            <a th:href="@{/teams/show/} + ${team.id}"><span th:text="${team.name}">teams</span></a>
+                        </div>
+                    </td>
+                    <td th:text="|${#dates.format(competition.startDate,'dd-MM-yyyy')} - ${#dates.format(competition.endDate,'dd-MM-yyyy')}|">period</td>
+
+                    <td><a th:href="@{/admin/competition/edit/} + ${competition.id}">Edit</a></td>
+                    <td><a data-toggle="modal" data-target="#myModal" th:attr="data-competition-id=${competition.id}" class="competition-delete">Delete</a></td>
+                    <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Delete competition</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to delete this competition?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button pull-left" class="btn btn-default" data-dismiss="modal">
+                                        cancel
+                                    </button>
+                                    <a id="closemodal" class="btn btn-primary" role="button"
+                                       th:href="@{/admin/competition/delete/}+(data-competition-id)">delete competition</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+
+            <p th:if="${competitions.size() == 0}">
+            <div class="alert alert-warning" role="alert">No competitions found.</div>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

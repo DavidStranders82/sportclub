@@ -1,0 +1,82 @@
+<!doctype html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymelead/layout"
+        layout:decorator="layouts/main">
+>
+<head>
+
+    <title>Members</title>
+
+</head>
+<body>
+
+
+<div layout:fragment="content">
+    <br/>
+
+    <div class="container">
+        <br/>
+        <ol class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="/members/list">Members</a></li>
+            <li class="active" th:text="|${member.firstName} ${member.lastName}|"></li>
+        </ol>
+    </div>
+
+    <div class="container">
+
+        <div th:if="${message}" class="alert alert-success" role="alert">
+            <p th:text="${message}">succes message</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <header>
+                    <img th:src="${member.base64image != null} ? @{'data:image/jpeg;base64,'+${member.base64image}} : '/images/user.jpg' "/>
+                </header>
+            </div>
+            <div class="col-md-9">
+                <br/>
+                <h2 th:text="|${member.firstName} ${member.lastName}|">name</h2>
+                <br/>
+                <table class="table table-striped">
+                    <tr>
+                        <td>Email</td>
+                        <td>
+                            <a th:href="|mailto:${member.email}|"><span th:text="${member.email}">email</span></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Member since</td>
+                        <td th:text="${#dates.format(member.memberSince,'dd-mm-yyyy')}">date</td>
+                    </tr>
+                    <tr>
+                        <td>Team</td>
+                        <td>
+                            <div th:if="${member.teams != null}">
+                                <div th:each="team : ${member.teams}">
+                                    <a th:href="@{/teams/show/} + ${team.id}"><span th:text="${team.name}">team</span></a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Profile</td>
+                        <td th:text="${member.profile}">profile</td>
+                    </tr>
+                </table>
+                <br/>
+                <div th:if="${currentLoggedIn}">
+                    <a class="btn btn-primary pull-right" role="button"
+                       th:href="@{/members/edit/} + ${member.id}">Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

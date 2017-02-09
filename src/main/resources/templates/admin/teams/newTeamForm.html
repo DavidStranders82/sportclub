@@ -1,0 +1,123 @@
+<!doctype html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymelead/layout"
+        layout:decorator="layouts/main">
+>
+<head>
+    <title>Create new Team</title>
+
+</head>
+<body>
+
+
+<div layout:fragment="content">
+    <br/>
+
+    <div class="container">
+        <br/>
+        <ol class="breadcrumb">
+            <li><a href="/admin/teams">Manage team</a></li>
+            <li class="active">New team form</li>
+        </ol>
+    </div>
+
+    <div class="container">
+        <div class="container">
+
+            <h2>Create new team</h2>
+            <br/>
+
+            <div th:if="${message}" class="alert alert-danger" role="alert">
+                <p th:text="${message}">message</p>
+            </div>
+
+            <form class="form-horizontal form-width" th:object="${team}" th:action="@{/admin/team/save}"
+                  method="post" enctype="multipart/form-data">
+                <input type="hidden" th:field="*{id}"/>
+                <div th:class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-error'">
+                    <label class="col-md-3 control-label">Name <span class="required">*</span></label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" th:field="*{name}"/>
+                        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" th:class="help-block">name Errors</span>
+                    </div>
+                </div>
+                <div th:class="form-group">
+                    <label class="col-md-3 control-label">Yell </label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" th:field="*{yell}"/>
+                    </div>
+                </div>
+                <div th:class="form-group">
+                    <label class="col-md-3 control-label">Team Captain</label>
+                    <div class="col-md-9">
+                        <select class="form-control" th:field="*{teamCaptain}">
+                            <option value="">Select team captain</option>
+                            <option th:each="teamCaptain : ${teamCaptains}" th:value="${teamCaptain.id}"
+                                    th:text="|${teamCaptain.firstName} ${teamCaptain.lastName}|">team captain
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div th:class="form-group">
+                    <label class="col-md-3 control-label">Available members </label>
+                    <div>
+                        <div class="col-md-9">
+                            <div th:if="${availableMembers.size() != 0}">
+                                <div th:each="member : ${availableMembers}">
+                                    <label class="checkbox-inline">
+                                        <input class="checkbox-inline" type="checkbox"
+                                               th:field="*{members}"
+                                               th:value="${member.id}"
+                                               th:text="|${member.firstName} ${member.lastName}|"/>
+                                    </label>
+                                </div>
+                            </div>
+                            <div th:if="${availableMembers.size() == 0}" >
+                                <h5>no members available</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div th:class="form-group">
+                    <label class="col-md-3 control-label">Competitions </label>
+                    <div>
+                        <div class="col-md-9">
+                            <div th:each="competition : ${competitions}">
+                                <label class="checkbox-inline">
+                                    <input class="checkbox-inline" type="checkbox" th:field="*{competitions}"
+                                           th:value="${competition.id}" th:text="${competition.name}"/>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div th:class="form-group">
+                    <label class="col-md-3 control-label">Picture</label>
+                    <div class="col-md-9">
+                        <div class="input-group">
+                            <label class="input-group-btn">
+                <span class="btn btn-default">Browse
+                <input type="file" name="file" style="display: none;"/>
+                </span>
+                            </label>
+                            <input type="text" class="form-control" readonly="readonly"
+                                   placeholder="no image selected"/>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="pull-right">
+                    <a class="btn btn-default" role="button"
+                       th:href="@{/admin/teams}">cancel</a>
+                    <button type="submit" class="btn btn-primary">submit</button>
+                </div>
+            </form>
+            <br/><br/><br/>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

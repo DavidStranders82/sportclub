@@ -1,0 +1,35 @@
+<!doctype html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymelead/layout"
+        layout:decorator="layouts/main">
+>
+<head>
+    <title>Acces denied</title>
+
+</head>
+<body>
+
+<div layout:fragment="navbar-list">
+    <ul class="nav navbar-nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/members/list">members</a></li>
+        <li><a href="/teams/list">teams</a></li>
+        <li><a href="/competition/show">competition</a></li>
+    </ul>
+</div>
+
+
+<div layout:fragment="content">
+    <div class="container">
+        <div>
+            <h1>Access denied</h1>
+            <p class="lead">You don't have access to this page</p>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymelead/layout"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+>
+<head>
+    <title>Home</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link th:href="@{/css/starter-template.css}" rel="stylesheet"/>
+
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/scripts.js"></script>
+
+    <!-- Include Date Range Picker -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container fluid">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <!--<span class="sr-only">Toggle navigation</span>-->
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand"><img style="max-width:60px" src="/images/logo2.png" /> </a>
+            <a class="navbar-brand" href="/" style="color:white">HAC Hockeyclub</a>
+        </div>
+        <div id="myNavbar" class="collapse navbar-collapse">
+            <!--<div layout:fragment="navbar-list">-->
+            <!--</div>-->
+
+            <ul class="nav navbar-nav">
+                <li th:class="${homeController == 'active'} ? 'active'"><a href="/">Home</a></li>
+                <li th:class="${memberController == 'active'} ? 'active'"><a href="/members/list">Members</a></li>
+                <li th:class="${teamController == 'active'} ? 'active'"><a href="/teams/list">Teams</a></li>
+                <li th:class="${competitionController == 'active'} ? 'active'"><a
+                        href="/competition/list">Competitions</a></li>
+                <li th:class="${adminController == 'active'} ? 'dropdown active' : 'dropdown'"
+                    sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Admin <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/admin/members">Manage members</a></li>
+                        <li><a href="/admin/teams">Manage teams</a></li>
+                        <li><a href="/admin/competitions">Manage competitions</a></li>
+                        <li><a href="/admin/games">Manage games</a></li>
+                        <li><a href="/admin/locations">Manage locations</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="navbar-text navbar-right">
+                Welcome <span sec:authentication="name">Guest</span> |
+                <form sec:authorize="isAuthenticated()" id="frmlogout" th:action="@{/logout}" method="post"
+                      class="form-inline">
+                    <a href="javascript:{}" onclick="document.getElementById('frmlogout').submit(); return false;">Logout</a>
+                </form>
+                <a sec:authorize="!isAuthenticated()" th:href="@{/login}"> Login</a>
+            </div>
+        </div>
+
+    </div>
+</nav>
+
+<div layout:fragment="content">
+    <br/>
+</div>
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+<div class="navbar-fixed-bottom footer">
+    <p>Copyright David Stranders 2017</p>
+</div>
+
+
+</body>
+</html>

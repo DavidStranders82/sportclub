@@ -1,0 +1,164 @@
+<!doctype html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymelead/layout"
+        layout:decorator="layouts/main">
+>
+<head>
+    <title>Edit member</title>
+
+</head>
+<body>
+
+
+<div layout:fragment="content">
+    <br/>
+
+    <div class="container">
+        <br/>
+        <ol class="breadcrumb">
+            <li>Admin</li>
+            <li><a href="/admin/members">Manage members</a></li>
+            <li class="active">Edit member</li>
+        </ol>
+    </div>
+
+    <div class="container">
+        <div class="container">
+            <h2>Edit member  XX</h2>
+            <br/>
+
+
+            <div th:if="${message}" class="alert alert-danger" role="alert">
+                <p th:text="${message}">message</p>
+            </div>
+            <div class="col-md-12">
+                <form class="form-horizontal" th:object="${member}" th:action="@{/admin/member/update}"
+                      method="post"
+                      enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <header>
+                                <img th:src="${member.base64image != null} ? @{'data:image/jpeg;base64,'+${member.base64image}} : '/images/user.jpg' "/>
+                            </header>
+                            <br/>
+                            <div >
+                                <div class="input-group">
+                                    <label class="input-group-btn">
+                                      <span class="btn btn-default">Change picture
+                                        <input type="file" name="file" style="display: none;" />
+                                      </span>
+                                    </label>
+                                    <input type="text" class="form-control" readonly="readonly" placeholder="no image selected" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <br/>
+                            <input type="hidden" th:field="*{id}"/>
+                            <div th:class="form-group" th:classappend="${#fields.hasErrors('firstName')}? 'has-error'">
+                                <label class="col-md-4 control-label">First name <span class="required">*</span></label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" th:field="*{firstName}"/>
+                                    <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
+                                          th:class="help-block">firstName Errors</span>
+                                </div>
+                            </div>
+                            <div th:class="form-group" th:classappend="${#fields.hasErrors('lastName')}? 'has-error'">
+                                <label class="col-md-4 control-label">Last name <span class="required">*</span></label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" th:field="*{lastName}"/>
+                                    <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
+                                          th:class="help-block">lastName Errors</span>
+                                </div>
+                            </div>
+                            <div th:class="form-group" th:classappend="${#fields.hasErrors('email')}? 'has-error'">
+                                <label class="col-md-4 control-label">Email <span class="required">*</span></label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" th:field="*{email}"/>
+                                    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                                          th:class="help-block">Email Errors</span>
+                                </div>
+                            </div>
+                            <div th:class="form-group" th:classappend="${#fields.hasErrors('password')}? 'has-error'" >
+                                <label class="col-md-4 control-label">Password
+                                    <span class="required">*</span>
+                                </label>
+                                <div class="col-md-8">
+                                    <input type="password" class="form-control" th:field="*{password}" placeholder="*********"/>
+                                    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+                                          th:class="help-block">Password Errors</span>
+                                </div>
+                            </div>
+                            <div th:class="form-group" th:classappend="${#fields.hasErrors('confirmPw')}? 'has-error'">
+                                <label class="col-md-4 control-label">Confirm password
+                                    <span class="required">*</span>
+                                </label>
+                                <div class="col-md-8">
+                                    <input type="password" class="form-control" th:field="*{confirmPw}" placeholder="*********"/>
+                                    <span th:if="${#fields.hasErrors('confirmPw')}" th:errors="*{confirmPw}"
+                                          th:class="help-block">Confirmation Errors</span>
+                                </div>
+                            </div>
+                            <div th:class="form-group" th:classappend="${#fields.hasErrors('roles')}? 'has-error'">
+                                <label class="col-md-4 control-label">Roles</label>
+                                <div>
+                                    <div class="col-md-8">
+                                        <label class="checkbox-inline"><input type="checkbox" th:field="*{roles}"
+                                                                              value="1"/>user</label>
+                                        <label class="checkbox-inline"><input type="checkbox" th:field="*{roles}"
+                                                                              value="2"/>admin</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:class="form-group"
+                                 th:classappend="${#fields.hasErrors('memberSince')}? 'has-error'">
+                                <label class="col-md-4 control-label">Member since <span
+                                        class="required">*</span></label>
+                                <div class="col-md-8">
+                                    <div class='input-group'>
+                                        <input type="text" class="form-control" id="datetimepicker4"
+                                               th:field="*{memberSince}"
+                                               placeholder="dd/mm/yyyy"/>
+                                        <span th:if="${#fields.hasErrors('memberSince')}" th:errors="*{memberSince}"
+                                              th:class="help-block">MemberSince Errors</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:class="form-group" th:classappend="${#fields.hasErrors('teams')}? 'has-error'">
+                                <label class="col-md-4 control-label">team</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" th:field="*{teams}">
+                                        <option value="">Select team</option>
+                                        <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}">
+                                            teams
+                                        </option>
+                                    </select>
+                                    <span th:if="${#fields.hasErrors('teams')}" th:errors="*{teams}"
+                                          th:class="help-block">Team Errors</span>
+                                </div>
+                            </div>
+                            <div th:class="form-group">
+                                <label class="col-md-4 control-label">Profile</label>
+                                <div class="col-md-8">
+                                    <textarea class="form-control" rows="3" th:field="*{profile}">profile</textarea>
+                                </div>
+                            </div>
+                            <div class="pull-right">
+                                <a class="btn btn-default" role="button"
+                                   th:href="@{/admin/members}">cancel</a>
+                                <button type="submit" class="btn btn-primary">save</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br/><br/><br/>
+    </div>
+</div>
+
+
+</body>
+</html>

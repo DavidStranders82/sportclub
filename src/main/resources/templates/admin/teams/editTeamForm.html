@@ -1,0 +1,158 @@
+<!doctype html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymelead/layout"
+        layout:decorator="layouts/main">
+>
+<head>
+    <title>Edit team</title>
+
+</head>
+<body>
+
+
+<div layout:fragment="content">
+    <br/>
+
+    <div class="container">
+        <br/>
+        <ol class="breadcrumb">
+            <li>Admin</li>
+            <li><a href="/admin/teams">Manage teams</a></li>
+            <li class="active">Edit team</li>
+        </ol>
+    </div>
+
+    <div class="container">
+        <div class="container">
+            <h2>Edit team</h2>
+            <br/>
+
+
+            <div th:if="${message}" class="alert alert-danger" role="alert">
+                <p th:text="${message}">message</p>
+            </div>
+            <div class="col-md-12">
+                <form class="form-horizontal" th:object="${team}" th:action="@{/admin/team/update}"
+                      method="post"
+                      enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <header>
+                                <img class="profile-picture2" th:classappend="${team.base64image != null}? 'zoom'"
+                                     th:src="${team.base64image != null} ? @{'data:image/jpeg;base64,'+${team.base64image}} : '/images/usergroup.jpg' "/>
+                            </header>
+                            <br/>
+                            <div>
+                                <div class="input-group">
+                                    <label class="input-group-btn">
+                                      <span class="btn btn-default">Change picture
+                                        <input type="file" name="file" style="display: none;"/>
+                                      </span>
+                                    </label>
+                                    <input type="text" class="form-control" readonly="readonly"
+                                           placeholder="no image selected"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <br/>
+                            <input type="hidden" th:field="*{id}"/>
+                            <div th:class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-error'">
+                                <label class="col-md-3 control-label">Name <span class="required">*</span></label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control" th:field="*{name}"/>
+                                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                                          th:class="help-block">name Errors</span>
+                                </div>
+                            </div>
+                            <div th:class="form-group">
+                                <label class="col-md-3 control-label">Yell </label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control" th:field="*{yell}"/>
+                                </div>
+                            </div>
+                            <div th:class="form-group">
+                                <label class="col-md-3 control-label">Team Captain</label>
+                                <div class="col-md-7">
+                                    <select class="form-control" th:field="*{teamCaptain}">
+                                        <option value="">Select team captain</option>
+                                        <option th:each="teamCaptain : ${teamCaptains}" th:value="${teamCaptain.id}"
+                                                th:text="|${teamCaptain.firstName} ${teamCaptain.lastName}|">
+                                            team captain
+                                        </option>
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div th:if="${team.members.size() != 0}" th:class="form-group">
+                                <label class="col-md-3 control-label">Current members </label>
+                                <div>
+                                    <div class="col-md-7">
+                                        <div th:each="member : ${team.members}">
+                                            <label class="checkbox-inline">
+                                                <input class="checkbox-inline" type="checkbox"
+                                                       th:field="*{members}"
+                                                       th:value="${member.id}"
+                                                       th:text="|${member.firstName} ${member.lastName}|"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:class="form-group">
+                                <label class="col-md-3 control-label">Available members </label>
+                                <div>
+                                    <div class="col-md-7">
+                                        <div th:if="${availableMembers.size() != 0}">
+                                            <div th:each="member : ${availableMembers}">
+                                                <label class="checkbox-inline">
+                                                    <input class="checkbox-inline" type="checkbox"
+                                                           th:field="*{members}"
+                                                           th:value="${member.id}"
+                                                           th:text="|${member.firstName} ${member.lastName}|"/>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div th:if="${availableMembers.size() == 0}" >
+                                            <h5>no members available</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:class="form-group">
+                                <label class="col-md-3 control-label">Competitions </label>
+                                <div>
+                                    <div class="col-md-7">
+                                        <div th:each="competition : ${competitions}">
+                                            <label class="checkbox-inline">
+                                                <input class="checkbox-inline" type="checkbox"
+                                                       th:field="*{competitions}"
+                                                       th:value="${competition.id}"
+                                                       th:text="${competition.name}"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="col-md-10">
+                                <div class="pull-right">
+                                    <a class="btn btn-default" role="button"
+                                       th:href="@{/admin/teams}">cancel</a>
+                                    <button type="submit" class="btn btn-primary">save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br/><br/><br/>
+    </div>
+</div>
+
+
+</body>
+</html>

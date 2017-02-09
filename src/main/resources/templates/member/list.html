@@ -1,0 +1,53 @@
+<!doctype html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymelead/layout"
+        layout:decorator="layouts/main">
+>
+<head>
+
+    <title>Members</title>
+
+</head>
+<body>
+
+
+<div layout:fragment="content">
+
+
+    <div class="jumbotron">
+        <div class="container">
+            <h2>Our Members</h2>
+            <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                exea commodo consequat.</h4>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row slideanim">
+        <div th:each="member : ${members}">
+            <a href="#" th:href="@{/members/show/} + ${member.id}">
+            <div class="col-md-3" >
+                    <div class="picture-box">
+                        <img class="profile-picture" th:src="${member.base64image != null} ? @{'data:image/jpeg;base64,'+${member.base64image}} : '/images/user.jpg' "/>
+                        <div class="text-label">
+                            <h4 th:text="|${member.firstName} ${member.lastName}|">Full Name</h4>
+                        </div>
+                    </div>
+            </div>
+            </a>
+        </div>
+        </div>
+
+        <p th:if="${members.size() == 0}">
+        <div class="alert alert-warning" role="alert">No members found.</div>
+        </p>
+    </div>
+</div>
+
+
+</body>
+</html>
+

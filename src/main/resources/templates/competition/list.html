@@ -1,0 +1,65 @@
+<!doctype html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymelead/layout"
+        layout:decorator="layouts/main">
+>
+<head>
+
+    <title>Competition</title>
+
+</head>
+<body>
+
+
+<div layout:fragment="content">
+
+    <div class="jumbotron">
+        <div class="container">
+            <h2>Our competitions</h2>
+            <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                exea commodo consequat.</h4>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="row slideanim">
+            <div th:each="competition : ${competitions}">
+                <a href="#" th:href="@{/competition/show/} + ${competition.id}">
+                    <div class="col-md-4">
+
+                        <div class="picture-box">
+                            <div class="text-label">
+                                <h2 th:text="${competition.name}">name</h2>
+                            </div>
+                            <div class="text-label">
+                                <h6 th:text="|${#dates.format(competition.startDate,'dd/M/yyyy')} - ${#dates.format(competition.endDate,'dd/M/yyyy')}|">period</h6>
+                            </div>
+                            <img class="profile-picture2"
+                                 th:src="${competition.base64image != null} ? @{'data:image/jpeg;base64,'+${competition.base64image}} : '/images/competition.jpg' "/>
+                            <div class="text-label">
+                                <div class="competition-label">
+                                    <h4 th:text="${competition.teaser}">teaser</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <p th:if="${competitions.size() == 0}">
+        <div class="alert alert-warning" role="alert">No competitions found.</div>
+        </p>
+
+    </div>
+
+
+</div>
+
+
+</body>
+</html>

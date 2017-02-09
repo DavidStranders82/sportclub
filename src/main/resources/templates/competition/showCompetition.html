@@ -1,0 +1,158 @@
+<!doctype html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymelead/layout"
+        layout:decorator="layouts/main">
+>
+<head>
+
+    <title>Competition</title>
+
+</head>
+<body>
+
+
+<div layout:fragment="content">
+    <br/>
+
+    <div class="container">
+        <br/>
+        <ol class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="/competition/list">Competitions</a></li>
+            <li class="active" th:text="${competition.name}"></li>
+        </ol>
+    </div>
+
+    <div class="container">
+
+        <div th:if="${message}" class="alert alert-success" role="alert">
+            <p th:text="${message}">succes message</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5">
+                <br/>
+                <header>
+                    <img class="profile-picture3"
+                         th:src="${competition.base64image != null} ? @{'data:image/jpeg;base64,'+${competition.base64image}} : '/images/competition.jpg' "/>
+                </header>
+            </div>
+            <div class="col-md-7">
+                <h2 th:text="${competition.name}">name</h2>
+                <br/>
+                <table class="table table-striped">
+                    <tr>
+                        <td class="col-sm-3">teaser</td>
+                        <td th:text="${competition.teaser}">teaser</td>
+                    </tr>
+                    <tr>
+                        <td>Description</td>
+                        <td th:text="${competition.description}">teaser</td>
+                    </tr>
+                    <tr>
+                        <td>Period</td>
+                        <td th:text="|${#dates.format(competition.startDate,'dd/M/yyyy')} - ${#dates.format(competition.endDate,'dd/M/yyyy')}|">
+                            period
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Max # teams</td>
+                        <td th:text="${competition.maxTeams}">maxTeams</td>
+                    </tr>
+                    <tr>
+                        <td>Enrolled teams</td>
+                        <td>
+                            <!--<div th:if="${competition.teams != null}">-->
+                            <div th:each="team : ${competition.teams}">
+                                <a th:href="@{/teams/show/} + ${team.id}"><span th:text="${team.name}">team</span></a>
+                            </div>
+                            <!--</div>-->
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <hr/>
+            <br/><br/>
+        </div>
+
+            <div class="col-md-6 well">
+
+                <h2>Matches</h2>
+                <br/>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Match</th>
+                        <th>Date</th>
+                        <th>Location</th>
+                        <th>Result</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="game, iterationStatus : ${games}">
+                        <td><a th:href="@{/teams/show/} + ${game.teams.get(0).id}">
+                            <span th:text="${game.teams.get(0).name}">team 1</span></a>
+                            -
+                            <a th:href="@{/teams/show/} + ${game.teams.get(0).id}">
+                                <span th:text="${game.teams.get(1).name}">team 2</span></a>
+
+                        </td>
+                        <td th:text="${#dates.format(game.date,'dd-M-yyyy hh:mm')}">date</td>
+                        <td th:text="${game.location.field}">location</td>
+                        <td>
+                            <div th:if="|${game.scoreTeamA != null}">
+                                <span th:text="|${game.scoreTeamA} - ${game.scoreTeamB}|">result</span>
+                            </div>
+                            <div th:if="|${game.scoreTeamA == null}">
+                                <span> .. - ..</span>
+                            </div>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        <div class="container">
+
+            <div class="col-md-6 well pull-right">
+
+                <h2>Ranking</h2>
+                <br/>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Team</th>
+                        <th>Goals Made</th>
+                        <th>Goals Against</th>
+                        <th>Total Points</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="team, iterationStatus : ${ranking}">
+                        <td th:text="${iterationStatus.count}">1</td>
+                        <td><a th:href="@{/teams/show/} + ${team.id}">
+                            <span th:text="${team.name}">team</span></a>
+                        </td>
+                        <td style="text-align: center" th:text="${team.goalsMade}">Goals Made</td>
+                        <td style="text-align: center" th:text="${team.goalsAgainst}">Goals Against</td>
+                        <td style="text-align: center" th:text="${team.totalPoints}">Total Points</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymelead/layout"
+        layout:decorator="layouts/main">
+>
+<head>
+    <title>Edit location</title>
+
+</head>
+<body>
+
+
+<div layout:fragment="content">
+    <br/>
+
+    <div class="container">
+        <br/>
+        <ol class="breadcrumb">
+            <li><a href="/admin/locations">Manage locations</a></li>
+            <li class="active">Edit location</li>
+        </ol>
+    </div>
+
+    <div class="container">
+
+
+        <div class="container">
+
+            <h2>Edit location</h2>
+            <br/>
+
+            <div th:if="${message}" class="alert alert-danger" role="alert">
+                <p th:text="${message}">message</p>
+            </div>
+
+            <form class="form-horizontal form-width" th:object="${location}" th:action="@{/admin/location/update}"
+                  method="post">
+                <input type="hidden" th:field="*{id}"/>
+                <div th:class="form-group" th:classappend="${#fields.hasErrors('field')}? 'has-error'">
+                    <label class="col-md-3 control-label">Location <span class="required">*</span></label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" th:field="*{field}"/>
+                        <span th:if="${#fields.hasErrors('field')}" th:errors="*{field}" th:class="help-block">field Errors</span>
+                    </div>
+                </div>
+                <div th:class="form-group" th:classappend="${#fields.hasErrors('external')}? 'has-error'">
+                    <label class="col-md-3 control-label">External</label>
+                    <div>
+                        <div class="col-md-9">
+                            <label class="checkbox-inline">
+                                <input type="radio" th:field="*{external}" value="true"/> yes
+                                <input type="radio" th:field="*{external}" value="false"/> no
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="pull-right">
+                    <a class="btn btn-default" role="button"
+                       th:href="@{/admin/locations}">cancel</a>
+                    <button type="submit" class="btn btn-primary">submit</button>
+                </div>
+            </form>
+            <br/><br/><br/>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
