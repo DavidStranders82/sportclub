@@ -49,7 +49,7 @@ public class CompetitionTest {
 
 
     @Test
-    public void calculateRanking3TeamsTest1() throws Exception {
+    public void calculateRanking3TeamsTest() throws Exception {
 
         competition.setTeams(new ArrayList<>());
         Team teamA = new Team("Team A", 1);
