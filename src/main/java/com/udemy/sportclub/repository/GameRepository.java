@@ -14,5 +14,7 @@ public interface GameRepository extends CrudRepository<Game, Integer> {
 
     List<Game> findAllByCompetitionIdOrderByDateAsc (int id);
 
+    List<Game> findAllByLocationId (int id);
+
 
 }

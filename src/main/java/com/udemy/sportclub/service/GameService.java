@@ -41,7 +41,7 @@ public class GameService {
         return upcomingGames;
     }
 
-    public List<Game> listCompetitionGames(int id){
+    public List<Game> listGamesByCompetitionId(int id){
         return gameRepository.findAllByCompetitionIdOrderByDateAsc(id);
     }
 
@@ -55,5 +55,9 @@ public class GameService {
 
     public void delete (int id){
       gameRepository.delete(id);
+    }
+
+    public List<Game> listGamesByLocationId (int id){
+        return gameRepository.findAllByLocationId(id);
     }
 }

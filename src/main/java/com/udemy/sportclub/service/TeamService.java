@@ -40,7 +40,8 @@ public class TeamService {
         return teams;
     }
 
-    public void save(Team team, MultipartFile myFile){
+
+    public Team save(Team team, MultipartFile myFile){
 
         try {
             if (myFile.getBytes().length!=0) {
@@ -51,7 +52,7 @@ public class TeamService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        teamRepository.save(team);
+        return teamRepository.save(team);
     }
 
     public void save(Team team){

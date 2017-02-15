@@ -32,18 +32,57 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Competition</th>
+                        <th>
+                            <div th:if="${sortColumn!='competition'}">
+                                <a th:href="@{/admin/games/page/}+ ${pageNumber} + '/competition/' +${sortOrder}">Competition
+                                </a>
+                            </div>
+                            <div th:if="${sortColumn=='competition'}">
+                                <div th:if="${sortOrder=='desc'}"><a th:href="@{/admin/games/page/}+ ${pageNumber} + '/competition/asc' ">Competition
+                                    <span class="glyphicon glyphicon-triangle-top"></span></a>
+                                </div>
+                                <div th:if="${sortOrder=='asc'}"><a th:href="@{/admin/games/page/}+ ${pageNumber} + '/competition/desc' ">Competition
+                                    <span class="glyphicon glyphicon-triangle-bottom"></span></a>
+                                </div>
+                            </div>
+                        </th>
                         <th>Teams</th>
-                        <th>Date</th>
-                        <th>Location</th>
+                        <th>
+                            <div th:if="${sortColumn!='date'}">
+                                <a th:href="@{/admin/games/page/}+ ${pageNumber} + '/date/' +${sortOrder}">Date
+                                </a>
+                            </div>
+                            <div th:if="${sortColumn=='date'}">
+                                <div th:if="${sortOrder=='desc'}"><a th:href="@{/admin/games/page/}+ ${pageNumber} + '/date/asc' ">Date
+                                    <span class="glyphicon glyphicon-triangle-top"></span></a>
+                                </div>
+                                <div th:if="${sortOrder=='asc'}"><a th:href="@{/admin/games/page/}+ ${pageNumber} + '/date/desc' ">Date
+                                    <span class="glyphicon glyphicon-triangle-bottom"></span></a>
+                                </div>
+                            </div>
+                        </th>
+                        <th>
+                            <div th:if="${sortColumn!='location'}">
+                                <a th:href="@{/admin/games/page/}+ ${pageNumber} + '/location/' +${sortOrder}">Location
+                                </a>
+                            </div>
+                            <div th:if="${sortColumn=='location'}">
+                                <div th:if="${sortOrder=='desc'}"><a th:href="@{/admin/games/page/}+ ${pageNumber} + '/location/asc' ">Location
+                                    <span class="glyphicon glyphicon-triangle-top"></span></a>
+                                </div>
+                                <div th:if="${sortOrder=='asc'}"><a th:href="@{/admin/games/page/}+ ${pageNumber} + '/location/desc' ">Location
+                                    <span class="glyphicon glyphicon-triangle-bottom"></span></a>
+                                </div>
+                            </div>
+                        </th>
                         <th>Result</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="game, iterationStatus : ${games}">
-                        <td th:text="${iterationStatus.count}">1</td>
+                    <tr th:each="game, iterationStatus : ${games.pageList}">
+                        <td th:text="${iterationStatus.count} + (${games.getPage()}*10)">1</td>
                         <td>
                             <div th:if="${game.competition != null}">
                                 <a th:href="@{/admin/competition/edit/} + ${game.competition.id}">
@@ -77,7 +116,7 @@
                         </td>
 
                         <td><a th:href="@{/admin/game/edit/} + ${game.id}">Edit</a></td>
-                        <div th:if="${game.scoreTeamA == null}">
+                        <!--<div th:if="${game.scoreTeamA == null}">-->
                             <td><a data-toggle="modal" data-target="#myModal" th:attr="data-game-id=${game.id}"
                                    class="game-delete">Delete</a></td>
                             <div class="modal fade" id="myModal" role="dialog">
@@ -101,14 +140,50 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                            <div th:if="${game.scoreTeamA != null}"><td></td></div>
+
                     </tr>
                     </tbody>
                 </table>
             </div>
 
-            <p th:if="${games.size() == 0}">
+            <div th:if="${totalPageCount>1}">
+                <div class="col-md-12 text-center">
+                    <div class="pagination pagination-centered">
+                        <ul class="pagination">
+                            <li th:class="${currentIndex == 1}? 'disabled' : ''">
+                                <span th:if="${currentIndex ==1}">First</span>
+                                <a th:if="${currentIndex!= 1}" th:href="@{/admin/games/page/1/} + ${sortColumn} + '/' + ${sortOrder}">First</a>
+                            </li>
+                            <li th:class="${currentIndex != 1}? '' : 'disabled'">
+                                <span th:if="${currentIndex ==1}"><span class="glyphicon glyphicon-chevron-left"></span></span>
+                                <a th:if="${currentIndex != 1}" th:href="@{/admin/games/page/}+ ${currentIndex-1} + '/' + ${sortColumn} + '/' + ${sortOrder}"
+                                   title="Go to previous page"><span
+                                        class="glyphicon glyphicon-chevron-left"></span></a>
+                            </li>
+                            <li th:each="item : ${#numbers.sequence(beginIndex, endIndex)}"
+                                th:class="${item==currentIndex ? 'active' : ''}">
+                                <span th:if="${item == currentIndex}" th:text="${item}">1</span>
+                                <a th:if="${item!= currentIndex}" th:href="@{/admin/games/page/}+ ${item} + '/' + ${sortColumn} + '/' + ${sortOrder}">
+                                    <span th:text="${item}">1</span>
+                                </a>
+                            </li>
+                            <li th:class="${currentIndex != totalPageCount}? '' : 'disabled'">
+                                <span th:if="${currentIndex == totalPageCount}"><span
+                                        class="glyphicon glyphicon-chevron-right"></span></span>
+                                <a th:if="${currentIndex != totalPageCount}" th:href="@{/admin/games/page/}+ ${currentIndex+1} + '/' + ${sortColumn} + '/' + ${sortOrder}"
+                                   title="Go to next page"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                            </li>
+                            <li th:class="${currentIndex == totalPageCount}? 'disabled' : ''">
+                                <span th:if="${currentIndex ==totalPageCount}">Last</span>
+                                <a th:if="${currentIndex != totalPageCount}" th:href="@{/admin/games/page/}+ ${totalPageCount} + '/' + ${sortColumn} + '/' + ${sortOrder} ">Last</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <p th:if="${games.getNrOfElements() == 0}">
             <div class="alert alert-warning" role="alert">No games found.</div>
             </p>
         </div>

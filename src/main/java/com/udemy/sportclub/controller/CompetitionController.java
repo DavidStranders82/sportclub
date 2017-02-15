@@ -40,7 +40,7 @@ public class CompetitionController {
         Competition competition = competitionService.get(id);
         model.addAttribute("competitionController", "active");
         model.addAttribute("competition", competition );
-        model.addAttribute("games", gameService.listCompetitionGames(id));
+        model.addAttribute("games", gameService.listGamesByCompetitionId(id));
         model.addAttribute("ranking", competitionService.get(id).calculateRanking());
         return"/competition/showCompetition";
     }

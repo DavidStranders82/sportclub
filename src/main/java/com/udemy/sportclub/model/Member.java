@@ -45,7 +45,7 @@ public class Member {
     @DateTimeFormat(pattern="dd/MM/yyyy")
     private Date memberSince;
 
-    @ManyToMany(mappedBy = "members", cascade = CascadeType.REFRESH)
+    @ManyToMany(mappedBy = "members", cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private List<Team> teams;
 
     @OneToOne(mappedBy = "teamCaptain")

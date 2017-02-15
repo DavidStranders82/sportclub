@@ -79,43 +79,43 @@
             <br/><br/>
         </div>
 
-            <div class="col-md-6 well">
+        <div class="col-md-6 well">
 
-                <h2>Matches</h2>
-                <br/>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Match</th>
-                        <th>Date</th>
-                        <th>Location</th>
-                        <th>Result</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="game, iterationStatus : ${games}">
-                        <td><a th:href="@{/teams/show/} + ${game.teams.get(0).id}">
-                            <span th:text="${game.teams.get(0).name}">team 1</span></a>
-                            -
-                            <a th:href="@{/teams/show/} + ${game.teams.get(0).id}">
-                                <span th:text="${game.teams.get(1).name}">team 2</span></a>
+            <h2>Matches</h2>
+            <br/>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Match</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Result</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="game, iterationStatus : ${games}">
+                    <td><a th:href="@{/teams/show/} + ${game.teams.get(0).id}">
+                        <span th:text="${game.teams.get(0).name}">team 1</span></a>
+                        -
+                        <a th:href="@{/teams/show/} + ${game.teams.get(0).id}">
+                            <span th:text="${game.teams.get(1).name}">team 2</span></a>
 
-                        </td>
-                        <td th:text="${#dates.format(game.date,'dd-M-yyyy hh:mm')}">date</td>
-                        <td th:text="${game.location.field}">location</td>
-                        <td>
-                            <div th:if="|${game.scoreTeamA != null}">
-                                <span th:text="|${game.scoreTeamA} - ${game.scoreTeamB}|">result</span>
-                            </div>
-                            <div th:if="|${game.scoreTeamA == null}">
-                                <span> .. - ..</span>
-                            </div>
-                        </td>
+                    </td>
+                    <td th:text="${#dates.format(game.date,'dd-M-yyyy hh:mm')}">date</td>
+                        <td th:text="${game.location}!=null ? ${game.location.field}">location</td>
+                    <td>
+                        <div th:if="|${game.scoreTeamA != null}">
+                            <span th:text="|${game.scoreTeamA} - ${game.scoreTeamB}|">result</span>
+                        </div>
+                        <div th:if="|${game.scoreTeamA == null}">
+                            <span> .. - ..</span>
+                        </div>
+                    </td>
 
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+                </tr>
+                </tbody>
+            </table>
+        </div>
         <div class="container">
 
             <div class="col-md-6 well pull-right">
@@ -147,7 +147,6 @@
 
             </div>
         </div>
-
 
 
     </div>

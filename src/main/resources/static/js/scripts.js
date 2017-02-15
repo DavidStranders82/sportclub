@@ -2,8 +2,8 @@
  //Datepicker script:
 
 $(function() {
-   $('#datetimepicker4').datepicker({
-     format: 'dd/mm/yyyy'
+   $('#datetimepicker4').datetimepicker({
+//     format: 'dd/mm/yyyy'
    });
 })
 

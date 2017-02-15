@@ -102,12 +102,12 @@
                     <td><a th:href="@{/teams/show/} + ${game.teams.get(0).id}">
                         <span th:text="${game.teams.get(0).name}">team 1</span></a>
                         -
-                        <a th:href="@{/teams/show/} + ${game.teams.get(0).id}">
+                        <a th:href="@{/teams/show/} + ${game.teams.get(1).id}">
                             <span th:text="${game.teams.get(1).name}">team 2</span></a>
 
                     </td>
                     <td th:text="${#dates.format(game.date,'dd-M-yyyy hh:mm')}">date</td>
-                    <td th:text="${game.location.field}">location</td>
+                    <td th:text="${game.location}!=null ? ${game.location.field}">location</td>
                     <td>
                         <div th:if="|${game.scoreTeamA != null}">
                             <span th:text="|${game.scoreTeamA} - ${game.scoreTeamB}|">result</span>

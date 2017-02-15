@@ -7,6 +7,8 @@ import com.udemy.sportclub.service.RoleService;
 import com.udemy.sportclub.service.TeamService;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.MutableSortDefinition;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -40,21 +43,50 @@ public class AdminMemberController {
     }
 
     @RequestMapping("admin/members")
-    public String list(Model model) {
-        model.addAttribute("members", memberService.findAllByOrderByLastName());
+    public String list(HttpServletRequest request) {
+        return "redirect:/admin/members/page/1/lastName/asc";
+    }
+
+    @RequestMapping("/admin/members/page/{pageNumber}/{sortColumn}/{sortOrder}")
+    public String list(Model model, HttpServletRequest request, @PathVariable Integer pageNumber, @PathVariable String sortColumn, @PathVariable String sortOrder) {
         model.addAttribute("adminController", "active");
+        PagedListHolder<Member> pagedListHolder = (PagedListHolder<Member>)request.getSession().getAttribute("members");
+
+        if(pagedListHolder == null){
+            List<Member> members = memberService.findAllByOrderByLastName();
+            pagedListHolder = new PagedListHolder<Member>(members);
+            pagedListHolder.setPageSize(10);
+        } else {
+            final int goToPage = pageNumber -1;
+            if(goToPage<=pagedListHolder.getPageCount() && goToPage>=0){
+                pagedListHolder.setPage(goToPage);
+            }
+        }
+
+        if (sortColumn != null){
+            pagedListHolder.setSort(new MutableSortDefinition(sortColumn, true, sortOrder.equals("asc")));
+            pagedListHolder.resort();
+        }
+
+        request.getSession().setAttribute("members", pagedListHolder);
+        pagedListHolder.setPage(pageNumber-1);
+        int current = pagedListHolder.getPage()+1;
+        int begin = Math.max(1, current-10);
+        int end = Math.min(begin + 5, pagedListHolder.getPageCount());
+        int totalPageCount = pagedListHolder.getPageCount();
+
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current);
+        model.addAttribute("totalPageCount", totalPageCount);
+        model.addAttribute("members", pagedListHolder);
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("sortColumn", sortColumn);
+        model.addAttribute("sortOrder", sortOrder);
         return "admin/members/list";
     }
 
-//    @RequestMapping("admin/members")
-//    public String list(Model model, Pageable pageable) {
-//        model.addAttribute("adminController", "active");
-//        PageWrapper<Member> page = new PageWrapper<Member>(memberService.findAllByOrderByLastName(pageable), "admin/members");
-//        model.addAttribute("page", page);
-//        return "admin/members/list";
-//    }
-
-    @RequestMapping("admin/member/create")
+    @RequestMapping("/admin/member/create")
     public String create(Model model) {
         model.addAttribute("adminController", "active");
         model.addAttribute("member", new Member());
@@ -90,7 +122,7 @@ public class AdminMemberController {
                     teamService.save(teamTemp);
                 }
             }
-            redirectAttributes.addFlashAttribute("message", "New member was created succesfully");
+            redirectAttributes.addFlashAttribute("message", member.getFirstName() + " " + member.getLastName() + " was created succesfully");
             return "redirect:/admin/members";
         }
     }
@@ -102,8 +134,6 @@ public class AdminMemberController {
                          @RequestParam("file") MultipartFile myFile,
                          RedirectAttributes redirectAttributes) {
 
-        System.out.println(member.getMemberSince());
-
         if (bindingResult.hasErrors() || !(member.getPassword().equals(member.getConfirmPw()))) {
             if (!(member.getPassword().equals(member.getConfirmPw()))) {
                 model.addAttribute("message", "Passwords are not equal. Try again");
@@ -113,7 +143,7 @@ public class AdminMemberController {
             model.addAttribute("adminController", "active");
             Member memberTemp = memberService.get(member.getId());
             String base64Encoded = Base64.encodeBase64String(memberTemp.getImage());
-            if (!base64Encoded.isEmpty()) {
+            if (base64Encoded!=null) {
                 member.setBase64image(base64Encoded);
             }
             return "admin/members/editMemberForm";
@@ -129,7 +159,7 @@ public class AdminMemberController {
                 }
                 teamService.save(team);
             }
-            redirectAttributes.addFlashAttribute("message", "Member was updated succesfully");
+            redirectAttributes.addFlashAttribute("message",  member.getFirstName() + " " + member.getLastName() + " was updated succesfully");
             return "redirect:/admin/members";
         }
     }

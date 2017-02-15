@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  * Created by Dell on 5-2-2017.
  */
 @Entity
-public class Location {
+public class Location implements Comparable<Location>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -53,5 +53,10 @@ public class Location {
 
     public void setExternal(boolean external) {
         this.external = external;
+    }
+
+    @Override
+    public int compareTo(Location o) {
+        return this.field.compareTo(o.getField());
     }
 }

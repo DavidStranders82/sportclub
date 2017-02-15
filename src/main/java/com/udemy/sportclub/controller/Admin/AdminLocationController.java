@@ -49,33 +49,16 @@ public class AdminLocationController {
     }
 
     @RequestMapping(value = "/admin/location/save", method = RequestMethod.POST)
-    public String save(@Valid Location location,
+    public String saveOrUpdate(@Valid Location location,
                        BindingResult bindingResult,
                        Model model,
                        RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("adminController", "active");
-            return "admin/locations/newLocationForm";
+            return (location.getId()==0)? "admin/locations/newLocationForm" : "admin/locations/editLocationForm";
         } else {
+            redirectAttributes.addFlashAttribute("message", location.getId()==0? "'" + location.getField() + "' was created succesfully" : "'" + location.getField() + "' was updated succesfully");
             Location locationSaved = locationService.save(location);
-
-            redirectAttributes.addFlashAttribute("message", "New location was created succesfully");
-            return "redirect:/admin/locations";
-        }
-    }
-
-    @RequestMapping(value = "/admin/location/update", method = RequestMethod.POST)
-    public String update(@Valid Location location,
-                       BindingResult bindingResult,
-                       Model model,
-                       RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("adminController", "active");
-            return "admin/locations/editLocationForm";
-        } else {
-            Location locationSaved = locationService.save(location);
-
-            redirectAttributes.addFlashAttribute("message", "Location was updated succesfully");
             return "redirect:/admin/locations";
         }
     }
@@ -90,12 +73,10 @@ public class AdminLocationController {
 
     @RequestMapping("/admin/location/delete/{id}")
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
-        List<Game> games = gameService.list();
+        List<Game> games = gameService.listGamesByLocationId(id);
             for (Game game : games){
-                if (game.getLocation().getId()== id){
-                    game.setLocation(null);
-                    gameService.save(game);
-                }
+                game.setLocation(null);
+                gameService.save(game);
             }
         locationService.delete(id);
         redirectAttributes.addFlashAttribute("message", "Location was deleted succesfully");

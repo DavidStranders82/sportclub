@@ -19,7 +19,7 @@ public class Game {
     private int id;
 
     @NotNull
-    @ManyToMany
+    @ManyToMany (fetch = FetchType.EAGER)
     private List<Team> teams;
 
     private Integer scoreTeamA;
@@ -33,7 +33,7 @@ public class Game {
     private Competition competition;
 
     @NotNull
-    @DateTimeFormat(pattern="dd/MM/yyyy hh:mm:ss")
+    @DateTimeFormat(pattern="dd/MM/yyyy")
     private Date date;
 
     public Game(){}
@@ -84,7 +84,7 @@ public class Game {
         return scoreTeamA;
     }
 
-    public void setScoreTeamA(int scoreTeamA) {
+    public void setScoreTeamA(Integer scoreTeamA) {
         this.scoreTeamA = scoreTeamA;
     }
 
@@ -92,7 +92,7 @@ public class Game {
         return scoreTeamB;
     }
 
-    public void setScoreTeamB(int scoreTeamB) {
+    public void setScoreTeamB(Integer scoreTeamB) {
         this.scoreTeamB = scoreTeamB;
     }
 

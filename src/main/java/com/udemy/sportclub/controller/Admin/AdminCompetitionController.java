@@ -77,7 +77,7 @@ public class AdminCompetitionController {
                     teamService.save(teamTemp);
                 }
             }
-            redirectAttributes.addFlashAttribute("message", "New competition was created succesfully");
+            redirectAttributes.addFlashAttribute("message", competition.getName() + " was created succesfully");
             return "redirect:/admin/competitions";
         }
     }
@@ -116,7 +116,7 @@ public class AdminCompetitionController {
                 }
                 teamService.save(team);
             }
-            redirectAttributes.addFlashAttribute("message", "Competition was succesfully updated");
+            redirectAttributes.addFlashAttribute("message", competition.getName() + " was succesfully updated");
             return "redirect:/admin/competitions";
         }
     }
@@ -135,9 +135,9 @@ public class AdminCompetitionController {
         Competition competition = competitionService.get(id);
         if(!competition.getTeams().isEmpty())
             for (Team team : competition.getTeams()){
-            Team teamTemp = teamService.get(team.getId());
-            teamTemp.getCompetitions().remove(competition);
-            teamService.save(teamTemp);
+                 Team teamTemp = teamService.get(team.getId());
+                 teamTemp.getCompetitions().remove(competition);
+                 teamService.save(teamTemp);
             }
         competitionService.delete(id);
         redirectAttributes.addFlashAttribute("message", "Competition was deleted succesfully");

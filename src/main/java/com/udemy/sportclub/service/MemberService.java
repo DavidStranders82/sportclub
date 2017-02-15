@@ -4,8 +4,6 @@ import com.udemy.sportclub.model.Member;
 import com.udemy.sportclub.repository.MemberRepository;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -63,19 +61,6 @@ public class MemberService implements UserDetailsService {
        }
        return members;
    }
-
-    public Page<Member> findAllByOrderByLastName(Pageable pageable){
-        Page<Member> members = memberRepository.findAll(pageable);
-        for (Member member : members) {
-            if(member.getImage()!=null) {
-                String base64Encoded = Base64.encodeBase64String(member.getImage());
-                if (!base64Encoded.isEmpty()) {
-                    member.setBase64image(base64Encoded);
-                }
-            }
-        }
-        return members;
-    }
 
    public Member save(Member member, MultipartFile myFile){
        if(member.getId()!=0 && member.getPassword().isEmpty()){

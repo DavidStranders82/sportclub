@@ -57,27 +57,7 @@ public class AdminTeamController {
     }
 
     @RequestMapping(value = "/admin/team/save", method = RequestMethod.POST)
-    public String save(@Valid Team team,
-                       BindingResult bindingResult,
-                       Model model,
-                       @RequestParam("file") MultipartFile myFile,
-                       RedirectAttributes redirectAttributes) {
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("adminController", "active");
-            model.addAttribute("availableMembers", memberService.listAvailableMembers());
-            model.addAttribute("teamCaptains", memberService.listAvailableTeamCaptains());
-            model.addAttribute("competitions", competitionService.list());
-            return "admin/teams/newTeamForm";
-        } else {
-            teamService.save(team, myFile);
-            redirectAttributes.addFlashAttribute("message", "New team was created succesfully");
-            return "redirect:/admin/teams";
-        }
-    }
-
-    @RequestMapping(value = "/admin/team/update", method = RequestMethod.POST)
-    public String update(@Valid Team team,
+    public String saveOrUpdate(@Valid Team team,
                          BindingResult bindingResult,
                          Model model,
                          @RequestParam("file") MultipartFile myFile,
@@ -88,15 +68,18 @@ public class AdminTeamController {
             model.addAttribute("competitions", competitionService.list());
             model.addAttribute("availableMembers", memberService.listAvailableMembers());
             model.addAttribute("teamCaptains", memberService.listAvailableTeamCaptains());
-            Team teamTemp = teamService.get(team.getId());
-            String base64Encoded = Base64.encodeBase64String(teamTemp.getImage());
-            if (!base64Encoded.isEmpty()) {
-                team.setBase64image(base64Encoded);
+            if(team.getId()!=0) {
+                Team teamTemp = teamService.get(team.getId());
+                String base64Encoded = Base64.encodeBase64String(teamTemp.getImage());
+                if (base64Encoded!=null) {
+                    team.setBase64image(base64Encoded);
+                }
+                return "admin/teams/editTeamForm";
             }
-            return "admin/teams/editMemberForm";
+            return "admin/teams/newTeamForm";
         } else {
-            teamService.save(team, myFile);
-            redirectAttributes.addFlashAttribute("message", "Team was updated succesfully");
+            redirectAttributes.addFlashAttribute("message",(team.getId()!=0)? team.getName() + " was updated succesfully" : team.getName() + " was created succesfully");
+            Team savedTeam = teamService.save(team, myFile);
             return "redirect:/admin/teams";
         }
     }

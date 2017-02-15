@@ -35,7 +35,7 @@
                 <p th:text="${message}">message</p>
             </div>
 
-            <form class="form-horizontal form-width" th:object="${location}" th:action="@{/admin/location/update}"
+            <form class="form-horizontal form-width" th:object="${location}" th:action="@{/admin/location/save}"
                   method="post">
                 <input type="hidden" th:field="*{id}"/>
                 <div th:class="form-group" th:classappend="${#fields.hasErrors('field')}? 'has-error'">

@@ -31,10 +31,62 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                        <th>Member since</th>
+                        <th>
+                            <div th:if="${sortColumn!='firstName'}">
+                                <a th:href="@{/admin/members/page/}+ ${pageNumber} + '/firstName/' +${sortOrder}">First Name
+                                </a>
+                            </div>
+                            <div th:if="${sortColumn=='firstName'}">
+                                <div th:if="${sortOrder=='desc'}"><a th:href="@{/admin/members/page/}+ ${pageNumber} + '/firstName/asc' ">First Name
+                                    <span class="glyphicon glyphicon-triangle-top"></span></a>
+                                </div>
+                                <div th:if="${sortOrder=='asc'}"><a th:href="@{/admin/members/page/}+ ${pageNumber} + '/firstName/desc' ">First Name
+                                    <span class="glyphicon glyphicon-triangle-bottom"></span></a>
+                                </div>
+                            </div>
+                        </th>
+                        <th>
+                            <div th:if="${sortColumn!='lastName'}">
+                                <a th:href="@{/admin/members/page/}+ ${pageNumber} + '/lastName/' +${sortOrder}">Last Name
+                               </a>
+                            </div>
+                            <div th:if="${sortColumn=='lastName'}">
+                                <div th:if="${sortOrder=='desc'}"><a th:href="@{/admin/members/page/}+ ${pageNumber} + '/lastName/asc' ">Last Name
+                                    <span class="glyphicon glyphicon-triangle-top"></span></a>
+                                </div>
+                                <div th:if="${sortOrder=='asc'}"><a th:href="@{/admin/members/page/}+ ${pageNumber} + '/lastName/desc' ">Last Name
+                                    <span class="glyphicon glyphicon-triangle-bottom"></span></a>
+                                </div>
+                            </div>
+                        </th>
+                        <th>
+                            <div th:if="${sortColumn!='email'}">
+                                <a th:href="@{/admin/members/page/}+ ${pageNumber} + '/email/' +${sortOrder}" >Email
+                                </a>
+                            </div>
+                            <div th:if="${sortColumn=='email'}">
+                                <div th:if="${sortOrder=='desc'}"><a th:href="@{/admin/members/page/}+ ${pageNumber} + '/email/asc' ">Email
+                                    <span class="glyphicon glyphicon-triangle-top"></span></a>
+                                </div>
+                                <div th:if="${sortOrder=='asc'}"><a th:href="@{/admin/members/page/}+ ${pageNumber} + '/email/desc' ">Email
+                                    <span class="glyphicon glyphicon-triangle-bottom"></span></a>
+                                </div>
+                            </div>
+                        </th>
+                        <th>
+                            <div th:if="${sortColumn!='memberSince'}">
+                                <a th:href="@{/admin/members/page/}+ ${pageNumber} + '/memberSince/' +${sortOrder}">Member since
+                                </a>
+                            </div>
+                            <div th:if="${sortColumn=='memberSince'}">
+                                <div th:if="${sortOrder=='desc'}"><a th:href="@{/admin/members/page/}+ ${pageNumber} + '/memberSince/asc' ">Member since
+                                    <span class="glyphicon glyphicon-triangle-top"></span></a>
+                                </div>
+                                <div th:if="${sortOrder=='asc'}"><a th:href="@{/admin/members/page/}+ ${pageNumber} + '/memberSince/desc' ">Member since
+                                    <span class="glyphicon glyphicon-triangle-bottom"></span></a>
+                                </div>
+                            </div>
+                        </th>
                         <th>Teams</th>
                         <th>Roles</th>
                         <th>Edit</th>
@@ -42,8 +94,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="member, iterationStatus : ${members}">
-                        <td th:text="${iterationStatus.count}">1</td>
+                    <tr th:each="member, iterationStatus : ${members.pageList}">
+                        <td th:text="${iterationStatus.count} + (${members.getPage()}*10)">1</td>
                         <td th:text="${member.firstName}">First Name</td>
                         <td th:text="${member.lastName}">Last Name</td>
                         <td th:text="${member.email}">Email Address</td>
@@ -87,9 +139,46 @@
                 </table>
             </div>
 
-            <!--<p th:if="${members.size() == 0}">-->
-            <!--<div class="alert alert-warning" role="alert">No members Found.</div>-->
-            <!--</p>-->
+            <div th:if="${totalPageCount>1}">
+                <div class="col-md-12 text-center">
+                    <div class="pagination pagination-centered">
+                        <ul class="pagination">
+                            <li th:class="${currentIndex == 1}? 'disabled' : ''">
+                                <span th:if="${currentIndex ==1}">First</span>
+                                <a th:if="${currentIndex!= 1}" th:href="@{/admin/members/page/1/} + ${sortColumn} + '/' + ${sortOrder}">First</a>
+                            </li>
+                            <li th:class="${currentIndex != 1}? '' : 'disabled'">
+                                <span th:if="${currentIndex ==1}"><span class="glyphicon glyphicon-chevron-left"></span></span>
+                                <a th:if="${currentIndex != 1}" th:href="@{/admin/members/page/}+ ${currentIndex-1} + '/' + ${sortColumn} + '/' + ${sortOrder}"
+                                   title="Go to previous page"><span
+                                        class="glyphicon glyphicon-chevron-left"></span></a>
+                            </li>
+                            <li th:each="item : ${#numbers.sequence(beginIndex, endIndex)}"
+                                th:class="${item==currentIndex ? 'active' : ''}">
+                                <span th:if="${item == currentIndex}" th:text="${item}">1</span>
+                                <a th:if="${item!= currentIndex}" th:href="@{/admin/members/page/}+ ${item} + '/' + ${sortColumn} + '/' + ${sortOrder}">
+                                    <span th:text="${item}">1</span>
+                                </a>
+                            </li>
+                            <li th:class="${currentIndex != totalPageCount}? '' : 'disabled'">
+                                <span th:if="${currentIndex == totalPageCount}"><span
+                                        class="glyphicon glyphicon-chevron-right"></span></span>
+                                <a th:if="${currentIndex != totalPageCount}" th:href="@{/admin/members/page/}+ ${currentIndex+1} + '/' + ${sortColumn} + '/' + ${sortOrder}"
+                                   title="Go to next page"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                            </li>
+                            <li th:class="${currentIndex == totalPageCount}? 'disabled' : ''">
+                                <span th:if="${currentIndex ==totalPageCount}">Last</span>
+                                <a th:if="${currentIndex != totalPageCount}" th:href="@{/admin/members/page/}+ ${totalPageCount} + '/' + ${sortColumn} + '/' + ${sortOrder} ">Last</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <p th:if="${members.getNrOfElements() == 0}">
+            <div class="alert alert-warning" role="alert">No members Found.</div>
+            </p>
         </div>
     </div>
 </div>

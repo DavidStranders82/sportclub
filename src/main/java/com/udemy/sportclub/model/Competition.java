@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Dell on 14-1-2017.
  */
 @Entity
-public class Competition {
+public class Competition implements Comparable<Competition>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,7 +36,7 @@ public class Competition {
     @DateTimeFormat(pattern="dd/MM/yyyy")
     private Date endDate;
 
-    @ManyToMany(mappedBy = "competitions", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "competitions")
     private List<Team> teams;
 
     @OneToMany(mappedBy = "competition")
@@ -202,4 +202,8 @@ public class Competition {
         }
     }
 
+    @Override
+    public int compareTo(Competition o) {
+        return this.name.compareTo(o.getName());
+    }
 }
