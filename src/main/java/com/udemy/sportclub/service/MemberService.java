@@ -1,6 +1,7 @@
 package com.udemy.sportclub.service;
 
 import com.udemy.sportclub.model.Member;
+import com.udemy.sportclub.model.Team;
 import com.udemy.sportclub.repository.MemberRepository;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Dell on 14-1-2017.
@@ -24,12 +26,14 @@ import java.util.List;
 public class MemberService implements UserDetailsService {
 
     private MemberRepository memberRepository;
+    private TeamService teamService;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder){
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, TeamService teamService){
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
+        this.teamService = teamService;
     }
 
    public Iterable<Member> listAll(){
@@ -82,6 +86,20 @@ public class MemberService implements UserDetailsService {
    }
 
    public void delete(Integer id){
+       Member member  = memberRepository.findOne(id);
+       if (!member.getTeams().isEmpty()) {
+           for (Team team : member.getTeams()) {
+               Team teamTemp = teamService.get(team.getId());
+               teamTemp.getMembers().remove(member);
+               teamService.save(teamTemp);
+           }
+       }
+       if (member.getTeamCaptain()!=null){
+               Team team = teamService.get(member.getTeamCaptain().getId());
+               team.setTeamCaptain(null);
+               teamService.save(team);
+
+       }
        memberRepository.delete(id);
    }
 
@@ -110,15 +128,15 @@ public class MemberService implements UserDetailsService {
    }
 
    public List<Member> listAvailableMembers(){
-       List<Member> availableMembers = new ArrayList<>();
         List<Member> members = memberRepository.findAllByOrderByLastNameAsc();
-        for(Member member : members){
-            if(member.getTeams().isEmpty()){
-                availableMembers.add(member);
-            }
-        }
-        return availableMembers;
+       return members.stream().filter(member -> member.getTeams().isEmpty()).collect(Collectors.toList());
    }
+
+//   for(Member member : members){
+//        if(member.getTeams().isEmpty()){
+//            availableMembers.add(member);
+//        }
+//    }
 
    public List<Member> listAvailableTeamCaptains(){
        List<Member> availableTeamCaptains = new ArrayList<>();

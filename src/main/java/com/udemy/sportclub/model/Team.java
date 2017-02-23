@@ -24,11 +24,10 @@ public class Team implements Comparable<Team> {
     @OneToOne(fetch = FetchType.EAGER)
     private Member teamCaptain;
 
-    @ManyToMany(targetEntity = Member.class, cascade = {CascadeType.REFRESH})
-    @JoinTable(name="team_member", joinColumns = {@JoinColumn(name="team_id")}, inverseJoinColumns = {@JoinColumn(name = "member_id")} )
+    @ManyToMany
     private List<Member> members;
 
-    @ManyToMany (mappedBy = "teams")
+    @ManyToMany (mappedBy = "teams", cascade = CascadeType.ALL)
     private List<Game> games;
 
     @ManyToMany

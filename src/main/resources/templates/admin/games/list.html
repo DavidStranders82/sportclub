@@ -24,7 +24,7 @@
             <a class="btn btn-md btn-primary" th:href="@{/admin/game/create}">Add new game</a>
             <br/><br/><br/>
 
-            <div th:if="${message}" class="alert alert-success" role="alert">
+            <div th:if="${message} !='external redirect'" class="alert alert-success" role="alert">
                 <p th:text="${message}">succes message</p>
             </div>
             <div class="table-responsive">

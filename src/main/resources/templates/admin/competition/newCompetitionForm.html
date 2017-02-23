@@ -67,12 +67,12 @@
                     <label class="col-md-3 control-label">Period <span class="required">*</span></label>
                     <div class="col-md-6">
                         <div class='input-group'>
-                            <input type="text" class="form-control" id="datetimepicker4" th:field="*{startDate}"
+                            <input type="text" class="form-control" id="datetimepicker5" th:field="*{startDate}"
                                    placeholder="dd/mm/yyyy" required="true"/>
                             <span th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"
                                   th:class="help-block">Start date Errors</span>
                             <span class="input-group-addon">-</span>
-                            <input type="text" class="form-control" id="datetimepicker5" th:field="*{endDate}"
+                            <input type="text" class="form-control" id="datetimepicker3" th:field="*{endDate}"
                                    placeholder="dd/mm/yyyy" required="true"/>
                             <span th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"
                                   th:class="help-block">End date Errors</span>

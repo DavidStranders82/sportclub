@@ -44,7 +44,8 @@ public class AdminGameController {
     }
 
     @RequestMapping("admin/games")
-    public String list(Model model){
+    public String list(Model model, RedirectAttributes redirectAttributes){
+        redirectAttributes.addFlashAttribute("message", "external redirect");
         return "redirect:/admin/games/page/1/date/asc";
     }
 
@@ -54,7 +55,7 @@ public class AdminGameController {
         model.addAttribute("adminController", "active");
         PagedListHolder<Game> pagedListHolder = (PagedListHolder<Game>)request.getSession().getAttribute("games");
 
-        if(pagedListHolder == null){
+        if(model.containsAttribute("message")){
             List<Game> games = gameService.list();
             pagedListHolder = new PagedListHolder<Game>(games);
             pagedListHolder.setPageSize(10);
@@ -88,10 +89,6 @@ public class AdminGameController {
 
         return "admin/games/list";
     }
-
-
-
-
 
     @RequestMapping("admin/game/create")
     public String create(Model model) {
@@ -131,7 +128,7 @@ public class AdminGameController {
         } else {
             redirectAttributes.addFlashAttribute("message", (game.getId()==0) ? "New game was created succesfully" : "Game was updated succesfully");
             Game gameSaved = gameService.save(game);
-            return "redirect:/admin/games";
+            return "redirect:/admin/games/page/1/date/asc";
         }
     }
 
@@ -152,7 +149,7 @@ public class AdminGameController {
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         gameService.delete(id);
         redirectAttributes.addFlashAttribute("message", "Game was deleted succesfully");
-        return "redirect:/admin/games";
+        return "redirect:/admin/games/page/1/date/asc";
     }
 
 

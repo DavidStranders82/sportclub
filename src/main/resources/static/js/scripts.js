@@ -14,6 +14,12 @@ $(function() {
 })
 
 $(function() {
+   $('#datetimepicker3').datepicker({
+     format: 'dd/mm/yyyy'
+   });
+})
+
+$(function() {
    $('#datetimepicker1').datetimepicker({
 //     format: 'dd/mm/yyyy hh:mm:ss'
    });

@@ -19,12 +19,10 @@ import java.util.List;
 public class TeamService {
 
     private TeamRepository teamRepository;
-    private MemberService memberService;
 
     @Autowired
-    public TeamService (TeamRepository teamRepository, MemberService memberService){
+    public TeamService (TeamRepository teamRepository){
         this.teamRepository = teamRepository;
-        this.memberService = memberService;
     }
 
     public List<Team> list(){

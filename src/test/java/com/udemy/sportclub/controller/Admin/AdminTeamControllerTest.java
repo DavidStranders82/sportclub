@@ -1,20 +1,21 @@
 package com.udemy.sportclub.controller.Admin;
 
 import com.udemy.sportclub.model.Competition;
-import com.udemy.sportclub.model.Game;
 import com.udemy.sportclub.model.Member;
 import com.udemy.sportclub.model.Team;
 import com.udemy.sportclub.service.CompetitionService;
 import com.udemy.sportclub.service.MemberService;
 import com.udemy.sportclub.service.TeamService;
+import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,13 +27,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -59,6 +56,7 @@ public class AdminTeamControllerTest {
 
     @Before
     public void setup(){
+
         competitions = new ArrayList<>();
         competitions.add(new Competition());
         competitions.add(new Competition());
@@ -89,7 +87,8 @@ public class AdminTeamControllerTest {
         mockMvc.perform(get("/admin/teams"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/teams/list"))
-                .andExpect(model().attribute("teams", hasSize(2)));
+                .andExpect(model().attribute("teams", hasSize(2)))
+                .andExpect(model().attribute("adminController", "active"));
     }
 
     @Test
@@ -105,52 +104,137 @@ public class AdminTeamControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/teams/newTeamForm"))
                 .andExpect(model().attribute("team", instanceOf(Team.class)))
+                .andExpect(model().attribute("adminController", "active"))
                 .andExpect(model().attribute("competitions", hasSize(2)))
                 .andExpect(model().attribute("availableMembers", hasSize(2)))
                 .andExpect(model().attribute("teamCaptains", hasSize(2)));
     }
 
-    @Ignore
     @Test
-    public void testSaveOrUpdate() throws Exception {
-        Integer id = 1;
-        String name = "testTeam";
-        Member teamCaptain = new Member();
-        List<Member> members = new ArrayList<>();
-        members.add(new Member());
-        members.add(new Member());
-        List<Game> games = new ArrayList<>();
-        games.add(new Game());
-        games.add(new Game());
-        List<Competition> competitions = new ArrayList<>();
-        competitions.add(new Competition());
-        competitions.add(new Competition());
-        byte[] image = parseImage("bert");
+    public void testSaveNewTeam() throws Exception {
 
-        MultipartFile file = new MockMultipartFile("testPicture", "bert.jpg", "image/jpg", parseImage("bert") );
+        MultipartFile mockfile = new MockMultipartFile("file", "bert.jpg", "multipart/form-data", parseImage("bert.jpg") );
+
+        when(teamService.save(new Team(), mockfile)).thenReturn(new Team());
+
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save")
+                .file("file",  parseImage("bert.jpg"))
+                .param("name", "testTeam"))
+                   .andExpect(status().is3xxRedirection())
+                    .andExpect(view().name("redirect:/admin/teams"))
+                   .andExpect(MockMvcResultMatchers.flash().attribute("message", "testTeam was created succesfully"));
+
+        ArgumentCaptor<Team> boundTeam = ArgumentCaptor.forClass(Team.class);
+        ArgumentCaptor<MultipartFile> boundMultipartFile = ArgumentCaptor.forClass(MultipartFile.class);
+        verify(teamService).save(boundTeam.capture(), boundMultipartFile.capture());
+
+        Assert.assertEquals("testTeam", boundTeam.getValue().getName());
+    }
+
+    @Test
+    public void testUpdateExistingTeam() throws Exception {
+
+        MultipartFile mockfile = new MockMultipartFile("file", "bert.jpg", "multipart/form-data", parseImage("bert.jpg") );
+
+        when(teamService.save(new Team(), mockfile)).thenReturn(new Team());
+
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save")
+                .file("file", parseImage("bert.jpg"))
+                .param("id", "1")
+                .param("name", "testTeam"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/admin/teams"))
+                .andExpect(MockMvcResultMatchers.flash().attribute("message", "testTeam was updated succesfully"));
+
+        ArgumentCaptor<Team> boundTeam = ArgumentCaptor.forClass(Team.class);
+        ArgumentCaptor<MultipartFile> boundMultipartFile = ArgumentCaptor.forClass(MultipartFile.class);
+        verify(teamService).save(boundTeam.capture(), boundMultipartFile.capture());
+
+        Assert.assertEquals("testTeam", boundTeam.getValue().getName());
+
+        verify(teamService, times(1)).save(boundTeam.capture(), boundMultipartFile.capture());
+    }
+
+    @Test
+    public void testSaveNewTeamWithBindingErrors() throws Exception {
+
+        when(competitionService.list()).thenReturn((List) competitions);
+        when(memberService.listAvailableMembers()).thenReturn((List) availableMembers);
+        when(memberService.listAvailableTeamCaptains()).thenReturn((List) availableTeamCaptains);
+
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save")
+                .file("file", parseImage("bert.jpg")))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("admin/teams/newTeamForm"))
+                    .andExpect(model().attribute("adminController", "active"))
+                    .andExpect(model().attribute("competitions", hasSize(2)))
+                    .andExpect(model().attribute("availableMembers", hasSize(2)))
+                    .andExpect(model().attribute("teamCaptains", hasSize(2)))
+                        .andExpect(model().attribute("team", instanceOf(Team.class)))
+                        .andExpect(model().attribute("team", hasProperty("id", is(0))));
+
+    }
+
+    @Test
+    public void testUpdateTeamWithBindingErrorsAndNoImage() throws Exception {
+
+        Integer id = 1;
 
         Team returnTeam = new Team();
         returnTeam.setId(id);
-        returnTeam.setName(name);
-        returnTeam.setTeamCaptain(teamCaptain);
-        returnTeam.setMembers(members);
-        returnTeam.setGames(games);
-        returnTeam.setCompetitions(competitions);
-        returnTeam.setImage(image);
+        returnTeam.setName("testTeam");
+        returnTeam.setTeamCaptain(new Member());
 
-        when(teamService.save(new Team(), file)).thenReturn(returnTeam);
+        when(teamService.get(id)).thenReturn(returnTeam);
+        when(competitionService.list()).thenReturn((List) competitions);
+        when(memberService.listAvailableMembers()).thenReturn((List) availableMembers);
+        when(memberService.listAvailableTeamCaptains()).thenReturn((List) availableTeamCaptains);
 
-        mockMvc.perform(post("/admin/team/save)")
-                .param("id", "1")
-                .param("name", "testTeam"))
-//                    .andExpect(status().isOk())
-//                    .andExpect(view().name("/admin/teams/editTeamForm"))
-                    .andExpect(status().is3xxRedirection())
-                    .andExpect(view().name("redirect:/admin/teams"))
-                    .andExpect(model().attribute("team", instanceOf(Team.class)))
-                    .andExpect(model().attribute("team", hasProperty("id", is(id))))
-                    .andExpect(model().attribute("team", hasProperty("name", is(name))));
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save")
+                .file("file", parseImage("bert.jpg"))
+                .param("id", "1"))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("admin/teams/editTeamForm"))
+                    .andExpect(model().attribute("adminController", "active"))
+                    .andExpect(model().attribute("competitions", hasSize(2)))
+                    .andExpect(model().attribute("availableMembers", hasSize(2)))
+                    .andExpect(model().attribute("teamCaptains", hasSize(2)))
+                        .andExpect(model().attribute("team", instanceOf(Team.class)))
+                        .andExpect(model().attribute("team", hasProperty("id", is(1))))
+                        .andExpect(model().attribute("team", hasProperty("base64image", is(nullValue()))));;
 
+    }
+
+    @Test
+    public void testUpdateTeamWithBindingErrorsWithImage() throws Exception {
+
+        Integer id = 1;
+
+        Team returnTeam = new Team();
+        returnTeam.setId(id);
+        returnTeam.setName("testTeam");
+        returnTeam.setTeamCaptain(new Member());
+        returnTeam.setImage(parseImage("bert.jpg"));
+
+        when(teamService.get(id)).thenReturn(returnTeam);
+        when(competitionService.list()).thenReturn((List) competitions);
+        when(memberService.listAvailableMembers()).thenReturn((List) availableMembers);
+        when(memberService.listAvailableTeamCaptains()).thenReturn((List) availableTeamCaptains);
+
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save")
+                .file("file", parseImage("bert.jpg"))
+                .param("id", "1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/teams/editTeamForm"))
+                .andExpect(model().attribute("adminController", "active"))
+                .andExpect(model().attribute("competitions", hasSize(2)))
+                .andExpect(model().attribute("availableMembers", hasSize(2)))
+                .andExpect(model().attribute("teamCaptains", hasSize(2)))
+                .andExpect(model().attribute("team", instanceOf(Team.class)))
+                .andExpect(model().attribute("team", hasProperty("id", is(1))))
+                .andExpect(model().attribute("team", hasProperty("base64image", is(notNullValue()))));;
+
+        verify(teamService, times(0)).save(returnTeam);
     }
 
     @Test
@@ -167,6 +251,7 @@ public class AdminTeamControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/teams/editTeamForm"))
                 .andExpect(model().attribute("team", instanceOf(Team.class)))
+                .andExpect(model().attribute("adminController", "active"))
                 .andExpect(model().attribute("competitions", hasSize(2)))
                 .andExpect(model().attribute("availableMembers", hasSize(2)))
                 .andExpect(model().attribute("teamCaptains", hasSize(3)));
@@ -185,6 +270,7 @@ public class AdminTeamControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/teams/editTeamForm"))
                 .andExpect(model().attribute("team", instanceOf(Team.class)))
+                .andExpect(model().attribute("adminController", "active"))
                 .andExpect(model().attribute("competitions", hasSize(2)))
                 .andExpect(model().attribute("availableMembers", hasSize(2)))
                 .andExpect(model().attribute("teamCaptains", hasSize(2)));
@@ -200,11 +286,10 @@ public class AdminTeamControllerTest {
                 .andExpect(view().name("redirect:/admin/teams"));
 
         verify(teamService, times(1)).delete(id);
-
     }
 
     private byte[] parseImage(String filename){
-        Path path = Paths.get("C:/Users/Dell/Pictures/sportclubapp/" + filename + ".jpg");
+        Path path = Paths.get("C:/Users/Dell/Pictures/sportclubapp/" + filename);
         byte[] data = null;
         try {
             data = Files.readAllBytes(path);

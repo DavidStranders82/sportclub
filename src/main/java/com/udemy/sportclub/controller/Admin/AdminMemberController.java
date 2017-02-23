@@ -52,7 +52,7 @@ public class AdminMemberController {
         model.addAttribute("adminController", "active");
         PagedListHolder<Member> pagedListHolder = (PagedListHolder<Member>)request.getSession().getAttribute("members");
 
-        if(pagedListHolder == null){
+        if(pagedListHolder == null || model.containsAttribute("message")){
             List<Member> members = memberService.findAllByOrderByLastName();
             pagedListHolder = new PagedListHolder<Member>(members);
             pagedListHolder.setPageSize(10);
@@ -123,7 +123,7 @@ public class AdminMemberController {
                 }
             }
             redirectAttributes.addFlashAttribute("message", member.getFirstName() + " " + member.getLastName() + " was created succesfully");
-            return "redirect:/admin/members";
+            return "redirect:/admin/members/page/1/lastName/asc";
         }
     }
 
@@ -160,7 +160,7 @@ public class AdminMemberController {
                 teamService.save(team);
             }
             redirectAttributes.addFlashAttribute("message",  member.getFirstName() + " " + member.getLastName() + " was updated succesfully");
-            return "redirect:/admin/members";
+            return "redirect:/admin/members/page/1/lastName/asc";
         }
     }
 
@@ -168,7 +168,7 @@ public class AdminMemberController {
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         memberService.delete(id);
         redirectAttributes.addFlashAttribute("message", "Member was deleted succesfully");
-        return "redirect:/admin/members";
+        return "redirect:/admin/members/page/1/lastName/asc";
     }
 
     @RequestMapping("/admin/member/edit/{id}")

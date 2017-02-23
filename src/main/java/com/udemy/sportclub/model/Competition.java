@@ -39,7 +39,7 @@ public class Competition implements Comparable<Competition>{
     @ManyToMany(mappedBy = "competitions")
     private List<Team> teams;
 
-    @OneToMany(mappedBy = "competition")
+    @OneToMany(mappedBy = "competition",  cascade = CascadeType.ALL)
     private List<Game> games;
 
     @Lob
