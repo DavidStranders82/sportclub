@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 /**
- * Created by Dell on 22-1-2017.
+ * Created by DS on 22-1-2017.
  */
 public interface RoleRepository extends CrudRepository<Role, Long> {
 

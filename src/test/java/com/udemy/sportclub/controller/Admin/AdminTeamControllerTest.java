@@ -3,9 +3,7 @@ package com.udemy.sportclub.controller.Admin;
 import com.udemy.sportclub.model.Competition;
 import com.udemy.sportclub.model.Member;
 import com.udemy.sportclub.model.Team;
-import com.udemy.sportclub.service.CompetitionService;
-import com.udemy.sportclub.service.MemberService;
-import com.udemy.sportclub.service.TeamService;
+import com.udemy.sportclub.service.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Created by Dell on 13-2-2017.
+ * Created by DS on 13-2-2017.
  */
 public class AdminTeamControllerTest {
 
@@ -82,7 +80,7 @@ public class AdminTeamControllerTest {
         teams.add(new Team());
         teams.add(new Team());
 
-        when(teamService.list()).thenReturn((List)teams);
+        when(teamService.listAll()).thenReturn((List)teams);
 
         mockMvc.perform(get("/admin/teams"))
                 .andExpect(status().isOk())
@@ -96,7 +94,7 @@ public class AdminTeamControllerTest {
 
         verifyZeroInteractions(teamService);
 
-        when(competitionService.list()).thenReturn((List) competitions);
+        when(competitionService.listAll()).thenReturn((List) competitions);
         when(memberService.listAvailableMembers()).thenReturn((List) availableMembers);
         when(memberService.listAvailableTeamCaptains()).thenReturn((List) availableTeamCaptains);
 
@@ -158,7 +156,7 @@ public class AdminTeamControllerTest {
     @Test
     public void testSaveNewTeamWithBindingErrors() throws Exception {
 
-        when(competitionService.list()).thenReturn((List) competitions);
+        when(competitionService.listAll()).thenReturn((List) competitions);
         when(memberService.listAvailableMembers()).thenReturn((List) availableMembers);
         when(memberService.listAvailableTeamCaptains()).thenReturn((List) availableTeamCaptains);
 
@@ -185,8 +183,8 @@ public class AdminTeamControllerTest {
         returnTeam.setName("testTeam");
         returnTeam.setTeamCaptain(new Member());
 
-        when(teamService.get(id)).thenReturn(returnTeam);
-        when(competitionService.list()).thenReturn((List) competitions);
+        when(teamService.getById(id)).thenReturn(returnTeam);
+        when(competitionService.listAll()).thenReturn((List) competitions);
         when(memberService.listAvailableMembers()).thenReturn((List) availableMembers);
         when(memberService.listAvailableTeamCaptains()).thenReturn((List) availableTeamCaptains);
 
@@ -216,8 +214,8 @@ public class AdminTeamControllerTest {
         returnTeam.setTeamCaptain(new Member());
         returnTeam.setImage(parseImage("bert.jpg"));
 
-        when(teamService.get(id)).thenReturn(returnTeam);
-        when(competitionService.list()).thenReturn((List) competitions);
+        when(teamService.getById(id)).thenReturn(returnTeam);
+        when(competitionService.listAll()).thenReturn((List) competitions);
         when(memberService.listAvailableMembers()).thenReturn((List) availableMembers);
         when(memberService.listAvailableTeamCaptains()).thenReturn((List) availableTeamCaptains);
 
@@ -242,8 +240,8 @@ public class AdminTeamControllerTest {
         Integer id = 1;
 
         team.setTeamCaptain(new Member());
-        when(teamService.get(id)).thenReturn(team);
-        when(competitionService.list()).thenReturn((List) competitions);
+        when(teamService.getById(id)).thenReturn(team);
+        when(competitionService.listAll()).thenReturn((List) competitions);
         when(memberService.listAvailableMembers()).thenReturn((List) availableMembers);
         when(memberService.listAvailableTeamCaptains()).thenReturn((List) availableTeamCaptains);
 
@@ -261,8 +259,8 @@ public class AdminTeamControllerTest {
     public void testEditWithoutTeamCaptain() throws Exception {
         Integer id = 1;
 
-        when(teamService.get(id)).thenReturn(team);
-        when(competitionService.list()).thenReturn((List) competitions);
+        when(teamService.getById(id)).thenReturn(team);
+        when(competitionService.listAll()).thenReturn((List) competitions);
         when(memberService.listAvailableMembers()).thenReturn((List) availableMembers);
         when(memberService.listAvailableTeamCaptains()).thenReturn((List) availableTeamCaptains);
 

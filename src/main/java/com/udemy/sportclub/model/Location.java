@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by Dell on 5-2-2017.
+ * Created by DS on 5-2-2017.
  */
 @Entity
 public class Location implements Comparable<Location>{

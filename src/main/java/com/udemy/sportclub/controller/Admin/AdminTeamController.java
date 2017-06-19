@@ -2,9 +2,7 @@ package com.udemy.sportclub.controller.Admin;
 
 import com.udemy.sportclub.model.Member;
 import com.udemy.sportclub.model.Team;
-import com.udemy.sportclub.service.CompetitionService;
-import com.udemy.sportclub.service.MemberService;
-import com.udemy.sportclub.service.TeamService;
+import com.udemy.sportclub.service.*;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -22,7 +20,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * Created by Dell on 22-1-2017.
+ * Created by DS on 22-1-2017.
  */
 @Secured("ROLE_ADMIN")
 @Controller
@@ -40,9 +38,9 @@ public class AdminTeamController {
     }
 
     @RequestMapping("admin/teams")
-    public String list(Model model){
+    public String listAll(Model model){
         model.addAttribute("adminController", "active");
-        model.addAttribute("teams", teamService.list());
+        model.addAttribute("teams", teamService.listAll());
         return "admin/teams/list";
     }
 
@@ -52,7 +50,7 @@ public class AdminTeamController {
         model.addAttribute("team", new Team());
         model.addAttribute("availableMembers", memberService.listAvailableMembers());
         model.addAttribute("teamCaptains", memberService.listAvailableTeamCaptains());
-        model.addAttribute("competitions", competitionService.list());
+        model.addAttribute("competitions", competitionService.listAll());
         return "admin/teams/newTeamForm";
     }
 
@@ -65,11 +63,11 @@ public class AdminTeamController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("adminController", "active");
-            model.addAttribute("competitions", competitionService.list());
+            model.addAttribute("competitions", competitionService.listAll());
             model.addAttribute("availableMembers", memberService.listAvailableMembers());
             model.addAttribute("teamCaptains", memberService.listAvailableTeamCaptains());
             if(team.getId()!=0) {
-                Team teamTemp = teamService.get(team.getId());
+                Team teamTemp = teamService.getById(team.getId());
                 String base64Encoded = Base64.encodeBase64String(teamTemp.getImage());
                 if (base64Encoded!=null) {
                     team.setBase64image(base64Encoded);
@@ -87,13 +85,13 @@ public class AdminTeamController {
     @RequestMapping("/admin/team/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
         model.addAttribute("adminController", "active");
-        Team team =  teamService.get(id);
+        Team team =  teamService.getById(id);
         List<Member> availableTeamCaptains = memberService.listAvailableTeamCaptains();
         if(team.getTeamCaptain()!=null) {
             availableTeamCaptains.add(team.getTeamCaptain());
         }
         model.addAttribute("team", team);
-        model.addAttribute("competitions", competitionService.list());
+        model.addAttribute("competitions", competitionService.listAll());
         model.addAttribute("availableMembers", memberService.listAvailableMembers());
         model.addAttribute("teamCaptains", availableTeamCaptains);
         return "admin/teams/editTeamForm";

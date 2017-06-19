@@ -2,7 +2,9 @@ package com.udemy.sportclub.controller;
 
 import com.udemy.sportclub.model.Competition;
 import com.udemy.sportclub.service.CompetitionService;
+import com.udemy.sportclub.service.CompetitionServiceImpl;
 import com.udemy.sportclub.service.GameService;
+import com.udemy.sportclub.service.GameServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * Created by Dell on 17-1-2017.
+ * Created by DS on 17-1-2017.
  */
 @Controller
 @RequestMapping("/competition")
@@ -29,7 +31,7 @@ public class CompetitionController {
     @RequestMapping("/list")
     public String teams(Model model){
         model.addAttribute("competitionController", "active");
-        model.addAttribute("competitions", competitionService.list());
+        model.addAttribute("competitions", competitionService.listAll());
         return"/competition/list";
     }
 
@@ -37,11 +39,11 @@ public class CompetitionController {
     @RequestMapping("/show/{id}")
     public String showCompetition(Model model, @PathVariable Integer id){
 
-        Competition competition = competitionService.get(id);
+        Competition competition = competitionService.getById(id);
         model.addAttribute("competitionController", "active");
         model.addAttribute("competition", competition );
         model.addAttribute("games", gameService.listGamesByCompetitionId(id));
-        model.addAttribute("ranking", competitionService.get(id).calculateRanking());
+        model.addAttribute("ranking", competitionService.getById(id).calculateRanking());
         return"/competition/showCompetition";
     }
 

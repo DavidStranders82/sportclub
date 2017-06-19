@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.util.*;
 
 /**
- * Created by Dell on 14-1-2017.
+ * Created by DS on 14-1-2017.
  */
 @Entity
 public class Member {
@@ -60,6 +60,7 @@ public class Member {
 
     public Member(){}
 
+    // Constructor for data loading
     public Member(String firstName, String lastName, String email, String password, String confirmPw, String profile, Date memberSince, Team teamCaptain) {
         this.firstName = firstName;
         this.lastName = lastName;

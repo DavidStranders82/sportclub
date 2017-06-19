@@ -2,9 +2,7 @@ package com.udemy.sportclub.controller.Admin;
 
 import com.udemy.sportclub.model.Member;
 import com.udemy.sportclub.model.Team;
-import com.udemy.sportclub.service.MemberService;
-import com.udemy.sportclub.service.RoleService;
-import com.udemy.sportclub.service.TeamService;
+import com.udemy.sportclub.service.*;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.MutableSortDefinition;
@@ -25,7 +23,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * Created by Dell on 22-1-2017.
+ * Created by DS on 22-1-2017.
  */
 @Secured("ROLE_ADMIN")
 @Controller
@@ -90,8 +88,8 @@ public class AdminMemberController {
     public String create(Model model) {
         model.addAttribute("adminController", "active");
         model.addAttribute("member", new Member());
-        model.addAttribute("teams", teamService.list());
-        model.addAttribute("roles", roleService.list());
+        model.addAttribute("teams", teamService.listAll());
+        model.addAttribute("roles", roleService.listAll());
         return "admin/members/newMemberForm";
     }
 
@@ -109,15 +107,15 @@ public class AdminMemberController {
             if (!(member.getPassword().equals(member.getConfirmPw()))) {
                 model.addAttribute("message", "Passwords are not equal. Try again");
             }
-            model.addAttribute("teams", teamService.list());
-            model.addAttribute("roles", roleService.list());
+            model.addAttribute("teams", teamService.listAll());
+            model.addAttribute("roles", roleService.listAll());
             model.addAttribute("adminController", "active");
             return "admin/members/newMemberForm";
         } else {
             Member memberSaved = memberService.save(member, myFile);
             if (!member.getTeams().isEmpty()){
                 for (Team team : member.getTeams()){
-                    Team teamTemp = teamService.get(team.getId());
+                    Team teamTemp = teamService.getById(team.getId());
                     teamTemp.getMembers().add(memberSaved);
                     teamService.save(teamTemp);
                 }
@@ -138,10 +136,10 @@ public class AdminMemberController {
             if (!(member.getPassword().equals(member.getConfirmPw()))) {
                 model.addAttribute("message", "Passwords are not equal. Try again");
             }
-            model.addAttribute("teams", teamService.list());
-            model.addAttribute("roles", roleService.list());
+            model.addAttribute("teams", teamService.listAll());
+            model.addAttribute("roles", roleService.listAll());
             model.addAttribute("adminController", "active");
-            Member memberTemp = memberService.get(member.getId());
+            Member memberTemp = memberService.getById(member.getId());
             String base64Encoded = Base64.encodeBase64String(memberTemp.getImage());
             if (base64Encoded!=null) {
                 member.setBase64image(base64Encoded);
@@ -149,7 +147,7 @@ public class AdminMemberController {
             return "admin/members/editMemberForm";
         } else {
             memberService.save(member, myFile);
-            List<Team> teams = teamService.list();
+            List<Team> teams = teamService.listAll();
             for(Team team : teams){
                 if (team.getMembers().contains(member)){
                     team.getMembers().remove(member);
@@ -174,9 +172,9 @@ public class AdminMemberController {
     @RequestMapping("/admin/member/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
         model.addAttribute("adminController", "active");
-        model.addAttribute("member",memberService.get(id) );
-        model.addAttribute("teams", teamService.list());
-        model.addAttribute("roles", roleService.list());
+        model.addAttribute("member",memberService.getById(id) );
+        model.addAttribute("teams", teamService.listAll());
+        model.addAttribute("roles", roleService.listAll());
         return "admin/members/editMemberForm";
     }
 }

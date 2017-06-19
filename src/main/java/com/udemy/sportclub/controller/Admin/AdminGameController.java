@@ -1,10 +1,7 @@
 package com.udemy.sportclub.controller.Admin;
 
 import com.udemy.sportclub.model.Game;
-import com.udemy.sportclub.service.CompetitionService;
-import com.udemy.sportclub.service.GameService;
-import com.udemy.sportclub.service.LocationService;
-import com.udemy.sportclub.service.TeamService;
+import com.udemy.sportclub.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PagedListHolder;
@@ -23,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Dell on 5-2-2017.
+ * Created by DS on 5-2-2017.
  */
 
 @Secured("ROLE_ADMIN")
@@ -56,7 +53,7 @@ public class AdminGameController {
         PagedListHolder<Game> pagedListHolder = (PagedListHolder<Game>)request.getSession().getAttribute("games");
 
         if(model.containsAttribute("message")){
-            List<Game> games = gameService.list();
+            List<Game> games = gameService.listAll();
             pagedListHolder = new PagedListHolder<Game>(games);
             pagedListHolder.setPageSize(10);
         } else {
@@ -94,9 +91,9 @@ public class AdminGameController {
     public String create(Model model) {
         model.addAttribute("adminController", "active");
         model.addAttribute("game", new Game());
-        model.addAttribute("teams", teamService.list());
-        model.addAttribute("competitions", competitionService.list());
-        model.addAttribute("locations", locationService.list());
+        model.addAttribute("teams", teamService.listAll());
+        model.addAttribute("competitions", competitionService.listAll());
+        model.addAttribute("locations", locationService.listAll());
         return "admin/games/newGameForm";
     }
 
@@ -121,9 +118,9 @@ public class AdminGameController {
                 }
             }
             model.addAttribute("adminController", "active");
-            model.addAttribute("teams", teamService.list());
-            model.addAttribute("competitions", competitionService.list());
-            model.addAttribute("locations", locationService.list());
+            model.addAttribute("teams", teamService.listAll());
+            model.addAttribute("competitions", competitionService.listAll());
+            model.addAttribute("locations", locationService.listAll());
             return (game.getId()==0) ? "admin/games/newGameForm" : "admin/games/editGameForm";
         } else {
             redirectAttributes.addFlashAttribute("message", (game.getId()==0) ? "New game was created succesfully" : "Game was updated succesfully");
@@ -134,13 +131,13 @@ public class AdminGameController {
 
     @RequestMapping("/admin/game/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
-        Game game = gameService.get(id);
+        Game game = gameService.getById(id);
         model.addAttribute("idTeamA", game.getTeams().get(0).getId());
         model.addAttribute("idTeamB", game.getTeams().get(1).getId());
         model.addAttribute("adminController", "active");
-        model.addAttribute("teams", teamService.list());
-        model.addAttribute("competitions", competitionService.list());
-        model.addAttribute("locations", locationService.list());
+        model.addAttribute("teams", teamService.listAll());
+        model.addAttribute("competitions", competitionService.listAll());
+        model.addAttribute("locations", locationService.listAll());
         model.addAttribute("game", game);
         return "admin/games/editGameForm";
     }

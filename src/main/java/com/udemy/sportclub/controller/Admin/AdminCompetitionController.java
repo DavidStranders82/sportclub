@@ -3,7 +3,9 @@ package com.udemy.sportclub.controller.Admin;
 import com.udemy.sportclub.model.Competition;
 import com.udemy.sportclub.model.Team;
 import com.udemy.sportclub.service.CompetitionService;
+import com.udemy.sportclub.service.CompetitionServiceImpl;
 import com.udemy.sportclub.service.TeamService;
+import com.udemy.sportclub.service.TeamServiceImpl;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -21,7 +23,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * Created by Dell on 22-1-2017.
+ * Created by DS on 22-1-2017.
  */
 @Secured("ROLE_ADMIN")
 @Controller
@@ -39,7 +41,7 @@ public class AdminCompetitionController {
     @RequestMapping("admin/competitions")
     public String list(Model model){
         model.addAttribute("adminController", "active");
-        model.addAttribute("competitions", competitionService.list());
+        model.addAttribute("competitions", competitionService.listAll());
         return "admin/competition/list";
     }
 
@@ -47,7 +49,7 @@ public class AdminCompetitionController {
     public String create(Model model) {
         model.addAttribute("adminController", "active");
         model.addAttribute("competition", new Competition());
-        model.addAttribute("teams", teamService.list());
+        model.addAttribute("teams", teamService.listAll());
         return "admin/competition/newCompetitionForm";
     }
 
@@ -66,13 +68,13 @@ public class AdminCompetitionController {
                 model.addAttribute("message", "Enddate cannot before startdate. Try again");
             }
             model.addAttribute("adminController", "active");
-            model.addAttribute("teams", teamService.list());
+            model.addAttribute("teams", teamService.listAll());
             return "admin/competition/newCompetitionForm";
         } else {
             Competition competitionSaved = competitionService.save(competition, myFile);
             if (!competition.getTeams().isEmpty()){
                 for (Team team : competition.getTeams()){
-                    Team teamTemp = teamService.get(team.getId());
+                    Team teamTemp = teamService.getById(team.getId());
                     teamTemp.getCompetitions().add(competitionSaved);
                     teamService.save(teamTemp);
                 }
@@ -97,8 +99,8 @@ public class AdminCompetitionController {
                 model.addAttribute("message", "Enddate cannot before startdate. Try again");
             }
             model.addAttribute("adminController", "active");
-            model.addAttribute("teams", teamService.list());
-            Competition competitionTemp = competitionService.get(competition.getId());
+            model.addAttribute("teams", teamService.listAll());
+            Competition competitionTemp = competitionService.getById(competition.getId());
             String base64Encoded = Base64.encodeBase64String(competitionTemp.getImage());
             if (!base64Encoded.isEmpty()) {
                 competition.setBase64image(base64Encoded);
@@ -106,7 +108,7 @@ public class AdminCompetitionController {
             return "admin/competition/editCompetitionForm";
         } else {
             competitionService.save(competition, myFile);
-            List<Team> teams = teamService.list();
+            List<Team> teams = teamService.listAll();
             for(Team team : teams){
                 if (team.getCompetitions().contains(competition)){
                     team.getCompetitions().remove(competition);
@@ -124,18 +126,18 @@ public class AdminCompetitionController {
     @RequestMapping("/admin/competition/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
         model.addAttribute("adminController", "active");
-        model.addAttribute("competition", competitionService.get(id));
-        model.addAttribute("teams", teamService.list());
+        model.addAttribute("competition", competitionService.getById(id));
+        model.addAttribute("teams", teamService.listAll());
         return "admin/competition/editCompetitionForm";
     }
 
 
     @RequestMapping("/admin/competition/delete/{id}")
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
-        Competition competition = competitionService.get(id);
+        Competition competition = competitionService.getById(id);
         if(!competition.getTeams().isEmpty())
             for (Team team : competition.getTeams()){
-                 Team teamTemp = teamService.get(team.getId());
+                 Team teamTemp = teamService.getById(team.getId());
                  teamTemp.getCompetitions().remove(competition);
                  teamService.save(teamTemp);
             }

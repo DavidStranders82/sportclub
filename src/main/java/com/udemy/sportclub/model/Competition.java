@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Dell on 14-1-2017.
+ * Created by DS on 14-1-2017.
  */
 @Entity
 public class Competition implements Comparable<Competition>{

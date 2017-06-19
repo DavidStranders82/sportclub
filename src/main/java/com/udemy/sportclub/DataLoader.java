@@ -2,7 +2,7 @@ package com.udemy.sportclub;
 
 import com.udemy.sportclub.model.*;
 import com.udemy.sportclub.repository.*;
-import com.udemy.sportclub.service.MemberService;
+import com.udemy.sportclub.service.MemberServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Dell on 5-2-2017.
+ * Created by DS on 5-2-2017.
  */
 @Component
 public class DataLoader {
@@ -23,12 +23,12 @@ public class DataLoader {
     private CompetitionRepository competitionRepository;
     private GameRepository gameRepository;
     private LocationRepository locationRepository;
-    private MemberService memberService;
+    private MemberServiceImpl memberService;
     private RoleRepository roleRepository;
     private TeamRepository teamRepository;
 
     @Autowired
-    public DataLoader(CompetitionRepository competitionRepository, GameRepository gameRepository, LocationRepository locationRepository, MemberService memberService, RoleRepository roleRepository, TeamRepository teamRepository) {
+    public DataLoader(CompetitionRepository competitionRepository, GameRepository gameRepository, LocationRepository locationRepository, MemberServiceImpl memberService, RoleRepository roleRepository, TeamRepository teamRepository) {
         this.competitionRepository = competitionRepository;
         this.gameRepository = gameRepository;
         this.locationRepository = locationRepository;
@@ -37,7 +37,7 @@ public class DataLoader {
         this.teamRepository = teamRepository;
     }
 
-  //  @PostConstruct
+ //   @PostConstruct
     private void loadData(){
 
         // Creating Roles

@@ -1,7 +1,9 @@
 package com.udemy.sportclub.controller;
 
 import com.udemy.sportclub.service.GameService;
+import com.udemy.sportclub.service.GameServiceImpl;
 import com.udemy.sportclub.service.TeamService;
+import com.udemy.sportclub.service.TeamServiceImpl;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * Created by Dell on 17-1-2017.
+ * Created by DS on 17-1-2017.
  */
 @Controller
 @RequestMapping("/teams")
@@ -27,7 +29,7 @@ public class TeamController {
     public String teams(Model model){
 
         model.addAttribute("teamController", "active");
-        model.addAttribute("teams", teamService.list());
+        model.addAttribute("teams", teamService.listAll());
         return"/team/list";
     }
 
@@ -36,7 +38,7 @@ public class TeamController {
     public String showTeam(Model model, @PathVariable Integer id){
 
         model.addAttribute("teamController", "active");
-        model.addAttribute("team", teamService.get(id));
+        model.addAttribute("team", teamService.getById(id));
         return"/team/showTeam";
     }
 

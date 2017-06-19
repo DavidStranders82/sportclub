@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 /**
- * Created by Dell on 14-1-2017.
+ * Created by DS on 14-1-2017.
  */
 public interface MemberRepository extends CrudRepository<Member, Integer>{
 
@@ -17,5 +17,6 @@ public interface MemberRepository extends CrudRepository<Member, Integer>{
     Member findByEmail(String email);
 
     List<Member> findAll();
+
 
 }

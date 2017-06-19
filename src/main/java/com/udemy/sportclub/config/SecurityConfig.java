@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * Created by Dell on 17-1-2017.
+ * Created by DS on 17-1-2017.
  */
 @Configuration
 @EnableGlobalMethodSecurity( securedEnabled = true)

@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Dell on 2-2-2017.
+ * Created by DS on 2-2-2017.
  */
 @Entity
 public class Game {

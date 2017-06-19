@@ -1,9 +1,7 @@
 package com.udemy.sportclub.controller;
 
 import com.udemy.sportclub.model.Member;
-import com.udemy.sportclub.service.MemberService;
-import com.udemy.sportclub.service.RoleService;
-import com.udemy.sportclub.service.TeamService;
+import com.udemy.sportclub.service.*;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -21,7 +19,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 
 /**
- * Created by Dell on 15-1-2017.
+ * Created by DS on 15-1-2017.
  */
 @Controller
 @RequestMapping("/members")
@@ -52,7 +50,7 @@ public class MemberController {
                              Model model,
                              Principal principal) {
         model.addAttribute("memberController", "active");
-        Member member = memberService.get(id);
+        Member member = memberService.getById(id);
         String currentUser = principal.getName();
         if (currentUser.equals(member.getEmail())) {
             model.addAttribute("currentLoggedIn", true);
@@ -65,9 +63,9 @@ public class MemberController {
     @RequestMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
         model.addAttribute("memberController", "active");
-        model.addAttribute("teams", teamService.list());
-        model.addAttribute("roles", roleService.list());
-        model.addAttribute("member", memberService.get(id));
+        model.addAttribute("teams", teamService.listAll());
+        model.addAttribute("roles", roleService.listAll());
+        model.addAttribute("member", memberService.getById(id));
         return "/member/memberForm";
     }
 
@@ -83,10 +81,10 @@ public class MemberController {
             if (!(member.getPassword().equals(member.getConfirmPw()))) {
                 model.addAttribute("message", "Passwords are not equal. Try again");
             }
-            model.addAttribute("teams", teamService.list());
-            model.addAttribute("roles", roleService.list());
+            model.addAttribute("teams", teamService.listAll());
+            model.addAttribute("roles", roleService.listAll());
             model.addAttribute("memberController", "active");
-            Member memberTemp = memberService.get(member.getId());
+            Member memberTemp = memberService.getById(member.getId());
             String base64Encoded = Base64.encodeBase64String(memberTemp.getImage());
             if (!base64Encoded.isEmpty()) {
                 member.setBase64image(base64Encoded);

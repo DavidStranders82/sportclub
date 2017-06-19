@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Dell on 9-2-2017.
+ * Created by DS on 9-2-2017.
  */
 public class CompetitionTest {
 

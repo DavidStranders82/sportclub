@@ -3,7 +3,9 @@ package com.udemy.sportclub.controller.Admin;
 import com.udemy.sportclub.model.Game;
 import com.udemy.sportclub.model.Location;
 import com.udemy.sportclub.service.GameService;
+import com.udemy.sportclub.service.GameServiceImpl;
 import com.udemy.sportclub.service.LocationService;
+import com.udemy.sportclub.service.LocationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -18,7 +20,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * Created by Dell on 5-2-2017.
+ * Created by DS on 5-2-2017.
  */
 
 @Secured("ROLE_ADMIN")
@@ -37,7 +39,7 @@ public class AdminLocationController {
     @RequestMapping("admin/locations")
     public String list(Model model){
         model.addAttribute("adminController", "active");
-        model.addAttribute("locations", locationService.list());
+        model.addAttribute("locations", locationService.listAll());
         return "admin/locations/list";
     }
 
@@ -66,7 +68,7 @@ public class AdminLocationController {
     @RequestMapping("/admin/location/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
         model.addAttribute("adminController", "active");
-        model.addAttribute("location", locationService.get(id));
+        model.addAttribute("location", locationService.getById(id));
         return "admin/locations/editLocationForm";
     }
 
