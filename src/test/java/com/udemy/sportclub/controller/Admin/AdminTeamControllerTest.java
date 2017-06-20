@@ -74,7 +74,7 @@ public class AdminTeamControllerTest {
     }
 
     @Test
-    public void testList() throws Exception {
+    public void listAllTeams() throws Exception {
 
         List<Team> teams = new ArrayList<>();
         teams.add(new Team());
@@ -90,7 +90,7 @@ public class AdminTeamControllerTest {
     }
 
     @Test
-    public void testCreate() throws Exception {
+    public void createTeam() throws Exception {
 
         verifyZeroInteractions(teamService);
 
@@ -109,18 +109,14 @@ public class AdminTeamControllerTest {
     }
 
     @Test
-    public void testSaveNewTeam() throws Exception {
-
-        MultipartFile mockfile = new MockMultipartFile("file", "bert.jpg", "multipart/form-data", parseImage("bert.jpg") );
-
-        when(teamService.save(new Team(), mockfile)).thenReturn(new Team());
+    public void saveNewTeam() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save")
                 .file("file",  parseImage("bert.jpg"))
                 .param("name", "testTeam"))
-                   .andExpect(status().is3xxRedirection())
-                    .andExpect(view().name("redirect:/admin/teams"))
-                   .andExpect(MockMvcResultMatchers.flash().attribute("message", "testTeam was created succesfully"));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/admin/teams"))
+                .andExpect(MockMvcResultMatchers.flash().attribute("message", "testTeam was created succesfully"));
 
         ArgumentCaptor<Team> boundTeam = ArgumentCaptor.forClass(Team.class);
         ArgumentCaptor<MultipartFile> boundMultipartFile = ArgumentCaptor.forClass(MultipartFile.class);
@@ -130,11 +126,7 @@ public class AdminTeamControllerTest {
     }
 
     @Test
-    public void testUpdateExistingTeam() throws Exception {
-
-        MultipartFile mockfile = new MockMultipartFile("file", "bert.jpg", "multipart/form-data", parseImage("bert.jpg") );
-
-        when(teamService.save(new Team(), mockfile)).thenReturn(new Team());
+    public void updateExistingTeam() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save")
                 .file("file", parseImage("bert.jpg"))
@@ -154,7 +146,7 @@ public class AdminTeamControllerTest {
     }
 
     @Test
-    public void testSaveNewTeamWithBindingErrors() throws Exception {
+    public void saveNewTeamWithBindingErrors() throws Exception {
 
         when(competitionService.listAll()).thenReturn((List) competitions);
         when(memberService.listAvailableMembers()).thenReturn((List) availableMembers);
@@ -174,7 +166,7 @@ public class AdminTeamControllerTest {
     }
 
     @Test
-    public void testUpdateTeamWithBindingErrorsAndNoImage() throws Exception {
+    public void updateTeamWithBindingErrorsAndNoImage() throws Exception {
 
         Integer id = 1;
 
@@ -204,7 +196,7 @@ public class AdminTeamControllerTest {
     }
 
     @Test
-    public void testUpdateTeamWithBindingErrorsWithImage() throws Exception {
+    public void updateTeamWithBindingErrorsWithImage() throws Exception {
 
         Integer id = 1;
 
@@ -236,7 +228,7 @@ public class AdminTeamControllerTest {
     }
 
     @Test
-    public void testEditWithTeamCaptain() throws Exception {
+    public void editWithTeamCaptain() throws Exception {
         Integer id = 1;
 
         team.setTeamCaptain(new Member());
@@ -256,7 +248,7 @@ public class AdminTeamControllerTest {
     }
 
     @Test
-    public void testEditWithoutTeamCaptain() throws Exception {
+    public void editWithoutTeamCaptain() throws Exception {
         Integer id = 1;
 
         when(teamService.getById(id)).thenReturn(team);
@@ -275,7 +267,7 @@ public class AdminTeamControllerTest {
     }
 
     @Test
-    public void delete() throws Exception {
+    public void deleteTeam() throws Exception {
         Integer id = 1;
 
         mockMvc.perform(get("/admin/team/delete/1"))

@@ -46,30 +46,30 @@ public class AdminMemberController {
     }
 
     @RequestMapping("/admin/members/page/{pageNumber}/{sortColumn}/{sortOrder}")
-    public String list(Model model, HttpServletRequest request, @PathVariable Integer pageNumber, @PathVariable String sortColumn, @PathVariable String sortOrder) {
+    public String listAll(Model model, HttpServletRequest request, @PathVariable Integer pageNumber, @PathVariable String sortColumn, @PathVariable String sortOrder) {
         model.addAttribute("adminController", "active");
-        PagedListHolder<Member> pagedListHolder = (PagedListHolder<Member>)request.getSession().getAttribute("members");
+        PagedListHolder<Member> pagedListHolder = (PagedListHolder<Member>) request.getSession().getAttribute("members");
 
-        if(pagedListHolder == null || model.containsAttribute("message")){
+        if (pagedListHolder == null || model.containsAttribute("message")) {
             List<Member> members = memberService.findAllByOrderByLastName();
             pagedListHolder = new PagedListHolder<Member>(members);
             pagedListHolder.setPageSize(10);
         } else {
-            final int goToPage = pageNumber -1;
-            if(goToPage<=pagedListHolder.getPageCount() && goToPage>=0){
+            final int goToPage = pageNumber - 1;
+            if (goToPage <= pagedListHolder.getPageCount() && goToPage >= 0) {
                 pagedListHolder.setPage(goToPage);
             }
         }
 
-        if (sortColumn != null){
+        if (sortColumn != null) {
             pagedListHolder.setSort(new MutableSortDefinition(sortColumn, true, sortOrder.equals("asc")));
             pagedListHolder.resort();
         }
 
         request.getSession().setAttribute("members", pagedListHolder);
-        pagedListHolder.setPage(pageNumber-1);
-        int current = pagedListHolder.getPage()+1;
-        int begin = Math.max(1, current-10);
+        pagedListHolder.setPage(pageNumber - 1);
+        int current = pagedListHolder.getPage() + 1;
+        int begin = Math.max(1, current - 10);
         int end = Math.min(begin + 5, pagedListHolder.getPageCount());
         int totalPageCount = pagedListHolder.getPageCount();
 
@@ -101,10 +101,10 @@ public class AdminMemberController {
                        RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors() || !(member.getPassword().equals(member.getConfirmPw())) || member.getPassword().isEmpty()) {
-            if (member.getPassword().isEmpty()) {
+            if (member.getPassword()==null || member.getPassword().isEmpty()) {
                 model.addAttribute("message", "Password is required. Try again");
             }
-            if (!(member.getPassword().equals(member.getConfirmPw()))) {
+            if (member.getPassword()!=null && !(member.getPassword().equals(member.getConfirmPw()))) {
                 model.addAttribute("message", "Passwords are not equal. Try again");
             }
             model.addAttribute("teams", teamService.listAll());
@@ -113,8 +113,8 @@ public class AdminMemberController {
             return "admin/members/newMemberForm";
         } else {
             Member memberSaved = memberService.save(member, myFile);
-            if (!member.getTeams().isEmpty()){
-                for (Team team : member.getTeams()){
+            if (member.getTeams() != null && !member.getTeams().isEmpty()) {
+                for (Team team : member.getTeams()) {
                     Team teamTemp = teamService.getById(team.getId());
                     teamTemp.getMembers().add(memberSaved);
                     teamService.save(teamTemp);
@@ -133,31 +133,32 @@ public class AdminMemberController {
                          RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors() || !(member.getPassword().equals(member.getConfirmPw()))) {
-            if (!(member.getPassword().equals(member.getConfirmPw()))) {
+            if (member.getPassword()!=null && !(member.getPassword().equals(member.getConfirmPw()))) {
                 model.addAttribute("message", "Passwords are not equal. Try again");
             }
             model.addAttribute("teams", teamService.listAll());
             model.addAttribute("roles", roleService.listAll());
             model.addAttribute("adminController", "active");
             Member memberTemp = memberService.getById(member.getId());
-            String base64Encoded = Base64.encodeBase64String(memberTemp.getImage());
-            if (base64Encoded!=null) {
-                member.setBase64image(base64Encoded);
+            if(memberTemp.getImage()!=null) {
+                member.setBase64image(Base64.encodeBase64String(memberTemp.getImage()));
             }
             return "admin/members/editMemberForm";
         } else {
             memberService.save(member, myFile);
             List<Team> teams = teamService.listAll();
-            for(Team team : teams){
-                if (team.getMembers().contains(member)){
-                    team.getMembers().remove(member);
-                }
-                if(member.getTeams().contains(team)){
-                    team.getMembers().add(member);
+            for (Team team : teams) {
+                if (team.getMembers()!= null) {
+                    if (team.getMembers().contains(member)) {
+                        team.getMembers().remove(member);
+                    }
+                    if (member.getTeams().contains(team)) {
+                        team.getMembers().add(member);
+                    }
                 }
                 teamService.save(team);
             }
-            redirectAttributes.addFlashAttribute("message",  member.getFirstName() + " " + member.getLastName() + " was updated succesfully");
+            redirectAttributes.addFlashAttribute("message", member.getFirstName() + " " + member.getLastName() + " was updated succesfully");
             return "redirect:/admin/members/page/1/lastName/asc";
         }
     }
@@ -172,7 +173,7 @@ public class AdminMemberController {
     @RequestMapping("/admin/member/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
         model.addAttribute("adminController", "active");
-        model.addAttribute("member",memberService.getById(id) );
+        model.addAttribute("member", memberService.getById(id));
         model.addAttribute("teams", teamService.listAll());
         model.addAttribute("roles", roleService.listAll());
         return "admin/members/editMemberForm";

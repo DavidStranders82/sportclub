@@ -1,9 +1,6 @@
 
- //Datepicker script:
-
 $(function() {
    $('#datetimepicker4').datetimepicker({
-//     format: 'dd/mm/yyyy'
    });
 })
 
@@ -19,11 +16,6 @@ $(function() {
    });
 })
 
-$(function() {
-   $('#datetimepicker1').datetimepicker({
-//     format: 'dd/mm/yyyy hh:mm:ss'
-   });
-})
 
 // Delete member modal:
 $(function() {

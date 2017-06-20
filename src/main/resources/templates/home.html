@@ -5,15 +5,10 @@
         xmlns:layout="http://www.ultraq.net.nz/thymelead/layout"
         xmlns="http://www.w3.org/1999/xhtml"
         layout:decorator="layouts/main">
->
 <head>
-
     <title>Home</title>
-
 </head>
 <body>
-
-
 <div layout:fragment="content">
 
     <div class="jumbotron">
@@ -26,9 +21,7 @@
             </p>
         </div>
     </div>
-
     <div class="container">
-
         <div class="row">
             <div class="container">
                 <div class="col-sm-12">
@@ -47,30 +40,24 @@
                                 <div class="item active">
                                     <img src="/images/foto4.jpg" alt="Chania"/>
                                     <div class="carousel-caption">
-                                        <!--<h3>Chania</h3>-->
-                                        <!--<p>The atmosphere in Chania has a touch of Florence and Venice.</p>-->
                                     </div>
                                 </div>
-
                                 <div class="item">
                                     <img src="/images/foto2.jpg" alt="Chania"/>
                                     <div class="carousel-caption">
                                     </div>
                                 </div>
-
                                 <div class="item">
                                     <img src="/images/foto3.jpg" alt="Flower"/>
                                     <div class="carousel-caption">
                                     </div>
                                 </div>
-
                                 <div class="item">
                                     <img src="/images/foto1.jpg" alt="Flower"/>
                                     <div class="carousel-caption">
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Left and right controls -->
                             <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
                                 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -85,14 +72,20 @@
                     <div class="col-sm-5">
                         <h2>HAC wins Competition!</h2>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-                            esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris
+                            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+                            velit
+                            esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                            sunt
                             in culpa qui officia deserunt mollit anim id est laborum. </p>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-                            esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris
+                            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+                            velit
+                            esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                            sunt
                             in culpa qui officia deserunt mollit anim id est laborum. </p>
                         <a href="">read more</a>
                     </div>
@@ -101,7 +94,6 @@
         </div>
         <div class="col-md-12">
             <hr/>
-
         </div>
         <div class="col-sm-7">
             <div class="col-sm-5">
@@ -112,7 +104,7 @@
                     aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
                     cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
                     culpa qui officia deserunt mollit anim id est laborum. </p>
-                 <a href="">read more</a>
+                <a href="">read more</a>
 
             </div>
             <div class="col-sm-1">
@@ -126,17 +118,13 @@
                     aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
                     cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
                     culpa qui officia deserunt mollit anim id est laborum. </p>
-                    <a href="">read more</a>
+                <a href="">read more</a>
 
             </div>
-
         </div>
-        <br/>
-        <br/>
-        <br/>
+        <br/><br/><br/>
         <div class="col-md-5 well">
-
-            <h2><span class="glyphicon glyphicon-calendar"></span>   Upcoming matches</h2>
+            <h2><span class="glyphicon glyphicon-calendar"></span> Upcoming matches</h2>
             <br/>
             <table class="table table-striped">
                 <thead>
@@ -151,20 +139,18 @@
                     <td>
                         <div th:if="${game.competition != null}">
                             <a th:href="@{/competition/show/} + ${game.competition.id}">
-                            <span th:text="${game.competition != null} ? ${game.competition.name}">competition</span>
+                                <span th:text="${game.competition != null} ? ${game.competition.name}">competition</span>
                             </a>
                         </div>
                     </td>
                     <td>
                         <a th:href="@{/teams/show/} + ${game.teams.get(0).id}">
-                        <span th:text="${game.teams.get(0).name}">team 1</span></a>
+                            <span th:text="${game.teams.get(0).name}">team 1</span></a>
                         -
-                            <a th:href="@{/teams/show/} + ${game.teams.get(1).id}">
-                        <span th:text="${game.teams.get(1).name}">team 2</span></a>
-
+                        <a th:href="@{/teams/show/} + ${game.teams.get(1).id}">
+                            <span th:text="${game.teams.get(1).name}">team 2</span></a>
                     </td>
                     <td th:text="${#dates.format(game.date,'dd-M-yyyy')}">date</td>
-
                 </tr>
                 </tbody>
             </table>
@@ -172,7 +158,5 @@
         </div>
     </div>
 </div>
-
-
 </body>
 </html>
