@@ -7,7 +7,7 @@ Members can also login and see more detail information about other members, team
 Admins have their own section where they can create, update and delete members, teams, games and competitions. 
 
 As it is a experimental project, there is much work left to do: 
-- Adding unit and integration tests
+- Adding much more unit and integration tests
 - Refactoring long, inefficient and complex methods
 - Rebuilding the front-end with Angular and use RESTful webservices
 - etc.
