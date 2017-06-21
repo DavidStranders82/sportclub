@@ -27,6 +27,11 @@ public class DataLoader {
     private RoleRepository roleRepository;
     private TeamRepository teamRepository;
 
+    private static final byte[] BERT = parseImage("bert");
+    private static final byte[] SS = parseImage("ss");
+    private static final byte[] SS2 = parseImage("ss2");
+    private static final byte[] ERNIE = parseImage("ernie");
+
     @Autowired
     public DataLoader(CompetitionRepository competitionRepository, GameRepository gameRepository, LocationRepository locationRepository, MemberServiceImpl memberService, RoleRepository roleRepository, TeamRepository teamRepository) {
         this.competitionRepository = competitionRepository;
@@ -37,7 +42,7 @@ public class DataLoader {
         this.teamRepository = teamRepository;
     }
 
- //   @PostConstruct
+ // @PostConstruct
     private void loadData(){
 
         // Creating Roles
@@ -51,19 +56,19 @@ public class DataLoader {
 
         Member David = new Member("David", "Stranders", "dstranders@hotmail.com", "123", "123", "I'm the boss!", parseDate("18/04/2005"), null);
         David.getRoles().add(admin);
-        David.setImage(parseImage("bert"));
+        David.setImage(BERT);
         David = memberService.save(David);
 
         Member JanJansen = new Member("Jan", "Jansen", "jan.jansen@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("21/10/2013"), null);
         JanJansen.getRoles().add(user);
-        JanJansen.setImage(parseImage("ss"));
+        JanJansen.setImage(SS);
         JanJansen = memberService.save(JanJansen);
 
         Member KeesKeessen = new Member("Kees", "Keessen", "kees.keessen@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/02/2006"), null);
         KeesKeessen.getRoles().add(user);
-        KeesKeessen.setImage(parseImage("ss"));
+        KeesKeessen.setImage(SS);
         KeesKeessen = memberService.save(KeesKeessen);
 
         Member KlaasKlaassen = new Member("Klaas", "Klaassen", "klaas.klaassen@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
@@ -74,31 +79,31 @@ public class DataLoader {
         Member PietPietersen = new Member("Piet", "Pietersen", "piet.pietersen@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/04/2010"), null);
         PietPietersen.getRoles().add(user);
-        PietPietersen.setImage(parseImage("ss2"));
+        PietPietersen.setImage(SS2);
         PietPietersen = memberService.save(PietPietersen);
 
         Member AnneDeVries = new Member("Anne", "De Vries", "anne.devries@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/06/2014"), null);
         AnneDeVries.getRoles().add(user);
-        AnneDeVries.setImage(parseImage("ss"));
+        AnneDeVries.setImage(SS);
         AnneDeVries = memberService.save(AnneDeVries);
 
         Member KarelDeJong = new Member("Karel", "De Jong", "karel.dejong@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/11/2008"), null);
         KarelDeJong.getRoles().add(user);
-        KarelDeJong.setImage(parseImage("bert"));
+        KarelDeJong.setImage(BERT);
         KarelDeJong = memberService.save(KarelDeJong);
 
         Member MarieJansen = new Member("Marie", "Jansen", "marie.jansen@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/08/2011"), null);
         MarieJansen.getRoles().add(user);
-        MarieJansen.setImage(parseImage("ss2"));
+        MarieJansen.setImage(SS2);
         MarieJansen = memberService.save(MarieJansen);
 
         Member PeterPetersen = new Member("Peter", "Petersen", "peter.petersen@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/06/2012"), null);
         PeterPetersen.getRoles().add(user);
-        PeterPetersen.setImage(parseImage("ernie"));
+        PeterPetersen.setImage(ERNIE);
         PeterPetersen = memberService.save(PeterPetersen);
 
         Member TomTomason = new Member("Tom", "Tomason", "tom.tomason@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
@@ -109,31 +114,31 @@ public class DataLoader {
         Member JanDeJong = new Member("Jan", "De Jong", "jan.dejong@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/06/2015"), null);
         JanDeJong.getRoles().add(user);
-        JanDeJong.setImage(parseImage("ernie"));
+        JanDeJong.setImage(ERNIE);
         JanDeJong = memberService.save(JanDeJong);
 
         Member DaanBakker = new Member("Daan", "Bakker", "daan.bakker@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/03/2014"), null);
         DaanBakker.getRoles().add(user);
-        DaanBakker.setImage(parseImage("ss2"));
+        DaanBakker.setImage(SS2);
         DaanBakker = memberService.save(DaanBakker);
 
         Member EmmaBakker = new Member("Emma", "Bakker", "emma.bakker@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/03/2014"), null);
         EmmaBakker.getRoles().add(user);
-        EmmaBakker.setImage(parseImage("ss"));
+        EmmaBakker.setImage(SS);
         EmmaBakker = memberService.save(EmmaBakker);
 
         Member LotteSmit = new Member("Lotte", "Smit", "lotte.smit@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/01/2017"), null);
         LotteSmit.getRoles().add(user);
-        LotteSmit.setImage(parseImage("ss"));
+        LotteSmit.setImage(SS);
         LotteSmit = memberService.save(LotteSmit);
 
         Member FleurVisser = new Member("Fleur", "Visser", "fleur.visser@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/09/2016"), null);
         FleurVisser.getRoles().add(user);
-        FleurVisser.setImage(parseImage("bert"));
+        FleurVisser.setImage(BERT);
         FleurVisser = memberService.save(FleurVisser);
 
         Member LisaVandeBerg = new Member("Lisa", "Van der Berg", "lisa.vanderberg@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
@@ -144,13 +149,13 @@ public class DataLoader {
         Member FleurHendriks = new Member("Fleur", "Hendriks", "fleur.hendriks@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/06/2013"), null);
         FleurHendriks.getRoles().add(user);
-        FleurHendriks.setImage(parseImage("ernie"));
+        FleurHendriks.setImage(ERNIE);
         FleurHendriks = memberService.save(FleurHendriks);
 
         Member DaanSmit = new Member("Daan", "Smit", "daan.smit@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/11/2015"), null);
         DaanSmit.getRoles().add(user);
-        DaanSmit.setImage(parseImage("bert"));
+        DaanSmit.setImage(BERT);
         DaanSmit = memberService.save(DaanSmit);
 
         Member TimVanDijk = new Member("Tim", "Van Dijk", "tim.vandijk@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
@@ -161,31 +166,31 @@ public class DataLoader {
         Member JuliaDeBoer = new Member("Julia", "De Boer", "julia.deboer@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/06/2015"), null);
         JuliaDeBoer.getRoles().add(user);
-        JuliaDeBoer.setImage(parseImage("ss"));
+        JuliaDeBoer.setImage(SS);
         JuliaDeBoer = memberService.save(JuliaDeBoer);
 
         Member LarsMulder = new Member("Lars", "Mulder", "lars.mulder@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/12/2015"), null);
         LarsMulder.getRoles().add(user);
-        LarsMulder.setImage(parseImage("ernie"));
+        LarsMulder.setImage(ERNIE);
         LarsMulder = memberService.save(LarsMulder);
 
         Member LotteVisser = new Member("Lotte", "Visser", "lotte.visser@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/06/2009"), null);
         LotteVisser.getRoles().add(user);
-        LotteVisser.setImage(parseImage("ss"));
+        LotteVisser.setImage(SS);
         LotteVisser = memberService.save(LotteVisser);
 
         Member ThijsPeters = new Member("Thijs", "Peters", "thijs.peters@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/06/2015"), null);
         ThijsPeters.getRoles().add(user);
-        ThijsPeters.setImage(parseImage("bert"));
+        ThijsPeters.setImage(BERT);
         ThijsPeters = memberService.save(ThijsPeters);
 
         Member SophieDekker = new Member("Sophie", "Dekker", "sophie.dekker@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/10/2015"), null);
         SophieDekker.getRoles().add(user);
-        SophieDekker.setImage(parseImage("ss2"));
+        SophieDekker.setImage(SS2);
         SophieDekker = memberService.save(SophieDekker);
 
         Member SemDeGroot = new Member("Sem", "De Groot", "sem.degroot@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
@@ -196,7 +201,7 @@ public class DataLoader {
         Member LisaBos = new Member("Lisa", "Bos", "lisa.bos@hotmail.com", "123", "123", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et\n" +
                 " dolore magna aliqua.", parseDate("01/06/2015"), null);
         LisaBos.getRoles().add(user);
-        LisaBos.setImage(parseImage("ernie"));
+        LisaBos.setImage(ERNIE);
         LisaBos = memberService.save(LisaBos);
 
         // Creating competitions
@@ -363,9 +368,7 @@ public class DataLoader {
 
     }
 
-
-
-    private byte[] parseImage(String filename){
+    public static byte[] parseImage(String filename){
         Path path = Paths.get("C:/Users/Dell/Pictures/sportclubapp/" + filename + ".jpg");
         byte[] data = null;
         try {
@@ -376,7 +379,8 @@ public class DataLoader {
         return data;
     }
 
-    public Date parseDate(String ddmmyyyy) {
+
+    public static Date parseDate(String ddmmyyyy) {
         java.util.Date utilDate = null;
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -387,7 +391,7 @@ public class DataLoader {
             }
     }
 
-    public Date parseDateTime(String dateTime) {
+    public static Date parseDateTime(String dateTime) {
         java.util.Date utilDate = null;
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");

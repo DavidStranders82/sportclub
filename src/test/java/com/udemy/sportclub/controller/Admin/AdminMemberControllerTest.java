@@ -1,5 +1,6 @@
 package com.udemy.sportclub.controller.Admin;
 
+import com.udemy.sportclub.DataLoader;
 import com.udemy.sportclub.model.Member;
 import com.udemy.sportclub.model.Role;
 import com.udemy.sportclub.model.Team;
@@ -48,36 +49,24 @@ public class AdminMemberControllerTest {
     private AdminMemberController adminMemberController;
     private MockMvc mockMvc;
 
-    private Member kees;
-    private Member jan;
-    private Member piet;
-    private List<Member> members;
+    private Member kees = new Member();
+    private Member jan = new Member();
+    private Member piet = new Member();
+    private List<Member> members = new ArrayList<>(Arrays.asList(piet, kees, jan));
 
-    private Role member;
-    private Role admin;
-    private List<Role> roles;
+    private Role member = new Role();
+    private Role admin = new Role();
+    private List<Role> roles = new ArrayList<>(Arrays.asList(member, admin));
 
-    private Team teamA;
-    private Team teamB;
-    private Team teamC;
-    private List<Team> teams;
+    private Team teamA = new Team();
+    private Team teamB = new Team();
+    private Team teamC = new Team();
+    private List<Team> teams = new ArrayList<>(Arrays.asList(teamA, teamB, teamC));
+
+    private static final byte[]IMAGE = DataLoader.parseImage("bert");
 
     @Before
     public void setup(){
-
-        kees = new Member();
-        jan = new Member();
-        piet = new Member();
-        members = new ArrayList<>(Arrays.asList(piet, kees, jan));
-
-        member = new Role("member");
-        admin = new Role("admin");
-        roles = new ArrayList<>(Arrays.asList(member, admin));
-
-        teamA = new Team();
-        teamB = new Team();
-        teamC = new Team();
-        teams = new ArrayList<>(Arrays.asList(teamA, teamB, teamC));
 
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(adminMemberController).build();
@@ -99,11 +88,10 @@ public class AdminMemberControllerTest {
 
         when(memberService.findAllByOrderByLastName()).thenReturn((List)members);
 
-        MvcResult result = mockMvc.perform(get("redirect:/admin/members/page/1/lastName/asc"))
+        MvcResult result = mockMvc.perform(get("/admin/members/page/1/lastName/asc"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/members/list"))
                 .andExpect(model().attribute("members", instanceOf(PagedListHolder.class)))
-                .andExpect(model().attribute("members", hasProperty("source", hasSize(3))))
                 .andExpect(model().attribute("members", hasProperty("source", hasSize(3))))
                 .andExpect(model().attribute("beginIndex", 1))
                 .andExpect(model().attribute("endIndex", 1))
@@ -153,7 +141,7 @@ public class AdminMemberControllerTest {
     public void saveNewMember() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/save")
-                .file("file",  parseImage("bert.jpg"))
+                .file("file", IMAGE)
                 .param("firstName", "Piet")
                 .param("email", "test@email.com")
                 .param("lastName", "testMember")
@@ -180,7 +168,7 @@ public class AdminMemberControllerTest {
         when(roleService.listAll()).thenReturn((List) roles);
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/save")
-                .file("file",  parseImage("bert.jpg"))
+                .file("file", IMAGE)
                 .param("firstName", "Piet"))
                     .andExpect(status().isOk())
                     .andExpect(view().name("admin/members/newMemberForm"))
@@ -196,10 +184,11 @@ public class AdminMemberControllerTest {
         when(roleService.listAll()).thenReturn((List) roles);
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/save")
-                .file("file",  parseImage("bert.jpg"))
+                .file("file", IMAGE)
                 .param("firstName", "Piet")
                 .param("email", "test@email.com")
                 .param("lastName", "testMember")
+                .param("password", "")
                 .param("roles", "1")
                 .param("memberSince", "01/01/2010"))
                     .andExpect(status().isOk())
@@ -217,7 +206,7 @@ public class AdminMemberControllerTest {
         when(roleService.listAll()).thenReturn((List) roles);
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/save")
-                .file("file",  parseImage("bert.jpg"))
+                .file("file", IMAGE)
                 .param("firstName", "Piet")
                 .param("email", "test@email.com")
                 .param("lastName", "testMember")
@@ -258,7 +247,7 @@ public class AdminMemberControllerTest {
         when(teamService.listAll()).thenReturn((List) teams);
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/update")
-                .file("file",  parseImage("bert.jpg"))
+                .file("file", IMAGE)
                 .param("id", "1")
                 .param("firstName", "Piet")
                 .param("email", "test@email.com")
@@ -285,14 +274,14 @@ public class AdminMemberControllerTest {
     public void updateMemberWithBindingErrors() throws Exception {
 
         Integer id = 1;
-        kees.setImage(parseImage("bert.jpg"));
+        kees.setImage(IMAGE);
 
         when(memberService.getById(id)).thenReturn(kees);
         when(teamService.listAll()).thenReturn((List) teams);
         when(roleService.listAll()).thenReturn((List) roles);
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/update")
-                .file("file",  parseImage("bert.jpg"))
+                .file("file",IMAGE)
                 .param("id", "1")
                 .param("firstName", "Piet"))
                     .andExpect(status().isOk())
@@ -301,7 +290,7 @@ public class AdminMemberControllerTest {
                     .andExpect(model().attribute("teams", hasSize(3)))
                     .andExpect(model().attribute("roles", hasSize(2)))
                     .andExpect(model().attribute("member", hasProperty("id", is(id))))
-                    .andExpect(model().attribute("member", hasProperty("base64image", is(Base64.encodeBase64String(parseImage("bert.jpg"))))));
+                    .andExpect(model().attribute("member", hasProperty("base64image", is(Base64.encodeBase64String(IMAGE)))));
 
         verify(memberService, times(1)).getById(id);
     }
@@ -316,7 +305,7 @@ public class AdminMemberControllerTest {
         when(roleService.listAll()).thenReturn((List) roles);
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/update")
-                .file("file",  parseImage("bert.jpg"))
+                .file("file", IMAGE)
                 .param("id", "1")
                 .param("firstName", "Piet"))
                 .andExpect(status().isOk())
@@ -340,7 +329,7 @@ public class AdminMemberControllerTest {
         when(roleService.listAll()).thenReturn((List) roles);
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/update")
-                .file("file",  parseImage("bert.jpg"))
+                .file("file", IMAGE)
                 .param("id", "1")
                 .param("firstName", "Piet")
                 .param("email", "test@email.com")
@@ -359,15 +348,4 @@ public class AdminMemberControllerTest {
                     .andExpect(model().attribute("message", is("Passwords are not equal. Try again")));
     }
 
-
-    private byte[] parseImage(String filename){
-        Path path = Paths.get("C:/Users/Dell/Pictures/sportclubapp/" + filename);
-        byte[] data = null;
-        try {
-            data = Files.readAllBytes(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return data;
-    }
 }

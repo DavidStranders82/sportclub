@@ -33,13 +33,13 @@ public class AdminCompetitionController {
     private TeamService teamService;
 
     @Autowired
-    public AdminCompetitionController(CompetitionService competitionService, TeamService teamService){
+    public AdminCompetitionController(CompetitionService competitionService, TeamService teamService) {
         this.competitionService = competitionService;
         this.teamService = teamService;
     }
 
     @RequestMapping("admin/competitions")
-    public String list(Model model){
+    public String list(Model model) {
         model.addAttribute("adminController", "active");
         model.addAttribute("competitions", competitionService.listAll());
         return "admin/competition/list";
@@ -60,67 +60,78 @@ public class AdminCompetitionController {
                        @RequestParam("file") MultipartFile myFile,
                        RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors() || (competition.getMaxTeams()<competition.getTeams().size()) || (competition.getEndDate().before(competition.getStartDate()))) {
-            if (competition.getMaxTeams()<competition.getTeams().size()){
-                model.addAttribute("message", "Number of enrolled teams is greater than maximum number of allowed teams");
-            }
-            if (competition.getEndDate().before(competition.getStartDate())){
-                model.addAttribute("message", "Enddate cannot before startdate. Try again");
-            }
-            model.addAttribute("adminController", "active");
-            model.addAttribute("teams", teamService.listAll());
+
+        if (bindingResult.hasErrors()) {
+            addAttributes(model);
             return "admin/competition/newCompetitionForm";
-        } else {
-            Competition competitionSaved = competitionService.save(competition, myFile);
-            if (!competition.getTeams().isEmpty()){
-                for (Team team : competition.getTeams()){
-                    Team teamTemp = teamService.getById(team.getId());
-                    teamTemp.getCompetitions().add(competitionSaved);
-                    teamService.save(teamTemp);
-                }
-            }
-            redirectAttributes.addFlashAttribute("message", competition.getName() + " was created succesfully");
-            return "redirect:/admin/competitions";
         }
+
+        if (competition.getTeams() != null && competition.getMaxTeams() < competition.getTeams().size()) {
+            model.addAttribute("message", "Number of enrolled teams is greater than maximum number of allowed teams");
+            addAttributes(model);
+            return "admin/competition/newCompetitionForm";
+        }
+
+        if (competition.getEndDate() != null && competition.getStartDate() != null &&
+                (competition.getEndDate().before(competition.getStartDate()))) {
+            model.addAttribute("message", "Enddate cannot before startdate. Try again");
+            addAttributes(model);
+            return "admin/competition/newCompetitionForm";
+        }
+
+        Competition competitionSaved = competitionService.save(competition, myFile);
+        if (competition.getTeams() != null && !competition.getTeams().isEmpty()) {
+            for (Team team : competition.getTeams()) {
+                Team teamTemp = teamService.getById(team.getId());
+                teamTemp.getCompetitions().add(competitionSaved);
+                teamService.save(teamTemp);
+            }
+        }
+        redirectAttributes.addFlashAttribute("message", competition.getName() + " was created succesfully");
+        return "redirect:/admin/competitions";
+
     }
 
     @RequestMapping(value = "/admin/competition/update", method = RequestMethod.POST)
     public String update(@Valid Competition competition,
-                       BindingResult bindingResult,
-                       Model model,
-                       @RequestParam("file") MultipartFile myFile,
-                       RedirectAttributes redirectAttributes) {
+                         BindingResult bindingResult,
+                         Model model,
+                         @RequestParam("file") MultipartFile myFile,
+                         RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors() || (competition.getMaxTeams()<competition.getTeams().size()) || (competition.getEndDate().before(competition.getStartDate()))) {
-            if (competition.getMaxTeams()<competition.getTeams().size()){
-                model.addAttribute("message", "Number of enrolled teams is greater than maximum number of allowed teams");
-            }
-            if (competition.getEndDate().before(competition.getStartDate())){
-                model.addAttribute("message", "Enddate cannot before startdate. Try again");
-            }
-            model.addAttribute("adminController", "active");
-            model.addAttribute("teams", teamService.listAll());
-            Competition competitionTemp = competitionService.getById(competition.getId());
-            String base64Encoded = Base64.encodeBase64String(competitionTemp.getImage());
-            if (!base64Encoded.isEmpty()) {
-                competition.setBase64image(base64Encoded);
-            }
+        if (bindingResult.hasErrors()) {
+            addAttributes(model);
+            resetBase64Image(competition);
             return "admin/competition/editCompetitionForm";
-        } else {
-            competitionService.save(competition, myFile);
-            List<Team> teams = teamService.listAll();
-            for(Team team : teams){
-                if (team.getCompetitions().contains(competition)){
-                    team.getCompetitions().remove(competition);
-                }
-                if(competition.getTeams().contains(team)){
-                    team.getCompetitions().add(competition);
-                }
-                teamService.save(team);
-            }
-            redirectAttributes.addFlashAttribute("message", competition.getName() + " was succesfully updated");
-            return "redirect:/admin/competitions";
         }
+        if (competition.getTeams() != null && competition.getMaxTeams() < competition.getTeams().size()) {
+            model.addAttribute("message", "Number of enrolled teams is greater than maximum number of allowed teams");
+            addAttributes(model);
+            resetBase64Image(competition);
+            return "admin/competition/editCompetitionForm";
+        }
+
+        if (competition.getEndDate() != null && competition.getStartDate() != null &&
+                (competition.getEndDate().before(competition.getStartDate()))) {
+            model.addAttribute("message", "Enddate cannot before startdate. Try again");
+            addAttributes(model);
+            resetBase64Image(competition);
+            return "admin/competition/editCompetitionForm";
+        }
+
+        competitionService.save(competition, myFile);
+        List<Team> teams = teamService.listAll();
+        for (Team team : teams) {
+            if (team.getCompetitions().contains(competition)) {
+                team.getCompetitions().remove(competition);
+            }
+            if (competition.getTeams().contains(team)) {
+                team.getCompetitions().add(competition);
+            }
+            teamService.save(team);
+        }
+        redirectAttributes.addFlashAttribute("message", competition.getName() + " was succesfully updated");
+        return "redirect:/admin/competitions";
     }
 
     @RequestMapping("/admin/competition/edit/{id}")
@@ -135,15 +146,28 @@ public class AdminCompetitionController {
     @RequestMapping("/admin/competition/delete/{id}")
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         Competition competition = competitionService.getById(id);
-        if(!competition.getTeams().isEmpty())
-            for (Team team : competition.getTeams()){
-                 Team teamTemp = teamService.getById(team.getId());
-                 teamTemp.getCompetitions().remove(competition);
-                 teamService.save(teamTemp);
+        if (!competition.getTeams().isEmpty())
+            for (Team team : competition.getTeams()) {
+                Team teamTemp = teamService.getById(team.getId());
+                teamTemp.getCompetitions().remove(competition);
+                teamService.save(teamTemp);
             }
         competitionService.delete(id);
         redirectAttributes.addFlashAttribute("message", "Competition was deleted succesfully");
         return "redirect:/admin/competitions";
+    }
+
+    private void addAttributes(Model model) {
+        model.addAttribute("adminController", "active");
+        model.addAttribute("teams", teamService.listAll());
+    }
+
+    private void resetBase64Image(Competition competition) {
+        Competition competitionTemp = competitionService.getById(competition.getId());
+        if (competitionTemp.getImage() != null) {
+            String base64Encoded = Base64.encodeBase64String(competitionTemp.getImage());
+            competition.setBase64image(base64Encoded);
+        }
     }
 
 }

@@ -20,7 +20,7 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     private Set<Member> members;
 
-    private Role(){}
+    public Role(){}
 
     public Role(String name) {
         this.name = name;

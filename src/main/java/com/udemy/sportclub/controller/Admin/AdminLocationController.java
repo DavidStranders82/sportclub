@@ -72,7 +72,6 @@ public class AdminLocationController {
         return "admin/locations/editLocationForm";
     }
 
-
     @RequestMapping("/admin/location/delete/{id}")
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         List<Game> games = gameService.listGamesByLocationId(id);
@@ -84,6 +83,5 @@ public class AdminLocationController {
         redirectAttributes.addFlashAttribute("message", "Location was deleted succesfully");
         return "redirect:/admin/locations";
     }
-
 
 }

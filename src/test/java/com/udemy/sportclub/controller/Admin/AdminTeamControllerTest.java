@@ -1,5 +1,6 @@
 package com.udemy.sportclub.controller.Admin;
 
+import com.udemy.sportclub.DataLoader;
 import com.udemy.sportclub.model.Competition;
 import com.udemy.sportclub.model.Member;
 import com.udemy.sportclub.model.Team;
@@ -51,6 +52,8 @@ public class AdminTeamControllerTest {
     private List<Member> availableMembers;
     private List<Member> availableTeamCaptains;
     private Team team;
+
+    private static final byte[]IMAGE = DataLoader.parseImage("bert");
 
     @Before
     public void setup(){
@@ -112,7 +115,7 @@ public class AdminTeamControllerTest {
     public void saveNewTeam() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save")
-                .file("file",  parseImage("bert.jpg"))
+                .file("file", IMAGE)
                 .param("name", "testTeam"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/admin/teams"))
@@ -129,7 +132,7 @@ public class AdminTeamControllerTest {
     public void updateExistingTeam() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save")
-                .file("file", parseImage("bert.jpg"))
+                .file("file", IMAGE)
                 .param("id", "1")
                 .param("name", "testTeam"))
                 .andExpect(status().is3xxRedirection())
@@ -153,7 +156,7 @@ public class AdminTeamControllerTest {
         when(memberService.listAvailableTeamCaptains()).thenReturn((List) availableTeamCaptains);
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save")
-                .file("file", parseImage("bert.jpg")))
+                .file("file", IMAGE))
                     .andExpect(status().isOk())
                     .andExpect(view().name("admin/teams/newTeamForm"))
                     .andExpect(model().attribute("adminController", "active"))
@@ -181,7 +184,7 @@ public class AdminTeamControllerTest {
         when(memberService.listAvailableTeamCaptains()).thenReturn((List) availableTeamCaptains);
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save")
-                .file("file", parseImage("bert.jpg"))
+                .file("file", IMAGE)
                 .param("id", "1"))
                     .andExpect(status().isOk())
                     .andExpect(view().name("admin/teams/editTeamForm"))
@@ -204,7 +207,7 @@ public class AdminTeamControllerTest {
         returnTeam.setId(id);
         returnTeam.setName("testTeam");
         returnTeam.setTeamCaptain(new Member());
-        returnTeam.setImage(parseImage("bert.jpg"));
+        returnTeam.setImage(IMAGE);
 
         when(teamService.getById(id)).thenReturn(returnTeam);
         when(competitionService.listAll()).thenReturn((List) competitions);
@@ -212,7 +215,7 @@ public class AdminTeamControllerTest {
         when(memberService.listAvailableTeamCaptains()).thenReturn((List) availableTeamCaptains);
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save")
-                .file("file", parseImage("bert.jpg"))
+                .file("file", IMAGE)
                 .param("id", "1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/teams/editTeamForm"))
@@ -277,16 +280,4 @@ public class AdminTeamControllerTest {
 
         verify(teamService, times(1)).delete(id);
     }
-
-    private byte[] parseImage(String filename){
-        Path path = Paths.get("C:/Users/Dell/Pictures/sportclubapp/" + filename);
-        byte[] data = null;
-        try {
-            data = Files.readAllBytes(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return data;
-    }
-
 }

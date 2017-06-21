@@ -41,49 +41,32 @@ public class AdminGameController {
     }
 
     @RequestMapping("admin/games")
-    public String list(Model model, RedirectAttributes redirectAttributes){
-        redirectAttributes.addFlashAttribute("message", "external redirect");
+    public String list(){
         return "redirect:/admin/games/page/1/date/asc";
     }
 
     @RequestMapping("/admin/games/page/{pageNumber}/{sortColumn}/{sortOrder}")
-    public String list(Model model, HttpServletRequest request, @PathVariable Integer pageNumber, @PathVariable String sortColumn, @PathVariable String sortOrder) {
+    public String list(Model model, @PathVariable Integer pageNumber, @PathVariable String sortColumn, @PathVariable String sortOrder) {
+
+        PagedListHolder<Game> pagedListHolder = new PagedListHolder<Game>(gameService.listAll());
+
+        pagedListHolder.setSort(new MutableSortDefinition(sortColumn, true, sortOrder.equals("asc")));
+        pagedListHolder.resort();
+        pagedListHolder.setPageSize(10);
+        pagedListHolder.setPage(pageNumber-1);
+
+        int begin = Math.max(1, pageNumber-10);
+        int end = Math.min(begin + 5, pagedListHolder.getPageCount());
 
         model.addAttribute("adminController", "active");
-        PagedListHolder<Game> pagedListHolder = (PagedListHolder<Game>)request.getSession().getAttribute("games");
-
-        if(model.containsAttribute("message")){
-            List<Game> games = gameService.listAll();
-            pagedListHolder = new PagedListHolder<Game>(games);
-            pagedListHolder.setPageSize(10);
-        } else {
-            final int goToPage = pageNumber -1;
-            if(goToPage<=pagedListHolder.getPageCount() && goToPage>=0){
-                pagedListHolder.setPage(goToPage);
-            }
-        }
-
-        if (sortColumn != null){
-            pagedListHolder.setSort(new MutableSortDefinition(sortColumn, true, sortOrder.equals("asc")));
-            pagedListHolder.resort();
-        }
-
-        request.getSession().setAttribute("games", pagedListHolder);
-        pagedListHolder.setPage(pageNumber-1);
-        int current = pagedListHolder.getPage()+1;
-        int begin = Math.max(1, current-10);
-        int end = Math.min(begin + 5, pagedListHolder.getPageCount());
-        int totalPageCount = pagedListHolder.getPageCount();
-
         model.addAttribute("beginIndex", begin);
         model.addAttribute("endIndex", end);
-        model.addAttribute("currentIndex", current);
-        model.addAttribute("totalPageCount", totalPageCount);
+        model.addAttribute("currentIndex", pageNumber);
+        model.addAttribute("totalPageCount", pagedListHolder.getPageCount());
         model.addAttribute("games", pagedListHolder);
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("sortColumn", sortColumn);
         model.addAttribute("sortOrder", sortOrder);
-
         return "admin/games/list";
     }
 
@@ -103,30 +86,28 @@ public class AdminGameController {
                        Model model,
                        RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors() ||
-                (game.getTeams().get(0).getId()==game.getTeams().get(1).getId()) ||
-                (game.getDate().before(new Date()))) {
-
-            if(game.getTeams().get(0)!=null && game.getTeams().get(1)!=null) {
-                if (game.getTeams().get(0).getId() == game.getTeams().get(1).getId()) {
-                    model.addAttribute("message", "Teams cannot be the same. Try again");
-                }
-            }
-            if(game.getDate()!=null) {
-                if ((game.getDate().before(new Date()))) {
-                    model.addAttribute("message", "Date must be in the future. Try again");
-                }
-            }
-            model.addAttribute("adminController", "active");
-            model.addAttribute("teams", teamService.listAll());
-            model.addAttribute("competitions", competitionService.listAll());
-            model.addAttribute("locations", locationService.listAll());
+        if (bindingResult.hasErrors()){
+            model.addAttribute("message", "Please fill in all necessary fields");
+            addAttributes(model);
             return (game.getId()==0) ? "admin/games/newGameForm" : "admin/games/editGameForm";
-        } else {
-            redirectAttributes.addFlashAttribute("message", (game.getId()==0) ? "New game was created succesfully" : "Game was updated succesfully");
-            Game gameSaved = gameService.save(game);
-            return "redirect:/admin/games/page/1/date/asc";
         }
+
+        if(game.getTeams().get(0)!=null && game.getTeams().get(1)!=null &&
+                (game.getTeams().get(0).getId() == game.getTeams().get(1).getId())) {
+            model.addAttribute("message", "Teams cannot be the same. Try again");
+            addAttributes(model);
+            return (game.getId()==0) ? "admin/games/newGameForm" : "admin/games/editGameForm";
+        }
+
+        if(game.getDate()!=null && game.getDate().before(new Date())) {
+            model.addAttribute("message", "Date must be in the future. Try again");
+            addAttributes(model);
+            return (game.getId()==0) ? "admin/games/newGameForm" : "admin/games/editGameForm";
+        }
+
+        redirectAttributes.addFlashAttribute("message", (game.getId()==0) ? "New game was created succesfully" : "Game was updated succesfully");
+        gameService.save(game);
+        return "redirect:/admin/games/page/1/date/asc";
     }
 
     @RequestMapping("/admin/game/edit/{id}")
@@ -147,6 +128,13 @@ public class AdminGameController {
         gameService.delete(id);
         redirectAttributes.addFlashAttribute("message", "Game was deleted succesfully");
         return "redirect:/admin/games/page/1/date/asc";
+    }
+
+    private void addAttributes(Model model){
+        model.addAttribute("adminController", "active");
+        model.addAttribute("teams", teamService.listAll());
+        model.addAttribute("competitions", competitionService.listAll());
+        model.addAttribute("locations", locationService.listAll());
     }
 
 
