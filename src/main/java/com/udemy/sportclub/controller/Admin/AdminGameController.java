@@ -92,7 +92,7 @@ public class AdminGameController {
             return (game.getId()==0) ? "admin/games/newGameForm" : "admin/games/editGameForm";
         }
 
-        if(game.getTeams().get(0)!=null && game.getTeams().get(1)!=null &&
+        if(game.getTeams().size()>0 && game.getTeams().get(0)!=null && game.getTeams().get(1)!=null &&
                 (game.getTeams().get(0).getId() == game.getTeams().get(1).getId())) {
             model.addAttribute("message", "Teams cannot be the same. Try again");
             addAttributes(model);

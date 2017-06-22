@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -32,6 +33,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -75,8 +77,6 @@ public class AdminGameControllerTest {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(adminGameController).build();
     }
-
-    // TODO: unittests for saving and updating games
 
     @Test
     public void list() throws Exception {
@@ -175,14 +175,95 @@ public class AdminGameControllerTest {
                 .andExpect(model().attribute("locations", hasSize(2)));
     }
 
-    private byte[] parseImage(String filename){
-        Path path = Paths.get("C:/Users/Dell/Pictures/sportclubapp/" + filename);
-        byte[] data = null;
-        try {
-            data = Files.readAllBytes(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return data;
+    @Test
+    public void saveNewGame() throws Exception{
+
+        mockMvc.perform(post("/admin/game/save")
+                .param("date", "01/10/2018"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/admin/games/page/1/date/asc"))
+                .andExpect(MockMvcResultMatchers.flash().attribute("message", "New game was created succesfully"));
+
+        ArgumentCaptor<Game> boundGame = ArgumentCaptor.forClass(Game.class);
+        verify(gameService).save(boundGame.capture());
+
+        Assert.assertEquals(DataLoader.parseDate("01/10/2018"), boundGame.getValue().getDate());
     }
+
+    @Test
+    public void saveNewGameWithBindingErrors() throws Exception{
+
+        when(teamService.listAll()).thenReturn((List) teams);
+        when(competitionService.listAll()).thenReturn((List) competitions);
+        when(locationService.listAll()).thenReturn((List) locations);
+
+        mockMvc.perform(post("/admin/game/save")
+                .param("id", "0"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/games/newGameForm"))
+                .andExpect(model().attribute("adminController", "active"))
+                .andExpect(model().attribute("teams", hasSize(3)))
+                .andExpect(model().attribute("competitions", hasSize(2)))
+                .andExpect(model().attribute("locations", hasSize(2)))
+                .andExpect(model().attribute("message", "Please fill in all necessary fields"));
+    }
+
+    @Test
+    public void editGameWithBindingErrors() throws Exception{
+
+        when(teamService.listAll()).thenReturn((List) teams);
+        when(competitionService.listAll()).thenReturn((List) competitions);
+        when(locationService.listAll()).thenReturn((List) locations);
+
+        mockMvc.perform(post("/admin/game/save")
+                .param("id", "1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/games/editGameForm"))
+                .andExpect(model().attribute("adminController", "active"))
+                .andExpect(model().attribute("teams", hasSize(3)))
+                .andExpect(model().attribute("competitions", hasSize(2)))
+                .andExpect(model().attribute("locations", hasSize(2)))
+                .andExpect(model().attribute("message", "Please fill in all necessary fields"));
+    }
+
+    @Test
+    public void saveNewGameWithWrongDate() throws Exception{
+
+        when(teamService.listAll()).thenReturn((List) teams);
+        when(competitionService.listAll()).thenReturn((List) competitions);
+        when(locationService.listAll()).thenReturn((List) locations);
+
+        mockMvc.perform(post("/admin/game/save")
+                .param("id", "0")
+                .param("date", "01/10/2016"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/games/newGameForm"))
+                .andExpect(model().attribute("adminController", "active"))
+                .andExpect(model().attribute("teams", hasSize(3)))
+                .andExpect(model().attribute("competitions", hasSize(2)))
+                .andExpect(model().attribute("locations", hasSize(2)))
+                .andExpect(model().attribute("message", "Date must be in the future. Try again"));
+    }
+
+    @Test
+    public void editGameWithWrongDate() throws Exception{
+
+        when(teamService.listAll()).thenReturn((List) teams);
+        when(competitionService.listAll()).thenReturn((List) competitions);
+        when(locationService.listAll()).thenReturn((List) locations);
+
+        mockMvc.perform(post("/admin/game/save")
+                .param("id", "1")
+                .param("date", "01/10/2016"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/games/editGameForm"))
+                .andExpect(model().attribute("adminController", "active"))
+                .andExpect(model().attribute("teams", hasSize(3)))
+                .andExpect(model().attribute("competitions", hasSize(2)))
+                .andExpect(model().attribute("locations", hasSize(2)))
+                .andExpect(model().attribute("message", "Date must be in the future. Try again"));
+    }
+
+    // TODO: adding tests for checking selected teams. I haven't figured out how to set teams as parameters to the game.teams list...
+
 }
