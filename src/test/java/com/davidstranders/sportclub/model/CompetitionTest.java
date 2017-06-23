@@ -14,7 +14,7 @@ public class CompetitionTest {
     private Competition competition = new Competition();
 
     @Test
-    public void calculateRanking4teams() throws Exception {
+    public void calculateRanking4teams() {
 
         competition.setTeams(new ArrayList<>());
         Team teamA = new Team("Team A", 1);
@@ -70,7 +70,7 @@ public class CompetitionTest {
 
 
     @Test
-    public void calculateRanking3Teams() throws Exception {
+    public void calculateRanking3Teams() {
 
         competition.setTeams(new ArrayList<>());
         Team teamA = new Team("Team A", 1);
