@@ -1,8 +1,10 @@
-package com.udemy.sportclub.controller.Admin;
+package com.davidstranders.sportclub.controller.Admin;
 
-import com.udemy.sportclub.model.Member;
-import com.udemy.sportclub.model.Team;
-import com.udemy.sportclub.service.*;
+import com.davidstranders.sportclub.model.Member;
+import com.davidstranders.sportclub.model.Team;
+import com.davidstranders.sportclub.service.CompetitionService;
+import com.davidstranders.sportclub.service.MemberService;
+import com.davidstranders.sportclub.service.TeamService;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;

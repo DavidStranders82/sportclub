@@ -1,9 +1,14 @@
-package com.udemy.sportclub.controller.Admin;
+package com.davidstranders.sportclub.controller.Admin;
 
-import com.udemy.sportclub.DataLoader;
-import com.udemy.sportclub.model.*;
-import com.udemy.sportclub.service.*;
-import org.apache.tomcat.util.codec.binary.Base64;
+import com.davidstranders.sportclub.DataLoader;
+import com.davidstranders.sportclub.model.Competition;
+import com.davidstranders.sportclub.model.Game;
+import com.davidstranders.sportclub.model.Location;
+import com.davidstranders.sportclub.model.Team;
+import com.davidstranders.sportclub.service.CompetitionService;
+import com.davidstranders.sportclub.service.GameService;
+import com.davidstranders.sportclub.service.LocationService;
+import com.davidstranders.sportclub.service.TeamService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,16 +19,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;

@@ -1,7 +1,6 @@
-package com.udemy.sportclub.controller;
+package com.davidstranders.sportclub.controller;
 
-import com.udemy.sportclub.service.GameService;
-import com.udemy.sportclub.service.GameServiceImpl;
+import com.davidstranders.sportclub.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

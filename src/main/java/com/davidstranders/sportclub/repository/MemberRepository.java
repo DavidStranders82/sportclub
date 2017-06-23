@@ -1,6 +1,6 @@
-package com.udemy.sportclub.repository;
+package com.davidstranders.sportclub.repository;
 
-import com.udemy.sportclub.model.Member;
+import com.davidstranders.sportclub.model.Member;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

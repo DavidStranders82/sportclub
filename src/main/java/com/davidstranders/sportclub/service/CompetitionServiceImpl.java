@@ -1,7 +1,7 @@
-package com.udemy.sportclub.service;
+package com.davidstranders.sportclub.service;
 
-import com.udemy.sportclub.model.Competition;
-import com.udemy.sportclub.repository.CompetitionRepository;
+import com.davidstranders.sportclub.model.Competition;
+import com.davidstranders.sportclub.repository.CompetitionRepository;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

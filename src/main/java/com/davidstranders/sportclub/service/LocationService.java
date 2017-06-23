@@ -1,6 +1,6 @@
-package com.udemy.sportclub.service;
+package com.davidstranders.sportclub.service;
 
-import com.udemy.sportclub.model.Location;
+import com.davidstranders.sportclub.model.Location;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.udemy.sportclub.model;
+package com.davidstranders.sportclub.model;
 
 import javax.persistence.*;
 import java.util.HashSet;

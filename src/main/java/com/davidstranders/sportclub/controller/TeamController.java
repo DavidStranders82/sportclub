@@ -1,9 +1,7 @@
-package com.udemy.sportclub.controller;
+package com.davidstranders.sportclub.controller;
 
-import com.udemy.sportclub.service.GameService;
-import com.udemy.sportclub.service.GameServiceImpl;
-import com.udemy.sportclub.service.TeamService;
-import com.udemy.sportclub.service.TeamServiceImpl;
+import com.davidstranders.sportclub.service.GameService;
+import com.davidstranders.sportclub.service.TeamService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,11 +1,9 @@
-package com.udemy.sportclub.controller.Admin;
+package com.davidstranders.sportclub.controller.Admin;
 
-import com.udemy.sportclub.model.Game;
-import com.udemy.sportclub.model.Location;
-import com.udemy.sportclub.service.GameService;
-import com.udemy.sportclub.service.GameServiceImpl;
-import com.udemy.sportclub.service.LocationService;
-import com.udemy.sportclub.service.LocationServiceImpl;
+import com.davidstranders.sportclub.model.Game;
+import com.davidstranders.sportclub.model.Location;
+import com.davidstranders.sportclub.service.GameService;
+import com.davidstranders.sportclub.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;

@@ -1,8 +1,8 @@
-package com.udemy.sportclub;
+package com.davidstranders.sportclub;
 
-import com.udemy.sportclub.model.*;
-import com.udemy.sportclub.repository.*;
-import com.udemy.sportclub.service.MemberServiceImpl;
+import com.davidstranders.sportclub.model.*;
+import com.davidstranders.sportclub.repository.*;
+import com.davidstranders.sportclub.service.MemberServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

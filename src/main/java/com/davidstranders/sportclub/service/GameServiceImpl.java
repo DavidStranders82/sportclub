@@ -1,7 +1,7 @@
-package com.udemy.sportclub.service;
+package com.davidstranders.sportclub.service;
 
-import com.udemy.sportclub.model.Game;
-import com.udemy.sportclub.repository.GameRepository;
+import com.davidstranders.sportclub.repository.GameRepository;
+import com.davidstranders.sportclub.model.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,6 +1,6 @@
-package com.udemy.sportclub.service;
+package com.davidstranders.sportclub.service;
 
-import com.udemy.sportclub.model.Game;
+import com.davidstranders.sportclub.model.Game;
 
 import java.util.List;
 

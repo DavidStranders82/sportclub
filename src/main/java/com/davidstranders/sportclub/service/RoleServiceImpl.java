@@ -1,7 +1,7 @@
-package com.udemy.sportclub.service;
+package com.davidstranders.sportclub.service;
 
-import com.udemy.sportclub.model.Role;
-import com.udemy.sportclub.repository.RoleRepository;
+import com.davidstranders.sportclub.model.Role;
+import com.davidstranders.sportclub.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

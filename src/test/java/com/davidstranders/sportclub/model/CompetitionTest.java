@@ -1,4 +1,4 @@
-package com.udemy.sportclub.model;
+package com.davidstranders.sportclub.model;
 
 import org.junit.Assert;
 import org.junit.Test;

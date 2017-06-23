@@ -1,6 +1,6 @@
-package com.udemy.sportclub.service;
+package com.davidstranders.sportclub.service;
 
-import com.udemy.sportclub.model.Team;
+import com.davidstranders.sportclub.model.Team;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
