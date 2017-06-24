@@ -20,7 +20,7 @@ public class Game {
 
     @NotNull
     @ManyToMany (fetch = FetchType.EAGER)
-    private List<Team> teams = new ArrayList<>();
+    private List<Team> teams;
 
     private Integer scoreTeamA;
 
