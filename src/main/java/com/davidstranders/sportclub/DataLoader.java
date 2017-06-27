@@ -4,6 +4,7 @@ import com.davidstranders.sportclub.model.*;
 import com.davidstranders.sportclub.repository.*;
 import com.davidstranders.sportclub.service.MemberServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -19,6 +20,7 @@ import java.util.Date;
  * Created by DS on 5-2-2017.
  */
 @Component
+@Profile("dev")
 public class DataLoader {
 
     private CompetitionRepository competitionRepository;
@@ -43,7 +45,7 @@ public class DataLoader {
         this.teamRepository = teamRepository;
     }
 
-    @PostConstruct
+   @PostConstruct
     private void loadData(){
 
         // Creating Roles
