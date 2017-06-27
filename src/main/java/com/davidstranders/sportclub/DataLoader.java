@@ -3,17 +3,15 @@ package com.davidstranders.sportclub;
 import com.davidstranders.sportclub.model.*;
 import com.davidstranders.sportclub.repository.*;
 import com.davidstranders.sportclub.service.MemberServiceImpl;
-import com.google.common.collect.Iterables;
+import com.google.common.io.ByteStreams;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import com.google.common.collect.Lists;
 
 import javax.annotation.PostConstruct;
+
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,7 +21,6 @@ import java.util.Iterator;
  * Created by DS on 5-2-2017.
  */
 @Component
-
 public class DataLoader {
 
     private CompetitionRepository competitionRepository;
@@ -377,16 +374,15 @@ public class DataLoader {
     }
 
     public static byte[] parseImage(String filename) {
-        Path path = Paths.get("C:/Users/Dell/Pictures/sportclubapp/" + filename + ".jpg");
         byte[] data = null;
         try {
-            data = Files.readAllBytes(path);
+            InputStream is = ClassLoader.class.getResourceAsStream("/static/images/"+ filename + ".jpg");
+            data = ByteStreams.toByteArray(is);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return data;
     }
-
 
     public static Date parseDate(String ddmmyyyy) {
         java.util.Date utilDate = null;
