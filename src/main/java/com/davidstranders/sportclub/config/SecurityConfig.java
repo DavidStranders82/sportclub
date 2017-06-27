@@ -48,6 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http
                 .authorizeRequests()
                     .antMatchers("/").permitAll()
+                    .antMatchers("/console/**").permitAll()
                     .antMatchers("/competition/show/**").hasAnyRole("ADMIN", "USER")
                     .antMatchers("/teams/show/**").hasAnyRole("ADMIN", "USER")
                     .antMatchers("/members/show/**").hasAnyRole("ADMIN", "USER")
@@ -62,5 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                     .logoutSuccessUrl("/login?logout")
                     .permitAll();
 
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
     }
 }

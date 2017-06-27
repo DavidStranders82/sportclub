@@ -6,6 +6,7 @@ import com.davidstranders.sportclub.service.MemberServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,7 +43,7 @@ public class DataLoader {
         this.teamRepository = teamRepository;
     }
 
- // @PostConstruct
+    @PostConstruct
     private void loadData(){
 
         // Creating Roles
