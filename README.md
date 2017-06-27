@@ -12,4 +12,8 @@ As it is a experimental project, there is much work left to do:
 - Rebuilding the front-end with Angular and use RESTful webservices
 - etc.
 
+NOTE: if you want to run this project locally (default it uses a preloaded H2database) and want to log in as admin, use these credentials:
+username: dstranders@hotmail.com password:123 
+
+
 
