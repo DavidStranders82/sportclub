@@ -1,185 +1,187 @@
 html {
-  height: 100%;
-  box-sizing: border-box;
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: scroll;
 }
 
 body {
     padding-top: 50px;
-     position: relative;
-     min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
+
 .starter-template {
-     padding: 40px 15px;
-     text-align: center;
- }
-
- .footer {
-     background-color:#e2e2e2;
-     color: #929293;
-     font-size: 13px;
-     padding: 7px 7px;
-     text-align: center;
-     width: 100%;
-     position: absolute;
-       right: 0;
-       bottom: 0;
-       left: 0;
- }
-
- #frmlogout {
- 	display:inline;
- }
-
- .form-signin {
-   max-width: 330px;
-   padding: 15px;
-   margin: 0 0 40px 0;
- }
- .form-signin .form-signin-heading,
- .form-signin .checkbox {
-   margin-bottom: 10px;
- }
- .form-signin .checkbox {
-   font-weight: normal;
- }
- .form-signin .form-control {
-   position: relative;
-   height: auto;
-   -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-           box-sizing: border-box;
-   padding: 10px;
-   font-size: 16px;
- }
- .form-signin .form-control:focus {
-   z-index: 2;
- }
- .form-signin input[type="text"] {
-   margin-bottom: -1px;
-   border-bottom-right-radius: 0;
-   border-bottom-left-radius: 0;
- }
- .form-signin input[type="password"] {
-   margin-bottom: 10px;
-   border-top-left-radius: 0;
-   border-top-right-radius: 0;
- }
-
- .form-width{
-    max-width: 700px;
- }
-
- .alert{
-    max-width: 700px;
- }
-
-.picture-box:hover{
-box-shadow: 5px 0px 40px rgba(0,0,0, .2);
+    padding: 40px 15px;
+    text-align: center;
 }
 
- .picture-box{
-     text-align: center;
-     border: 2px solid;
-     border-radius: 16px!important;
-     border-color: #EEEEEE;
-     overflow:hidden;
- }
+.footer {
+    background-color: #e2e2e2;
+    color: #929293;
+    font-size: 13px;
+    padding: 7px 7px;
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
 
-.profile-picture{
-    padding: 10px 10px 10px 10px;
-      max-height:200px;
-      max-width: 200px;
-      min-height: 200px;
-      min-widht:200px;
-  }
+#frmlogout {
+    display: inline;
+}
 
-.profile-picture2{
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 0 40px 0;
+}
+
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+    margin-bottom: 10px;
+}
+
+.form-signin .checkbox {
+    font-weight: normal;
+}
+
+.form-signin .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.form-signin .form-control:focus {
+    z-index: 2;
+}
+
+.form-signin input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.form-width {
+    max-width: 700px;
+}
+
+.alert {
+    max-width: 700px;
+}
+
+.picture-box:hover {
+    box-shadow: 5px 0px 40px rgba(0, 0, 0, .2);
+}
+
+.picture-box {
+    text-align: center;
+    border: 2px solid;
+    border-radius: 16px !important;
+    border-color: #EEEEEE;
+    overflow: hidden;
+}
+
+.profile-picture {
     padding: 10px 10px 10px 10px;
-    max-height:250px;
+    max-height: 200px;
+    max-width: 200px;
+    min-height: 200px;
+    min-widht: 200px;
+}
+
+.profile-picture2 {
+    padding: 10px 10px 10px 10px;
+    max-height: 250px;
     max-width: 300px;
     min-height: 250px;
-    min-widht:300px;
+    min-widht: 300px;
     border-radius: 25px;
 }
 
-.profile-picture3{
+.profile-picture3 {
     padding: 10px 10px 10px 10px;
     max-width: 430px;
     border-radius: 25px;
 }
 
-.col-md-3{
+.col-md-3 {
     padding: 10px 10px 10px 10px;
     text-align: center;
- }
+}
 
- .competition-label{
-     padding: 10px 10px 10px 10px;
-     text-align: center;
-  }
+.competition-label {
+    padding: 10px 10px 10px 10px;
+    text-align: center;
+}
 
-.breadcrumb{
-    background-color:white;
+.breadcrumb {
+    background-color: white;
 }
 
 hr {
- color: #929293;
+    color: #929293;
 }
 
 .zoom {
--webkit-transition: all 0.35s ease-in-out;
--moz-transition: all 0.35s ease-in-out;
-transition: all 0.35s ease-in-out;
-cursor: -webkit-zoom-in;
-cursor: -moz-zoom-in;
-cursor: zoom-in;
+    -webkit-transition: all 0.35s ease-in-out;
+    -moz-transition: all 0.35s ease-in-out;
+    transition: all 0.35s ease-in-out;
+    cursor: -webkit-zoom-in;
+    cursor: -moz-zoom-in;
+    cursor: zoom-in;
 }
 
 .zoom:hover,
 .zoom:active,
 .zoom:focus {
-/**adjust scale to desired size,
-add browser prefixes**/
--ms-transform: scale(2.5);
--moz-transform: scale(2.5);
--webkit-transform: scale(2.5);
--o-transform: scale(2.5);
-transform: scale(2.5);
-position:relative;
-z-index:100;
+    -ms-transform: scale(2.5);
+    -moz-transform: scale(2.5);
+    -webkit-transform: scale(2.5);
+    -o-transform: scale(2.5);
+    transform: scale(2.5);
+    position: relative;
+    z-index: 100;
 }
 
-/**To keep upscaled images visible on mobile,
-increase left & right margins a bit**/
 @media only screen and (max-width: 768px) {
-ul.gallery {
-margin-left: 15vw;
-margin-right: 15vw;
-}
+    ul.gallery {
+        margin-left: 15vw;
+        margin-right: 15vw;
+    }
 
-/**TIP: Easy escape for touch screens,
-give gallery's parent container a cursor: pointer.**/
-.DivName {cursor: pointer}
+    .DivName {
+        cursor: pointer
+    }
 }
 
 .vr {
-    width:1px;
-    background-color:#000;
-    position:absolute;
-    top:0;
-    bottom:0;
-    left:150px;
+    width: 1px;
+    background-color: #000;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 150px;
 }
 
 .navbar-brand > img {
- margin-top:-14px;
-  border-radius: 25px;
+    margin-top: -14px;
+    border-radius: 25px;
 }
-
 
 .carousel-width {
     max-width: 580px;
-
 }
 
 

@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-
 /**
  * Created by DS on 17-1-2017.
  */
@@ -40,5 +39,4 @@ public class WebConfig extends WebMvcConfigurerAdapter{
         registrationBean.addUrlMappings("/console/*");
         return registrationBean;
     }
-
 }
