@@ -13,13 +13,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.validation.Valid;
 import java.util.List;
 
@@ -80,12 +76,12 @@ public class AdminMemberController {
         return "admin/members/newMemberForm";
     }
 
-    @RequestMapping(value = "/admin/member/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/member/save/{id}", method = RequestMethod.POST)
     public String save(@Valid Member member,
                        BindingResult bindingResult,
                        Model model,
                        @RequestParam("file") MultipartFile myFile,
-                       RedirectAttributes redirectAttributes) {
+                       RedirectAttributes redirectAttributes){
 
         if (bindingResult.hasErrors()) {
             addAttributes(model);
@@ -104,8 +100,8 @@ public class AdminMemberController {
             addAttributes(model);
             return "admin/members/newMemberForm";
         }
-
         Member memberSaved = memberService.save(member, myFile);
+
         if (member.getTeams() != null && !member.getTeams().isEmpty()) {
             for (Team team : member.getTeams()) {
                 Team teamTemp = teamService.getById(team.getId());
@@ -117,13 +113,12 @@ public class AdminMemberController {
         return "redirect:/admin/members/page/1/lastName/asc";
     }
 
-    @RequestMapping(value = "/admin/member/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/member/update/{id}", method = RequestMethod.POST)
     public String update(@Valid Member member,
                          BindingResult bindingResult,
                          Model model,
                          @RequestParam("file") MultipartFile myFile,
                          RedirectAttributes redirectAttributes) {
-
         if (bindingResult.hasErrors()) {
             addAttributes(model);
             resetBase64Image(member);
@@ -153,7 +148,6 @@ public class AdminMemberController {
         }
         redirectAttributes.addFlashAttribute("message", member.getFirstName() + " " + member.getLastName() + " was updated succesfully");
         return "redirect:/admin/members/page/1/lastName/asc";
-
     }
 
     @RequestMapping("/admin/member/delete/{id}")
@@ -165,10 +159,8 @@ public class AdminMemberController {
 
     @RequestMapping("/admin/member/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
-        model.addAttribute("adminController", "active");
         model.addAttribute("member", memberService.getById(id));
-        model.addAttribute("teams", teamService.listAll());
-        model.addAttribute("roles", roleService.listAll());
+        addAttributes(model);
         return "admin/members/editMemberForm";
     }
 

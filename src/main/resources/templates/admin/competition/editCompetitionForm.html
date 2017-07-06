@@ -34,7 +34,7 @@
                 <p th:text="${message}">message</p>
             </div>
             <div class="col-md-12">
-                <form class="form-horizontal" th:object="${competition}" th:action="@{/admin/competition/update}"
+                <form class="form-horizontal" th:object="${competition}" th:action="@{/admin/competition/update/} + ${competition.id}"
                       method="post"
                       enctype="multipart/form-data">
                     <div class="row">
@@ -90,7 +90,7 @@
                                 <label class="col-md-3 control-label">Period <span class="required">*</span></label>
                                 <div class="col-md-7">
                                     <div class='input-group'>
-                                        <input type="text" class="form-control" id="datetimepicker4" th:field="*{startDate}"
+                                        <input type="text" class="form-control" id="datetimepicker3" th:field="*{startDate}"
                                                placeholder="dd/mm/yyyy" required="true"/>
                                         <span th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"
                                               th:class="help-block">Start date Errors</span>

@@ -90,7 +90,7 @@ public class AdminCompetitionController {
 
     }
 
-    @RequestMapping(value = "/admin/competition/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/competition/update/{id}", method = RequestMethod.POST)
     public String update(@Valid Competition competition,
                          BindingResult bindingResult,
                          Model model,

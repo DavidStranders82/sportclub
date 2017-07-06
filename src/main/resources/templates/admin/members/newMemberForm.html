@@ -33,7 +33,7 @@
                 <p th:text="${message}">message</p>
             </div>
 
-            <form class="form-horizontal form-width" th:object="${member}" th:action="@{/admin/member/save}"
+            <form class="form-horizontal form-width" th:object="${member}" th:action="@{/admin/member/save/} + ${member.id}"
                   method="post" enctype="multipart/form-data">
                 <input type="hidden" th:field="*{id}"/>
                 <div th:class="form-group" th:classappend="${#fields.hasErrors('firstName')}? 'has-error'">

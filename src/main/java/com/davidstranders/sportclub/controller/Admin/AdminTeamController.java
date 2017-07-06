@@ -56,7 +56,7 @@ public class AdminTeamController {
         return "admin/teams/newTeamForm";
     }
 
-    @RequestMapping(value = "/admin/team/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/team/save/{id}", method = RequestMethod.POST)
     public String saveOrUpdate(@Valid Team team,
                          BindingResult bindingResult,
                          Model model,

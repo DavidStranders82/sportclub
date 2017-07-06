@@ -2,11 +2,11 @@ package com.davidstranders.sportclub.controller.Admin;
 
 import com.davidstranders.sportclub.model.Member;
 import com.davidstranders.sportclub.service.TeamService;
-import com.davidstranders.sportclub.DataLoader;
 import com.davidstranders.sportclub.model.Role;
 import com.davidstranders.sportclub.model.Team;
 import com.davidstranders.sportclub.service.MemberService;
 import com.davidstranders.sportclub.service.RoleService;
+import com.davidstranders.sportclub.utils.Parsers;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.junit.Assert;
 import org.junit.Before;
@@ -59,7 +59,7 @@ public class AdminMemberControllerTest {
     private Team teamC = new Team();
     private List<Team> teams = new ArrayList<>(Arrays.asList(teamA, teamB, teamC));
 
-    private static final byte[]IMAGE = DataLoader.parseImage("bert");
+    private static final byte[]IMAGE = Parsers.parseImage("bert");
 
     @Before
     public void setup(){

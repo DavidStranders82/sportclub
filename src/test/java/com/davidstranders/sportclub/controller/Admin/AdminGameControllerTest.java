@@ -1,6 +1,5 @@
 package com.davidstranders.sportclub.controller.Admin;
 
-import com.davidstranders.sportclub.DataLoader;
 import com.davidstranders.sportclub.model.Competition;
 import com.davidstranders.sportclub.model.Game;
 import com.davidstranders.sportclub.model.Location;
@@ -9,6 +8,7 @@ import com.davidstranders.sportclub.service.CompetitionService;
 import com.davidstranders.sportclub.service.GameService;
 import com.davidstranders.sportclub.service.LocationService;
 import com.davidstranders.sportclub.service.TeamService;
+import com.davidstranders.sportclub.utils.Parsers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -86,9 +86,9 @@ public class AdminGameControllerTest {
     @Test
     public void listAllGames() throws Exception {
 
-        Date date_01_08_2017 = DataLoader.parseDate("01/08/2017");
-        Date date_12_05_2017 = DataLoader.parseDate("12/05/2017");
-        Date date_29_05_2017 = DataLoader.parseDate("29/05/2017");
+        Date date_01_08_2017 = Parsers.parseDate("01/08/2017");
+        Date date_12_05_2017 = Parsers.parseDate("12/05/2017");
+        Date date_29_05_2017 = Parsers.parseDate("29/05/2017");
 
         game1.setDate(date_01_08_2017);
         game2.setDate(date_12_05_2017);
@@ -187,7 +187,7 @@ public class AdminGameControllerTest {
         ArgumentCaptor<Game> boundGame = ArgumentCaptor.forClass(Game.class);
         verify(gameService).save(boundGame.capture());
 
-        Assert.assertEquals(DataLoader.parseDate("01/10/2018"), boundGame.getValue().getDate());
+        Assert.assertEquals(Parsers.parseDate("01/10/2018"), boundGame.getValue().getDate());
     }
 
     @Test

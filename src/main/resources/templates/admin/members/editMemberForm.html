@@ -34,13 +34,13 @@
                 <p th:text="${message}">message</p>
             </div>
             <div class="col-md-12">
-                <form class="form-horizontal" th:object="${member}" th:action="@{/admin/member/update}"
+                <form class="form-horizontal" th:object="${member}" th:action="@{/admin/member/update/} + ${member.id}"
                       method="post"
                       enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md-3">
                             <header>
-                                <img th:src="${member.base64image != null} ? @{'data:image/jpeg;base64,'+${member.base64image}} : '/images/user.jpg' "/>
+                                <img class="img-responsive img-rounded" th:src="${member.base64image != null} ? @{'data:image/jpeg;base64,'+${member.base64image}} : '/images/user.jpg' "/>
                             </header>
                             <br/>
                             <div >

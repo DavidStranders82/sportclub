@@ -25,13 +25,13 @@
                 <p th:text="${message}">succes message</p>
             </div>
             <div class="col-md-12">
-                <form class="form-horizontal" th:object="${member}" th:action="@{/members/update}"
+                <form class="form-horizontal" th:object="${member}" th:action="@{/members/update/} + ${member.id}"
                       method="post"
                       enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md-3">
                             <header>
-                                <img th:src="${member.base64image != null} ? @{'data:image/jpeg;base64,'+${member.base64image}} : '/images/user.jpg' "/>
+                                <img class="img-responsive img-rounded" th:src="${member.base64image != null} ? @{'data:image/jpeg;base64,'+${member.base64image}} : '/images/user.jpg' "/>
                             </header>
                             <br/>
                             <div >
@@ -92,9 +92,16 @@
                                           th:class="help-block">Confirmation Errors</span>
                                 </div>
                             </div>
-                            <div>
-                                <input type="hidden" th:field="*{roles}" value="1"/>
-                                <input type="hidden" th:field="*{roles}" value="2"/>
+                            <div th:class="form-group" th:classappend="${#fields.hasErrors('roles')}? 'has-error'">
+                                <label class="col-md-4 control-label">Roles</label>
+                                <div>
+                                    <div class="col-md-8">
+                                        <label class="checkbox-inline"><input type="checkbox" th:field="*{roles}"
+                                                                              value="1" onclick="return false;"/>user</label>
+                                        <label class="checkbox-inline"><input type="checkbox" th:field="*{roles}"
+                                                                              value="2" onclick="return false;"/>admin</label>
+                                    </div>
+                                </div>
                             </div>
                             <div th:class="form-group"
                                  th:classappend="${#fields.hasErrors('memberSince')}? 'has-error'">
@@ -110,19 +117,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--<div th:class="form-group" th:classappend="${#fields.hasErrors('team')}? 'has-error'">-->
-                                <!--<label class="col-md-4 control-label">team</label>-->
-                                <!--<div class="col-md-8">-->
-                                    <!--<select class="form-control" th:field="*{team}">-->
-                                        <!--<option value="">Select team</option>-->
-                                        <!--<option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}">-->
-                                            <!--teams-->
-                                        <!--</option>-->
-                                    <!--</select>-->
-                                    <!--<span th:if="${#fields.hasErrors('team')}" th:errors="*{team}"-->
-                                          <!--th:class="help-block">Team Errors</span>-->
-                                <!--</div>-->
-                            <!--</div>-->
                             <div th:class="form-group">
                                 <label class="col-md-4 control-label">Profile</label>
                                 <div class="col-md-8">

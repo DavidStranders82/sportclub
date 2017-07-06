@@ -6,14 +6,13 @@ import com.davidstranders.sportclub.service.RoleService;
 import com.davidstranders.sportclub.service.TeamService;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -24,6 +23,7 @@ import java.security.Principal;
  * Created by DS on 15-1-2017.
  */
 @Controller
+@ControllerAdvice
 @RequestMapping("/members")
 public class MemberController {
 
@@ -64,15 +64,13 @@ public class MemberController {
     @Secured({"ROLE_USER","ROLE_ADMIN"})
     @RequestMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
-        model.addAttribute("memberController", "active");
-        model.addAttribute("teams", teamService.listAll());
-        model.addAttribute("roles", roleService.listAll());
+        addAttributes(model);
         model.addAttribute("member", memberService.getById(id));
         return "/member/memberForm";
     }
 
     @Secured({"ROLE_USER","ROLE_ADMIN"})
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     public String update(@Valid Member member,
                          BindingResult bindingResult,
                          Model model,
@@ -83,9 +81,7 @@ public class MemberController {
             if (!(member.getPassword().equals(member.getConfirmPw()))) {
                 model.addAttribute("message", "Passwords are not equal. Try again");
             }
-            model.addAttribute("teams", teamService.listAll());
-            model.addAttribute("roles", roleService.listAll());
-            model.addAttribute("memberController", "active");
+            addAttributes(model);
             Member memberTemp = memberService.getById(member.getId());
             String base64Encoded = Base64.encodeBase64String(memberTemp.getImage());
             if (!base64Encoded.isEmpty()) {
@@ -98,5 +94,11 @@ public class MemberController {
             int memberId = member.getId();
             return "redirect:/members/show/" + memberId;
         }
+    }
+
+    private void addAttributes(Model model) {
+        model.addAttribute("teams", teamService.listAll());
+        model.addAttribute("roles", roleService.listAll());
+        model.addAttribute("memberController", "active");
     }
 }

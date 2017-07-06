@@ -1,12 +1,12 @@
 package com.davidstranders.sportclub.controller.Admin;
 
-import com.davidstranders.sportclub.DataLoader;
 import com.davidstranders.sportclub.model.Competition;
 import com.davidstranders.sportclub.model.Member;
 import com.davidstranders.sportclub.model.Team;
 import com.davidstranders.sportclub.service.CompetitionService;
 import com.davidstranders.sportclub.service.MemberService;
 import com.davidstranders.sportclub.service.TeamService;
+import com.davidstranders.sportclub.utils.Parsers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +50,7 @@ public class AdminTeamControllerTest {
     private List<Member> availableTeamCaptains;
     private Team team;
 
-    private static final byte[]IMAGE = DataLoader.parseImage("bert");
+    private static final byte[]IMAGE = Parsers.parseImage("bert");
 
     @Before
     public void setup(){
