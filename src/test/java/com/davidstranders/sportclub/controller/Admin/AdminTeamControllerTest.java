@@ -111,7 +111,7 @@ public class AdminTeamControllerTest {
     @Test
     public void saveNewTeam() throws Exception {
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save")
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save/0")
                 .file("file", IMAGE)
                 .param("name", "testTeam"))
                 .andExpect(status().is3xxRedirection())
@@ -128,7 +128,7 @@ public class AdminTeamControllerTest {
     @Test
     public void updateExistingTeam() throws Exception {
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save")
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save/1")
                 .file("file", IMAGE)
                 .param("id", "1")
                 .param("name", "testTeam"))
@@ -152,7 +152,7 @@ public class AdminTeamControllerTest {
         when(memberService.listAvailableMembers()).thenReturn((List) availableMembers);
         when(memberService.listAvailableTeamCaptains()).thenReturn((List) availableTeamCaptains);
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save")
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save/0")
                 .file("file", IMAGE))
                     .andExpect(status().isOk())
                     .andExpect(view().name("admin/teams/newTeamForm"))
@@ -180,7 +180,7 @@ public class AdminTeamControllerTest {
         when(memberService.listAvailableMembers()).thenReturn((List) availableMembers);
         when(memberService.listAvailableTeamCaptains()).thenReturn((List) availableTeamCaptains);
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save")
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save/1")
                 .file("file", IMAGE)
                 .param("id", "1"))
                     .andExpect(status().isOk())
@@ -211,7 +211,7 @@ public class AdminTeamControllerTest {
         when(memberService.listAvailableMembers()).thenReturn((List) availableMembers);
         when(memberService.listAvailableTeamCaptains()).thenReturn((List) availableTeamCaptains);
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save")
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/team/save/1")
                 .file("file", IMAGE)
                 .param("id", "1"))
                 .andExpect(status().isOk())

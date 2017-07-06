@@ -136,7 +136,7 @@ public class AdminMemberControllerTest {
     @Test
     public void saveNewMember() throws Exception {
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/save")
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/save/0")
                 .file("file", IMAGE)
                 .param("firstName", "Piet")
                 .param("email", "test@email.com")
@@ -163,7 +163,7 @@ public class AdminMemberControllerTest {
         when(teamService.listAll()).thenReturn((List) teams);
         when(roleService.listAll()).thenReturn((List) roles);
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/save")
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/save/0")
                 .file("file", IMAGE)
                 .param("firstName", "Piet"))
                     .andExpect(status().isOk())
@@ -179,7 +179,7 @@ public class AdminMemberControllerTest {
         when(teamService.listAll()).thenReturn((List) teams);
         when(roleService.listAll()).thenReturn((List) roles);
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/save")
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/save/0")
                 .file("file", IMAGE)
                 .param("firstName", "Piet")
                 .param("email", "test@email.com")
@@ -201,7 +201,7 @@ public class AdminMemberControllerTest {
         when(teamService.listAll()).thenReturn((List) teams);
         when(roleService.listAll()).thenReturn((List) roles);
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/save")
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/save/0")
                 .file("file", IMAGE)
                 .param("firstName", "Piet")
                 .param("email", "test@email.com")
@@ -242,7 +242,7 @@ public class AdminMemberControllerTest {
 
         when(teamService.listAll()).thenReturn((List) teams);
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/update")
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/update/1")
                 .file("file", IMAGE)
                 .param("id", "1")
                 .param("firstName", "Piet")
@@ -276,7 +276,7 @@ public class AdminMemberControllerTest {
         when(teamService.listAll()).thenReturn((List) teams);
         when(roleService.listAll()).thenReturn((List) roles);
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/update")
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/update/1")
                 .file("file",IMAGE)
                 .param("id", "1")
                 .param("firstName", "Piet"))
@@ -300,7 +300,7 @@ public class AdminMemberControllerTest {
         when(teamService.listAll()).thenReturn((List) teams);
         when(roleService.listAll()).thenReturn((List) roles);
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/update")
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/update/1")
                 .file("file", IMAGE)
                 .param("id", "1")
                 .param("firstName", "Piet"))
@@ -324,7 +324,7 @@ public class AdminMemberControllerTest {
         when(teamService.listAll()).thenReturn((List) teams);
         when(roleService.listAll()).thenReturn((List) roles);
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/update")
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/admin/member/update/0")
                 .file("file", IMAGE)
                 .param("id", "1")
                 .param("firstName", "Piet")
