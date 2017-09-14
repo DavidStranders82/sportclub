@@ -55,23 +55,23 @@ public class AdminLocationController {
                        RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("adminController", "active");
-            return (location.getId()==0)? "admin/locations/newLocationForm" : "admin/locations/editLocationForm";
+            return (location.getId()==null)? "admin/locations/newLocationForm" : "admin/locations/editLocationForm";
         } else {
-            redirectAttributes.addFlashAttribute("message", location.getId()==0? "'" + location.getField() + "' was created succesfully" : "'" + location.getField() + "' was updated succesfully");
+            redirectAttributes.addFlashAttribute("message", location.getId()==null? "'" + location.getField() + "' was created succesfully" : "'" + location.getField() + "' was updated succesfully");
             Location locationSaved = locationService.save(location);
             return "redirect:/admin/locations";
         }
     }
 
     @RequestMapping("/admin/location/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model) {
+    public String edit(@PathVariable String id, Model model) {
         model.addAttribute("adminController", "active");
         model.addAttribute("location", locationService.getById(id));
         return "admin/locations/editLocationForm";
     }
 
     @RequestMapping("/admin/location/delete/{id}")
-    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+    public String delete(@PathVariable String id, RedirectAttributes redirectAttributes) {
         List<Game> games = gameService.listGamesByLocationId(id);
             for (Game game : games){
                 game.setLocation(null);

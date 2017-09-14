@@ -29,7 +29,7 @@ public class GameServiceImpl implements GameService{
         return gameRepository.findAllByOrderByDateAsc();
     }
 
-    public List<Game> listGamesByLocationId (int id){
+    public List<Game> listGamesByLocationId (String id){
         return gameRepository.findAllByLocationId(id);
     }
 
@@ -45,7 +45,7 @@ public class GameServiceImpl implements GameService{
         return upcomingGames;
     }
 
-    public List<Game> listGamesByCompetitionId(int id){
+    public List<Game> listGamesByCompetitionId(String id){
         return gameRepository.findAllByCompetitionIdOrderByDateAsc(id);
     }
 
@@ -53,11 +53,11 @@ public class GameServiceImpl implements GameService{
         return gameRepository.save(game);
     }
 
-    public Game getById(int id){
+    public Game getById(String id){
         return gameRepository.findOne(id);
     }
 
-    public void delete (int id){
+    public void delete (String id){
       gameRepository.delete(id);
     }
 

@@ -68,7 +68,7 @@ public class AdminTeamController {
             model.addAttribute("competitions", competitionService.listAll());
             model.addAttribute("availableMembers", memberService.listAvailableMembers());
             model.addAttribute("teamCaptains", memberService.listAvailableTeamCaptains());
-            if(team.getId()!=0) {
+            if(team.getId()!=null) {
                 Team teamTemp = teamService.getById(team.getId());
                 String base64Encoded = Base64.encodeBase64String(teamTemp.getImage());
                 if (base64Encoded!=null) {
@@ -78,14 +78,14 @@ public class AdminTeamController {
             }
             return "admin/teams/newTeamForm";
         } else {
-            redirectAttributes.addFlashAttribute("message",(team.getId()!=0)? team.getName() + " was updated succesfully" : team.getName() + " was created succesfully");
+            redirectAttributes.addFlashAttribute("message",(team.getId()!=null)? team.getName() + " was updated succesfully" : team.getName() + " was created succesfully");
             Team savedTeam = teamService.save(team, myFile);
             return "redirect:/admin/teams";
         }
     }
 
     @RequestMapping("/admin/team/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model) {
+    public String edit(@PathVariable String id, Model model) {
         model.addAttribute("adminController", "active");
         Team team =  teamService.getById(id);
         List<Member> availableTeamCaptains = memberService.listAvailableTeamCaptains();
@@ -100,7 +100,7 @@ public class AdminTeamController {
     }
 
     @RequestMapping("/admin/team/delete/{id}")
-    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+    public String delete(@PathVariable String id, RedirectAttributes redirectAttributes) {
         teamService.delete(id);
         redirectAttributes.addFlashAttribute("message", "Team was deleted succesfully");
         return "redirect:/admin/teams";

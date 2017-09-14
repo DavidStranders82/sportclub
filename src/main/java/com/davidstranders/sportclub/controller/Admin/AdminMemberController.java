@@ -151,14 +151,14 @@ public class AdminMemberController {
     }
 
     @RequestMapping("/admin/member/delete/{id}")
-    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+    public String delete(@PathVariable String id, RedirectAttributes redirectAttributes) {
         memberService.delete(id);
         redirectAttributes.addFlashAttribute("message", "Member was deleted succesfully");
         return "redirect:/admin/members/page/1/lastName/asc";
     }
 
     @RequestMapping("/admin/member/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model) {
+    public String edit(@PathVariable String id, Model model) {
         model.addAttribute("member", memberService.getById(id));
         addAttributes(model);
         return "admin/members/editMemberForm";

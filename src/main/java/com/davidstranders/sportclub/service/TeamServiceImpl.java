@@ -44,7 +44,7 @@ public class TeamServiceImpl implements TeamService {
         try {
             if (myFile.getBytes().length!=0) {
                 team.setImage(myFile.getBytes());
-            }else if (team.getId()!=0){
+            }else if (team.getId()!=null){
                 team.setImage(getById(team.getId()).getImage());
             }
         } catch (IOException e) {
@@ -60,9 +60,9 @@ public class TeamServiceImpl implements TeamService {
     }
 
 
-    public Team getById(int id){
+    public Team getById(String id){
         Team team = null;
-        if(id!=0) {
+        if(id!=null) {
             team = teamRepository.findOne(id);
         }
         if(team.getImage()!=null) {
@@ -74,7 +74,7 @@ public class TeamServiceImpl implements TeamService {
         return team;
     }
 
-    public void delete(int id){
+    public void delete(String id){
         teamRepository.delete(id);
     }
 }

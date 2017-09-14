@@ -53,9 +53,9 @@ public class MemberServiceImpl implements UserDetailsService, MemberService {
         return members;
     }
 
-    public Member getById(int id) {
+    public Member getById(String id) {
         Member member = null;
-        if (id != 0) {
+        if (id != null) {
             member = memberRepository.findOne(id);
         }
         if (member.getImage() != null) {
@@ -82,7 +82,7 @@ public class MemberServiceImpl implements UserDetailsService, MemberService {
 
 
     public Member save(Member member, MultipartFile myFile) {
-        if (member.getId() != 0 && member.getPassword().isEmpty()) {
+        if (member.getId() != null && member.getPassword().isEmpty()) {
             member.setPassword(getById(member.getId()).getPassword());
         } else {
             member.setPassword(passwordEncoder.encode(member.getPassword()));
@@ -90,7 +90,7 @@ public class MemberServiceImpl implements UserDetailsService, MemberService {
         try {
             if (myFile.getBytes().length != 0) {
                 member.setImage(myFile.getBytes());
-            } else if (member.getId() != 0) {
+            } else if (member.getId() != null) {
                 member.setImage(getById(member.getId()).getImage());
             }
         } catch (IOException e) {
@@ -100,7 +100,7 @@ public class MemberServiceImpl implements UserDetailsService, MemberService {
     }
 
     public Member save(Member member) {
-        if (member.getId() != 0 && member.getPassword().isEmpty()) {
+        if (member.getId() != null && member.getPassword().isEmpty()) {
             member.setPassword(getById(member.getId()).getPassword());
         } else {
             member.setPassword(passwordEncoder.encode(member.getPassword()));
@@ -108,7 +108,7 @@ public class MemberServiceImpl implements UserDetailsService, MemberService {
         return memberRepository.save(member);
     }
 
-    public void delete(Integer id) {
+    public void delete(String id) {
         Member member = memberRepository.findOne(id);
         if (!member.getTeams().isEmpty()) {
             for (Team team : member.getTeams()) {

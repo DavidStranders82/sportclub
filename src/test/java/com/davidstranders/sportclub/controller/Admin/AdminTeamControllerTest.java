@@ -168,7 +168,7 @@ public class AdminTeamControllerTest {
     @Test
     public void updateTeamWithBindingErrorsAndNoImage() throws Exception {
 
-        Integer id = 1;
+        String id = "1";
 
         Team returnTeam = new Team();
         returnTeam.setId(id);
@@ -198,7 +198,7 @@ public class AdminTeamControllerTest {
     @Test
     public void updateTeamWithBindingErrorsWithImage() throws Exception {
 
-        Integer id = 1;
+        String id = "1";
 
         Team returnTeam = new Team();
         returnTeam.setId(id);
@@ -229,7 +229,7 @@ public class AdminTeamControllerTest {
 
     @Test
     public void editWithTeamCaptain() throws Exception {
-        Integer id = 1;
+        String id = "1";
 
         team.setTeamCaptain(new Member());
         when(teamService.getById(id)).thenReturn(team);
@@ -249,7 +249,7 @@ public class AdminTeamControllerTest {
 
     @Test
     public void editWithoutTeamCaptain() throws Exception {
-        Integer id = 1;
+        String id = "1";
 
         when(teamService.getById(id)).thenReturn(team);
         when(competitionService.listAll()).thenReturn((List) competitions);
@@ -268,7 +268,7 @@ public class AdminTeamControllerTest {
 
     @Test
     public void deleteTeam() throws Exception {
-        Integer id = 1;
+        String id = "1";
 
         mockMvc.perform(get("/admin/team/delete/1"))
                 .andExpect(status().is3xxRedirection())

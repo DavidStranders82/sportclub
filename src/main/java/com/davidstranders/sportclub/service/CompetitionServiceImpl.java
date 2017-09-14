@@ -46,7 +46,7 @@ public class CompetitionServiceImpl implements CompetitionService{
         try {
             if (myFile.getBytes().length!=0) {
                 competition.setImage(myFile.getBytes());
-            }else if (competition.getId()!=0){
+            }else if (competition.getId()!=null){
                 competition.setImage(getById(competition.getId()).getImage());
             }
         } catch (IOException e) {
@@ -55,9 +55,9 @@ public class CompetitionServiceImpl implements CompetitionService{
         return competitionRepository.save(competition);
     }
 
-    public Competition getById(int id){
+    public Competition getById(String id){
         Competition competition = null;
-        if(id!=0) {
+        if(id!=null) {
             competition = competitionRepository.findOne(id);
         }
         if(competition.getImage()!=null) {
@@ -69,7 +69,7 @@ public class CompetitionServiceImpl implements CompetitionService{
         return competition;
     }
 
-    public void delete(int id){
+    public void delete(String id){
         competitionRepository.delete(id);
     }
 

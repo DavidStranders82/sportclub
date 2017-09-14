@@ -17,10 +17,10 @@ public class CompetitionTest {
     public void calculateRanking4teams() {
 
         competition.setTeams(new ArrayList<>());
-        Team teamA = new Team("Team A", 1);
-        Team teamB = new Team("Team B", 2);
-        Team teamC = new Team("Team C", 3);
-        Team teamE = new Team("Team E", 5);
+        Team teamA = new Team("Team A", "1");
+        Team teamB = new Team("Team B", "2");
+        Team teamC = new Team("Team C", "3");
+        Team teamE = new Team("Team E", "5");
         competition.getTeams().add(teamA);
         competition.getTeams().add(teamB);
         competition.getTeams().add(teamC);
@@ -73,9 +73,9 @@ public class CompetitionTest {
     public void calculateRanking3Teams() {
 
         competition.setTeams(new ArrayList<>());
-        Team teamA = new Team("Team A", 1);
-        Team teamB = new Team("Team B", 2);
-        Team teamC = new Team("Team C", 3);
+        Team teamA = new Team("Team A", "1");
+        Team teamB = new Team("Team B", "2");
+        Team teamC = new Team("Team C", "3");
         competition.getTeams().add(teamA);
         competition.getTeams().add(teamB);
         competition.getTeams().add(teamC);

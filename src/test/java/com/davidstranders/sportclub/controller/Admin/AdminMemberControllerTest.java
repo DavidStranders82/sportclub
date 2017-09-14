@@ -130,7 +130,7 @@ public class AdminMemberControllerTest {
                 .andExpect(MockMvcResultMatchers.flash().attribute("message", "Member was deleted succesfully"))
                 .andExpect(view().name("redirect:/admin/members/page/1/lastName/asc"));
 
-        verify(memberService, times(1)).delete(1);
+        verify(memberService, times(1)).delete("1");
     }
 
     @Test
@@ -221,7 +221,7 @@ public class AdminMemberControllerTest {
     @Test
     public void edit() throws Exception {
 
-        Integer id = 1;
+        String id = "";
         kees.setId(id);
         when(memberService.getById(id)).thenReturn(kees);
         when(teamService.listAll()).thenReturn((List) teams);
@@ -269,7 +269,7 @@ public class AdminMemberControllerTest {
     @Test
     public void updateMemberWithBindingErrors() throws Exception {
 
-        Integer id = 1;
+        String id = "1";
         kees.setImage(IMAGE);
 
         when(memberService.getById(id)).thenReturn(kees);
@@ -294,7 +294,7 @@ public class AdminMemberControllerTest {
     @Test
     public void updateMemberWithBindingErrorsNoImage() throws Exception {
 
-        Integer id = 1;
+        String id = "1";
 
         when(memberService.getById(id)).thenReturn(kees);
         when(teamService.listAll()).thenReturn((List) teams);
@@ -318,7 +318,7 @@ public class AdminMemberControllerTest {
     @Test
     public void updateNewMemberWithNoEqualPasswords() throws Exception {
 
-        Integer id = 1;
+        String id = "1";
 
         when(memberService.getById(id)).thenReturn(kees);
         when(teamService.listAll()).thenReturn((List) teams);

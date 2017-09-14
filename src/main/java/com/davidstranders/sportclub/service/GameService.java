@@ -10,11 +10,11 @@ import java.util.List;
 public interface GameService {
 
     List<Game> listAll();
-    List<Game> listGamesByLocationId (int id);
+    List<Game> listGamesByLocationId (String id);
     List<Game> listUpcomingGames();
-    List<Game> listGamesByCompetitionId(int id);
+    List<Game> listGamesByCompetitionId(String id);
     Game save(Game game);
-    Game getById(int id);
-    void delete (int id);
+    Game getById(String id);
+    void delete (String id);
 
 }

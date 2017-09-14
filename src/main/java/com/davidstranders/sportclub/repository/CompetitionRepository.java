@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by DS on 1-2-2017.
  */
-public interface CompetitionRepository extends CrudRepository<Competition, Integer> {
+public interface CompetitionRepository extends CrudRepository<Competition, String> {
 
     List<Competition> findAllByOrderByNameAsc();
 

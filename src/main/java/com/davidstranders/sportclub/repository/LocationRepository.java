@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by DS on 5-2-2017.
  */
-public interface LocationRepository extends CrudRepository<Location, Integer> {
+public interface LocationRepository extends CrudRepository<Location, String> {
 
     List<Location> findAllByOrderByFieldAsc();
 }

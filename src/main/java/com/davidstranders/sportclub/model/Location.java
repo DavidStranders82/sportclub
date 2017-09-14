@@ -1,6 +1,7 @@
 package com.davidstranders.sportclub.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,17 +12,12 @@ import javax.validation.constraints.NotNull;
 /**
  * Created by DS on 5-2-2017.
  */
-@Entity
+@Document
 public class Location implements Comparable<Location>{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-
-    @NotEmpty
+    private String id;
     private String field;
-
-    @NotNull
     private boolean external;
 
     public Location(){}
@@ -31,11 +27,11 @@ public class Location implements Comparable<Location>{
         this.external = external;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

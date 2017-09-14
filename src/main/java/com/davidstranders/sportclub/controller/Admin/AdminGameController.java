@@ -90,29 +90,29 @@ public class AdminGameController {
         if (bindingResult.hasErrors()){
             model.addAttribute("message", "Please fill in all necessary fields");
             addAttributes(model);
-            return (game.getId()==0) ? "admin/games/newGameForm" : "admin/games/editGameForm";
+            return (game.getId()==null) ? "admin/games/newGameForm" : "admin/games/editGameForm";
         }
 
         if(game.getTeams().size()>0 && game.getTeams().get(0)!=null && game.getTeams().get(1)!=null &&
                 (game.getTeams().get(0).getId() == game.getTeams().get(1).getId())) {
             model.addAttribute("message", "Teams cannot be the same. Try again");
             addAttributes(model);
-            return (game.getId()==0) ? "admin/games/newGameForm" : "admin/games/editGameForm";
+            return (game.getId()==null) ? "admin/games/newGameForm" : "admin/games/editGameForm";
         }
 
         if(game.getDate()!=null && game.getDate().before(new Date())) {
             model.addAttribute("message", "Date must be in the future. Try again");
             addAttributes(model);
-            return (game.getId()==0) ? "admin/games/newGameForm" : "admin/games/editGameForm";
+            return (game.getId()==null) ? "admin/games/newGameForm" : "admin/games/editGameForm";
         }
 
-        redirectAttributes.addFlashAttribute("message", (game.getId()==0) ? "New game was created succesfully" : "Game was updated succesfully");
+        redirectAttributes.addFlashAttribute("message", (game.getId()==null) ? "New game was created succesfully" : "Game was updated succesfully");
         gameService.save(game);
         return "redirect:/admin/games/page/1/date/asc";
     }
 
     @RequestMapping("/admin/game/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model) {
+    public String edit(@PathVariable String id, Model model) {
         Game game = gameService.getById(id);
         model.addAttribute("idTeamA", game.getTeams().get(0).getId());
         model.addAttribute("idTeamB", game.getTeams().get(1).getId());
@@ -125,7 +125,7 @@ public class AdminGameController {
     }
 
     @RequestMapping("/admin/game/delete/{id}")
-    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+    public String delete(@PathVariable String id, RedirectAttributes redirectAttributes) {
         gameService.delete(id);
         redirectAttributes.addFlashAttribute("message", "Game was deleted succesfully");
         return "redirect:/admin/games/page/1/date/asc";

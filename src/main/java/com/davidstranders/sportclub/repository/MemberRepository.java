@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by DS on 14-1-2017.
  */
-public interface MemberRepository extends CrudRepository<Member, Integer>{
+public interface MemberRepository extends CrudRepository<Member, String>{
 
     List<Member> findByLastName(String lastName);
 

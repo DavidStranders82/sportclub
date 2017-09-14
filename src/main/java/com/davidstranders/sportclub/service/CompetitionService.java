@@ -11,7 +11,7 @@ import java.util.List;
 public interface CompetitionService {
 
     List<Competition> listAll();
-    Competition getById(int id);
+    Competition getById(String id);
     Competition save(Competition competition, MultipartFile myFile);
-    void delete(int id);
+    void delete(String id);
 }

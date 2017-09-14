@@ -10,9 +10,9 @@ import java.util.List;
 public interface LocationService {
 
     List<Location> listAll();
-    Location getById(int id);
+    Location getById(String id);
     Location save(Location location);
-    void delete(int id);
+    void delete(String id);
 
 
 

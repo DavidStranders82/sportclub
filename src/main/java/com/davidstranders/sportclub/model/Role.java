@@ -1,5 +1,8 @@
 package com.davidstranders.sportclub.model;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -7,17 +10,15 @@ import java.util.Set;
 /**
  * Created by DS on 18-1-2017.
  */
-@Entity
-@Table(name="roles")
+@Document
 public class Role {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
 
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
+    @DBRef
     private Set<Member> members;
 
     public Role(){}
@@ -27,11 +28,11 @@ public class Role {
         this.members = new HashSet<Member>();
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

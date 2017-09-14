@@ -144,18 +144,18 @@ public class AdminGameControllerTest {
                 .andExpect(MockMvcResultMatchers.flash().attribute("message", "Game was deleted succesfully"))
                 .andExpect(view().name("redirect:/admin/games/page/1/date/asc"));
 
-        verify(gameService, times(1)).delete(1);
+        verify(gameService, times(1)).delete("1");
     }
 
     @Test
     public void edit() throws Exception {
 
-        game1.setId(1);
-        teamA.setId(2);
-        teamB.setId(3);
+        game1.setId("1");
+        teamA.setId("2");
+        teamB.setId("3");
         game1.setTeams(new ArrayList<>(Arrays.asList(teamA, teamB)));
 
-        when(gameService.getById(1)).thenReturn(game1);
+        when(gameService.getById("1")).thenReturn(game1);
         when(teamService.listAll()).thenReturn((List) teams);
         when(competitionService.listAll()).thenReturn((List) competitions);
         when(locationService.listAll()).thenReturn((List) locations);
@@ -164,9 +164,9 @@ public class AdminGameControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/games/editGameForm"))
                 .andExpect(model().attribute("game", instanceOf(Game.class)))
-                .andExpect(model().attribute("game", hasProperty("id", is(1))))
-                .andExpect(model().attribute("idTeamA", is(2)))
-                .andExpect(model().attribute("idTeamB", is(3)))
+                .andExpect(model().attribute("game", hasProperty("id", is("1"))))
+                .andExpect(model().attribute("idTeamA", is("2")))
+                .andExpect(model().attribute("idTeamB", is("3")))
                 .andExpect(model().attribute("adminController", "active"))
                 .andExpect(model().attribute("teams", hasSize(3)))
                 .andExpect(model().attribute("competitions", hasSize(2)))

@@ -133,7 +133,7 @@ public class AdminCompetitionController {
     }
 
     @RequestMapping("/admin/competition/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model) {
+    public String edit(@PathVariable String id, Model model) {
         model.addAttribute("adminController", "active");
         model.addAttribute("competition", competitionService.getById(id));
         model.addAttribute("teams", teamService.listAll());
@@ -142,7 +142,7 @@ public class AdminCompetitionController {
 
 
     @RequestMapping("/admin/competition/delete/{id}")
-    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+    public String delete(@PathVariable String id, RedirectAttributes redirectAttributes) {
         Competition competition = competitionService.getById(id);
         if (!competition.getTeams().isEmpty())
             for (Team team : competition.getTeams()) {

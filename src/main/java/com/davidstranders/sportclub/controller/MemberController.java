@@ -48,7 +48,7 @@ public class MemberController {
 
     @Secured({"ROLE_USER","ROLE_ADMIN"})
     @RequestMapping("/show/{id}")
-    public String showMember(@PathVariable Integer id,
+    public String showMember(@PathVariable String id,
                              Model model,
                              Principal principal) {
         model.addAttribute("memberController", "active");
@@ -63,7 +63,7 @@ public class MemberController {
 
     @Secured({"ROLE_USER","ROLE_ADMIN"})
     @RequestMapping("/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model) {
+    public String edit(@PathVariable String id, Model model) {
         addAttributes(model);
         model.addAttribute("member", memberService.getById(id));
         return "/member/memberForm";
@@ -91,7 +91,7 @@ public class MemberController {
         } else {
             memberService.save(member, myFile);
             redirectAttributes.addFlashAttribute("message", "Profile was updated succesfully!");
-            int memberId = member.getId();
+            String memberId = member.getId();
             return "redirect:/members/show/" + memberId;
         }
     }

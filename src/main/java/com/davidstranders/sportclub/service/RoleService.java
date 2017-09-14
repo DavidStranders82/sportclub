@@ -11,7 +11,7 @@ public interface RoleService {
 
     List<Role> listAll();
     Role save(Role role);
-    Role getById(long id);
-    void delete(long id);
+    Role getById(String id);
+    void delete(String id);
 
 }

@@ -1,6 +1,8 @@
 package com.davidstranders.sportclub.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -13,37 +15,26 @@ import java.util.List;
 /**
  * Created by DS on 14-1-2017.
  */
-@Entity
+@Document
 public class Competition implements Comparable<Competition>{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private String id;
 
-    @NotEmpty
     private String name;
-
-    @Column (columnDefinition = "TEXT")
     private String description;
-
     private int maxTeams;
-
-    @NotNull
     @DateTimeFormat(pattern="dd/MM/yyyy")
     private Date startDate;
-
-    @NotNull
     @DateTimeFormat(pattern="dd/MM/yyyy")
     private Date endDate;
 
-    @ManyToMany(mappedBy = "competitions")
+    @DBRef
     private List<Team> teams;
 
-    @OneToMany(mappedBy = "competition",  cascade = CascadeType.ALL)
+    @DBRef
     private List<Game> games;
 
-    @Lob
-    @Column(columnDefinition = "longblob")
     private byte[] image;
 
     @Transient
@@ -64,11 +55,11 @@ public class Competition implements Comparable<Competition>{
         this.teaser = teaser;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

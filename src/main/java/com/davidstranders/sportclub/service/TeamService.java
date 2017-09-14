@@ -13,7 +13,7 @@ public interface TeamService {
     List<Team> listAll();
     Team save(Team team, MultipartFile myFile);
     Team save(Team team);
-    Team getById(int id);
-    void delete(int id);
+    Team getById(String id);
+    void delete(String id);
 
 }

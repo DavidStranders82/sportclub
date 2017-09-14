@@ -1,6 +1,8 @@
 package com.davidstranders.sportclub.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -10,49 +12,31 @@ import java.util.*;
 /**
  * Created by DS on 14-1-2017.
  */
-@Entity
+@Document
 public class Member {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
-    private int id;
-
-    @NotEmpty
+    private String id;
     private String firstName;
-
-    @NotEmpty
     private String lastName;
-
-    @NotEmpty
-    @Column(unique= true, nullable = false)
     private String email;
-
-    @NotNull
-    @Column(nullable = false)
     private String password;
 
     @Transient
     private String confirmPw;
-
-    @NotNull
-    @ManyToMany(fetch = FetchType.EAGER)
+    @DBRef
     private Set<Role> roles = new HashSet<Role>();
 
-    @Column (columnDefinition = "TEXT")
     private String profile;
-
-    @NotNull
     @DateTimeFormat(pattern="dd/MM/yyyy")
     private Date memberSince;
 
-    @ManyToMany(mappedBy = "members", fetch = FetchType.EAGER)
+    @DBRef
     private List<Team> teams;
 
-    @OneToOne(mappedBy = "teamCaptain")
+    @DBRef
     private Team teamCaptain;
 
-    @Lob
-    @Column(columnDefinition = "longblob")
     private byte[] image;
 
     @Transient
@@ -90,11 +74,11 @@ public class Member {
         this.profile = profile;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

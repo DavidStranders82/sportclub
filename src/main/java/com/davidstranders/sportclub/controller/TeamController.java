@@ -33,7 +33,7 @@ public class TeamController {
 
     @Secured({"ROLE_USER","ROLE_ADMIN"})
     @RequestMapping("/show/{id}")
-    public String showTeam(Model model, @PathVariable Integer id){
+    public String showTeam(Model model, @PathVariable String id){
 
         model.addAttribute("teamController", "active");
         model.addAttribute("team", teamService.getById(id));

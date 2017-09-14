@@ -31,11 +31,11 @@ public class LocationServiceImpl implements LocationService {
         return locationRepository.save(location);
     }
 
-    public Location getById(int id){
+    public Location getById(String id){
         return locationRepository.findOne(id);
     }
 
-    public void delete (int id){
+    public void delete (String id){
         locationRepository.delete(id);
     }
 }

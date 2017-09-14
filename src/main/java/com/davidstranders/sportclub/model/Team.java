@@ -1,6 +1,8 @@
 package com.davidstranders.sportclub.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,43 +11,32 @@ import java.util.List;
 /**
  * Created by DS on 14-1-2017.
  */
-@Entity
+@Document
 public class Team implements Comparable<Team> {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
-    private int id;
-
-    @NotEmpty
+    private String id;
     private String name;
-
     private String yell;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @DBRef
     private Member teamCaptain;
-
-    @ManyToMany
+    @DBRef
     private List<Member> members;
 
-    @ManyToMany (mappedBy = "teams", cascade = CascadeType.ALL)
+    @DBRef
     private List<Game> games;
 
-    @ManyToMany
+    @DBRef
     private List<Competition> competitions;
-
-    @Lob
-    @Column(columnDefinition = "longblob")
     private byte[] image;
 
     @Transient
     private String base64image =null;
-
     @Transient
     private int goalsMade;
-
     @Transient
     private int goalsAgainst;
-
     @Transient
     private int totalPoints;
 
@@ -62,16 +53,16 @@ public class Team implements Comparable<Team> {
     }
 
     // Constructor for testing
-    public Team(String name, int id){
+    public Team(String name, String id){
         this.name = name;
         this.id = id;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

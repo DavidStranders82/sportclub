@@ -1,5 +1,7 @@
 package com.davidstranders.sportclub.model;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -11,28 +13,22 @@ import java.util.List;
 /**
  * Created by DS on 2-2-2017.
  */
-@Entity
+@Document
 public class Game {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private String id;
 
-    @NotNull
-    @ManyToMany (fetch = FetchType.EAGER)
+    @DBRef
     private List<Team> teams;
-
     private Integer scoreTeamA;
-
     private Integer scoreTeamB;
 
-    @ManyToOne
+    @DBRef
     private Location location;
 
-    @ManyToOne
+    @DBRef
     private Competition competition;
-
-    @NotNull
     @DateTimeFormat(pattern="dd/MM/yyyy")
     private Date date;
 
@@ -64,11 +60,11 @@ public class Game {
         this.scoreTeamB = scoreTeamB;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

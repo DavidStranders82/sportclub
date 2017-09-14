@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by DS on 14-1-2017.
  */
-public interface TeamRepository extends CrudRepository<Team, Integer> {
+public interface TeamRepository extends CrudRepository<Team, String> {
 
     List<Team> findAllByOrderByNameAsc();
 

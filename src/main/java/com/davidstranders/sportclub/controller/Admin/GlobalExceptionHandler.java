@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
     public String handleException(Model model, HttpRequest request) {
         model.addAttribute("message", "Selected image is more than 10MB. Please try again");
         String path = request.getURI().getPath();
-        int id = Integer.parseInt(path.substring(path.lastIndexOf('/') + 1));
+        String id = path.substring(path.lastIndexOf('/') + 1);
         path = path.substring(0, path.lastIndexOf('/'));
 
         if (path.equals("/admin/member/update")) {
@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
             model.addAttribute("memberController", "active");
             return "/member/memberForm";
         }
-        else if (path.equals("/admin/team/save") && id>0) {
+        else if (path.equals("/admin/team/save") && id!=null) {
             model.addAttribute("adminController", "active");
             Team team =  teamService.getById(id);
             Hibernate.initialize(team.getCompetitions());
@@ -76,7 +76,7 @@ public class GlobalExceptionHandler {
             model.addAttribute("teamCaptains", availableTeamCaptains);
             return "admin/teams/editTeamForm";
         }
-        else if (path.equals("/admin/team/save") && id==0) {
+        else if (path.equals("/admin/team/save") && id==null) {
             model.addAttribute("adminController", "active");
             model.addAttribute("team", new Team());
             model.addAttribute("availableMembers", memberService.listAvailableMembers());

@@ -28,11 +28,11 @@ public class RoleServiceImpl implements RoleService {
         return roleRepository.save(role);
     }
 
-    public Role getById(long id){
+    public Role getById(String id){
         return roleRepository.findOne(id);
     }
 
-    public void delete(long id){
+    public void delete(String id){
         roleRepository.delete(id);
     }
 

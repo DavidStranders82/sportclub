@@ -14,9 +14,9 @@ public interface MemberService {
     List<Member> listAvailableMembers();
     List<Member> listAvailableTeamCaptains();
     List<Member> findAllByOrderByLastName();
-    Member getById(int id);
+    Member getById(String id);
     Member getByEmail(String email);
     Member save(Member member, MultipartFile myFile);
     Member save(Member member);
-    void delete(Integer id);
+    void delete(String id);
 }

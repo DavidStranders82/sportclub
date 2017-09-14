@@ -35,7 +35,7 @@ public class CompetitionController {
 
     @Secured({"ROLE_USER","ROLE_ADMIN"})
     @RequestMapping("/show/{id}")
-    public String showCompetition(Model model, @PathVariable Integer id){
+    public String showCompetition(Model model, @PathVariable String id){
 
         Competition competition = competitionService.getById(id);
         model.addAttribute("competitionController", "active");
