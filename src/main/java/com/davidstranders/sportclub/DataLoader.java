@@ -4,18 +4,12 @@ import com.davidstranders.sportclub.model.*;
 import com.davidstranders.sportclub.repository.*;
 import com.davidstranders.sportclub.service.MemberServiceImpl;
 import com.davidstranders.sportclub.utils.Parsers;
-import com.google.common.io.ByteStreams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.google.common.collect.Lists;
 
 import javax.annotation.PostConstruct;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Iterator;
 
 /**
